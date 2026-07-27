@@ -1,0 +1,30 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+
+{% seo %}
+
+<script>
+  /* Resolve the theme before first paint so the page never flashes. */
+  (function () {
+    var root = document.documentElement;
+    var pref = 'auto';
+    try { pref = localStorage.getItem('notes-theme') || 'auto'; } catch (e) {}
+    if (pref !== 'light' && pref !== 'dark') pref = 'auto';
+    root.setAttribute('data-theme-pref', pref);
+    root.setAttribute('data-theme', pref === 'auto'
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : pref);
+  })();
+</script>
+
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/latex-extras.css' | relative_url }}?v={{ include.asset_version }}">
+<link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}?v={{ include.asset_version }}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.17.0/katex.min.css"
+      referrerpolicy="no-referrer">
+
+{% include head-custom.html %}

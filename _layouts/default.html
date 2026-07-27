@@ -1,82 +1,16 @@
 <!DOCTYPE html>
+{%- comment -%}
+  Our own assets carry the build time so an edit is never served from a stale
+  cache — they are a few KB, so re-fetching them per deploy is free.
+{%- endcomment -%}
+{%- assign asset_version = site.time | date: '%s' -%}
 <html lang="{{ page.lang | default: 'en-US' }}">
   <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light dark">
-
-    {% seo %}
-
-    <script>
-      /* Resolve the theme before first paint so the page never flashes. */
-      (function () {
-        var root = document.documentElement;
-        var pref = 'auto';
-        try { pref = localStorage.getItem('notes-theme') || 'auto'; } catch (e) {}
-        if (pref !== 'light' && pref !== 'dark') pref = 'auto';
-        root.setAttribute('data-theme-pref', pref);
-        root.setAttribute('data-theme', pref === 'auto'
-          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-          : pref);
-      })();
-    </script>
-
-    {%- comment -%}
-      Our own assets carry the build time so an edit is never served from a
-      stale cache — they are a few KB, so re-fetching them per deploy is free.
-    {%- endcomment -%}
-    {%- assign asset_version = site.time | date: '%s' -%}
-
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/assets/css/latex-extras.css' | relative_url }}?v={{ asset_version }}">
-    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}?v={{ asset_version }}">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.17.0/katex.min.css"
-          referrerpolicy="no-referrer">
-
-    {% include head-custom.html %}
+    {% include head.html asset_version=asset_version %}
   </head>
 
   <body{% if page.nav %} class="has-page-nav"{% endif %}>
-    {%- comment -%}
-      Opt-in per page: a `nav:` list of {title, url} in the front matter. Pages
-      without one get no bar at all.
-    {%- endcomment -%}
-    {%- if page.nav %}
-    <nav class="page-nav" aria-label="Site">
-      <div class="page-nav-inner">
-        <a class="page-nav-brand" href="{{ '/' | relative_url }}">{{ page.nav_title | default: site.title }}</a>
-        <ul class="page-nav-links">
-          {%- for item in page.nav %}
-          <li>
-            <a href="{{ item.url | relative_url }}"{% if item.url == page.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
-          </li>
-          {%- endfor %}
-        </ul>
-      </div>
-    </nav>
-    {%- endif %}
-
-    <div class="page-menu" data-page-menu>
-      <button type="button" class="page-menu-button" data-page-menu-button
-              aria-haspopup="true" aria-expanded="false" aria-label="Page options">
-        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-          <circle cx="3" cy="8" r="1.5" fill="currentColor"/>
-          <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
-          <circle cx="13" cy="8" r="1.5" fill="currentColor"/>
-        </svg>
-      </button>
-
-      <div class="page-menu-popover" data-page-menu-popover hidden>
-        <p class="page-menu-label" id="page-menu-theme-label">Theme</p>
-        <div class="page-menu-group" role="radiogroup" aria-labelledby="page-menu-theme-label">
-          <button type="button" role="radio" aria-checked="false" data-theme-choice="light">Light</button>
-          <button type="button" role="radio" aria-checked="false" data-theme-choice="dark">Dark</button>
-        </div>
-      </div>
-    </div>
+    {% include page-chrome.html %}
 
     <div class="container-lg px-3 my-5 markdown-body latex-extras latex-page indent-pars">
       {{ content }}

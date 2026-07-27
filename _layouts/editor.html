@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+{%- assign asset_version = site.time | date: '%s' -%}
+<html lang="{{ page.lang | default: 'en-US' }}">
+  <head>
+    {% include head.html asset_version=asset_version %}
+  </head>
+
+  {%- comment -%}
+    A tool, not prose: no 80ch column, and the panes fill the window. The
+    preview pane carries the reading classes itself so what you see there is
+    styled exactly like a real page.
+  {%- endcomment -%}
+  <body class="editor-body{% if page.nav %} has-page-nav{% endif %}">
+    {% include page-chrome.html %}
+
+    <div class="editor">
+      <div class="editor-topbar">
+        <label class="editor-file" title="마크다운 파일 열기">
+          open<input type="file" accept=".md,.markdown,text/markdown" data-editor-open hidden>
+        </label>
+        <input type="text" class="editor-name" data-editor-name value="new-note.md"
+               aria-label="파일명" spellcheck="false">
+        <button type="button" class="editor-download" data-editor-download>download</button>
+      </div>
+
+      <div class="editor-panes">
+        <div class="editor-preview" data-editor-preview>
+          <div class="editor-device">
+            <div class="editor-nav-slot" data-editor-nav></div>
+            <div class="markdown-body latex-extras latex-page indent-pars" data-editor-render></div>
+          </div>
+        </div>
+
+        {%- comment -%}
+          The seam itself is the handle — drag it to resize — and the controls
+          ride on top of the line rather than in a bar of their own.
+        {%- endcomment -%}
+        <div class="editor-divider" data-editor-divider role="separator"
+             aria-label="크기 조절 — 끌어서 옮기고, 두 번 누르면 반반">
+          <div class="editor-chips">
+            <button type="button" data-editor-swap title="에디터와 미리보기 자리 바꾸기">⇅</button>
+            <button type="button" data-editor-split title="위아래 / 좌우 분할">⊞</button>
+            <span class="editor-chip-sep"></span>
+            <button type="button" data-device="full" aria-pressed="true" title="전체 폭"><span class="chip-long">full</span><span class="chip-short">F</span></button>
+            <button type="button" data-device="tablet" aria-pressed="false" title="태블릿 820px"><span class="chip-long">tablet</span><span class="chip-short">T</span></button>
+            <button type="button" data-device="phone" aria-pressed="false" title="모바일 390px"><span class="chip-long">phone</span><span class="chip-short">P</span></button>
+          </div>
+        </div>
+
+        <div class="editor-code">
+      <div class="editor-tools" role="toolbar" aria-label="Markdown tools">
+        <div class="editor-tool-group">
+          <button type="button" data-snippet="h2" title="section (## )">H2</button>
+          <button type="button" data-snippet="h3" title="subsection (### )">H3</button>
+          <button type="button" data-snippet="bold" title="bold"><b>B</b></button>
+          <button type="button" data-snippet="italic" title="italic"><i>I</i></button>
+          <button type="button" data-snippet="ul" title="list">list</button>
+          <button type="button" data-snippet="table" title="table">table</button>
+        </div>
+
+        <div class="editor-tool-group">
+          <button type="button" data-snippet="link" title="link">link</button>
+          <button type="button" data-editor-sitelink title="사이트 안 링크 — 본문에서 [[ 를 쳐도 열립니다">[[ site</button>
+          <button type="button" data-snippet="figure" title="figure — 이미지를 끌어다 놓아도 됩니다">figure</button>
+          <button type="button" data-snippet="footnote" title="footnote">footnote</button>
+          <button type="button" data-snippet="sidenote-text" title="sidenote (글만)">sidenote</button>
+          <button type="button" data-snippet="sidenote" title="sidenote + 그림">sidenote+img</button>
+        </div>
+
+        <div class="editor-tool-group">
+          <button type="button" data-snippet="math-inline" title="inline math">$$x$$</button>
+          <button type="button" data-snippet="math-block" title="display math">math</button>
+        </div>
+
+        <div class="editor-tool-group">
+          <select data-snippet-menu aria-label="문단">
+            <option value="">paragraph…</option>
+            <option value="h4">H4 소제목</option>
+            <option value="quote">quote 인용</option>
+            <option value="hr">hr 구분선</option>
+            <option value="codeblock">code block</option>
+          </select>
+          <select data-snippet-menu aria-label="글자">
+            <option value="">inline…</option>
+            <option value="code">code 인라인</option>
+            <option value="sup">sup 윗첨자</option>
+            <option value="kbd">kbd</option>
+            <option value="ol">ordered list</option>
+          </select>
+          <select data-snippet-menu aria-label="수식">
+            <option value="">math…</option>
+            <option value="aligned">aligned</option>
+            <option value="cases">cases</option>
+            <option value="matrix">matrix</option>
+          </select>
+          <select data-snippet-menu aria-label="환경">
+            <option value="">environment…</option>
+            <option value="theorem">theorem</option>
+            <option value="lemma">lemma</option>
+            <option value="definition">definition</option>
+            <option value="proof">proof</option>
+          </select>
+        </div>
+
+      </div>
+          <div class="editor-code-body">
+            <pre class="editor-highlight" data-editor-highlight aria-hidden="true"></pre>
+            <textarea class="editor-input" data-editor-input spellcheck="false"
+                      aria-label="마크다운"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-status" data-editor-status aria-live="polite"></div>
+    </div>
+
+    {%- comment -%}
+      Jekyll writes the real page and PDF list in at build time, so the link
+      search has nothing to fetch and nothing to keep in sync.
+    {%- endcomment -%}
+    <script type="application/json" data-editor-sitemap>
+      [
+        {%- assign first = true -%}
+        {%- for p in site.pages -%}
+          {%- if p.title and p.url != page.url -%}
+            {%- unless first %},{% endunless -%}{%- assign first = false -%}
+            {"t":{{ p.title | jsonify }},"u":{{ p.url | relative_url | jsonify }},"k":"page"}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- for f in site.static_files -%}
+          {%- if f.extname == '.pdf' -%}
+            {%- unless first %},{% endunless -%}{%- assign first = false -%}
+            {"t":{{ f.path | jsonify }},"u":{{ f.path | relative_url | jsonify }},"k":"pdf"}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    </script>
+
+    <div class="editor-complete" data-editor-complete hidden role="listbox"></div>
+
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.17.0/katex.min.js"
+            referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.17.0/contrib/auto-render.min.js"
+            referrerpolicy="no-referrer"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.3.0/lib/marked.umd.min.js"
+            referrerpolicy="no-referrer"></script>
+    <script defer src="{{ '/assets/js/site.js' | relative_url }}?v={{ asset_version }}"></script>
+    <script defer src="{{ '/assets/js/editor.js' | relative_url }}?v={{ asset_version }}"></script>
+  </body>
+</html>

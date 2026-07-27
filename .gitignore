@@ -44,13 +44,18 @@ latex.out/
 
 *.pdf
 
-# local Jekyll preview. _config.yml is NOT here: it is the only place site.title
-# can be set, and without it GitHub Pages falls back to the repository name.
-Gemfile
+# What the local preview *produces* — never what it needs to run. serve-site.sh,
+# the Gemfile and _config.yml are all tracked, so a fresh clone can preview the
+# site as it is published. Gemfile.lock is not: the github-pages gem pins its own
+# dependencies, and a lock resolved on this Mac is only noise on another machine.
 Gemfile.lock
 .jekyll-bundle/
+# Kept out of the repo on purpose: the generator for assets/css/latex-extras.scss
+# and the upstream stylesheet it reads. Only needed when latex.css is upgraded,
+# and the generated file carries latex.css's MIT licence itself.
+tools-gen-latex-extras.sh
+_vendor/
 .jekyll-cache/
 _site/
 vendor/
 .bundle/
-serve-site.sh

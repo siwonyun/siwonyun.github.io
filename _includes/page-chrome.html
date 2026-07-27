@@ -1,0 +1,37 @@
+{%- comment -%}
+  The top bar is opt-in per page: a `nav:` list of {title, url} in the front
+  matter. Pages without one get no bar at all. The theme menu is always there.
+{%- endcomment -%}
+{%- if page.nav %}
+<nav class="page-nav" aria-label="Site">
+  <div class="page-nav-inner">
+    <a class="page-nav-brand" href="{{ '/' | relative_url }}">{{ page.nav_title | default: site.title }}</a>
+    <ul class="page-nav-links">
+      {%- for item in page.nav %}
+      <li>
+        <a href="{{ item.url | relative_url }}"{% if item.url == page.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</nav>
+{%- endif %}
+
+<div class="page-menu" data-page-menu>
+  <button type="button" class="page-menu-button" data-page-menu-button
+          aria-haspopup="true" aria-expanded="false" aria-label="Page options">
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <circle cx="3" cy="8" r="1.5" fill="currentColor"/>
+      <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
+      <circle cx="13" cy="8" r="1.5" fill="currentColor"/>
+    </svg>
+  </button>
+
+  <div class="page-menu-popover" data-page-menu-popover hidden>
+    <p class="page-menu-label" id="page-menu-theme-label">Theme</p>
+    <div class="page-menu-group" role="radiogroup" aria-labelledby="page-menu-theme-label">
+      <button type="button" role="radio" aria-checked="false" data-theme-choice="light">Light</button>
+      <button type="button" role="radio" aria-checked="false" data-theme-choice="dark">Dark</button>
+    </div>
+  </div>
+</div>

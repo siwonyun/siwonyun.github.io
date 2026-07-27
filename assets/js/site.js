@@ -103,6 +103,25 @@
     });
   }
 
+  /* ---------- external links ---------- */
+
+  /*
+   * Anything pointing off this host opens in its own tab. Same-host links —
+   * including the note PDFs and in-page anchors — are left alone, so navigating
+   * the site never scatters tabs. rel="noopener" keeps the opened page from
+   * reaching back through window.opener.
+   */
+  function markExternalLinks() {
+    [].forEach.call(document.querySelectorAll('a[href]'), function (link) {
+      if (link.target) return;
+      if (link.protocol !== 'http:' && link.protocol !== 'https:') return;
+      if (link.host === window.location.host) return;
+
+      link.target = '_blank';
+      link.rel = link.rel ? link.rel + ' noopener noreferrer' : 'noopener noreferrer';
+    });
+  }
+
   /* ---------- table of contents ---------- */
 
   /*
@@ -317,6 +336,7 @@
 
   function init() {
     renderMath();
+    markExternalLinks();
     initToc();
   }
 

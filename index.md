@@ -7,7 +7,7 @@ nav:
   - title: Notes
     url: /bcsc_memory_CN/
   - title: Style test
-    url: /styleguide.html
+    url: /styleguide
 ---
 
 # Siwon Yun

@@ -468,6 +468,563 @@ body {
   }
 }
 
+/* ---------- editor ---------- */
+
+/* The tool fills the window below the bar; only the panes scroll. */
+.editor-body {
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+.editor {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--page-nav-height));
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+.editor-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  padding: 0.4rem 3.25rem 0.4rem 0.75rem; /* right clears the fixed "..." menu */
+  border-bottom: var(--border-width-thin) solid var(--rule-color);
+}
+
+/* The snippet toolbar belongs to the editor pane, so it travels with it when
+   the panes are swapped instead of stranding itself at the top of the window. */
+.editor-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1rem;
+  padding: 0.4rem 0.75rem;
+  border-bottom: var(--border-width-thin) solid var(--rule-color);
+  background-color: var(--body-bg-color);
+}
+
+.editor-panes.is-swapped .editor-tools {
+  border-bottom: var(--border-width-thin) solid var(--rule-color);
+}
+
+.editor-tool-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.editor-tool-group-end {
+  margin-left: auto;
+}
+
+.editor-tools button,
+.editor-topbar button,
+.editor-file {
+  padding: 0.25rem 0.55rem;
+  font: inherit;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--muted-color);
+  background-color: transparent;
+  border: var(--border-width-thin) solid var(--rule-color);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.editor-tools button:hover,
+.editor-topbar button:hover,
+.editor-file:hover {
+  color: var(--body-color);
+  border-color: var(--muted-color);
+}
+
+.editor-tools code,
+.editor-tools b,
+.editor-tools i {
+  font-size: inherit;
+  background: none;
+  padding: 0;
+}
+
+.editor-tools select {
+  max-width: 9rem;
+  padding: 0.25rem 0.4rem;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--muted-color);
+  background-color: transparent;
+  border: var(--border-width-thin) solid var(--rule-color);
+  border-radius: 0.25rem;
+}
+
+.editor-name {
+  width: 12rem;
+  padding: 0.25rem 0.5rem;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--body-color);
+  background-color: transparent;
+  border: var(--border-width-thin) solid var(--rule-color);
+  border-radius: 0.25rem;
+}
+
+.editor-download {
+  color: var(--link-visited) !important;
+  border-color: var(--link-visited) !important;
+}
+
+/* Preview on top by default: the page has a contents rail on the left and
+   margin notes on the right, and neither fits in half a window. --split is the
+   size of whichever pane is first, and the divider drags it. */
+.editor-panes {
+  display: grid;
+  grid-template-rows: var(--split, 58%) 0 1fr;
+  grid-template-columns: 1fr;
+  flex: 1;
+  min-height: 0;
+}
+
+.editor-preview { order: 1; }
+.editor-divider { order: 2; }
+.editor-code { order: 3; }
+
+.editor-panes.is-swapped .editor-preview { order: 3; }
+.editor-panes.is-swapped .editor-code { order: 1; }
+
+/* Side by side mirrors the stack rather than repeating it: what was on top
+   moves to the right, so the pane you were reading ends up on the far side of
+   the seam from the one you type in. */
+.editor.is-side-by-side .editor-preview { order: 3; }
+.editor.is-side-by-side .editor-code { order: 1; }
+.editor.is-side-by-side .editor-panes.is-swapped .editor-preview { order: 1; }
+.editor.is-side-by-side .editor-panes.is-swapped .editor-code { order: 3; }
+
+.editor.is-side-by-side .editor-panes {
+  grid-template-rows: 1fr;
+  grid-template-columns: var(--split, 50%) 0 1fr;
+}
+
+/* ---- the seam ---- */
+
+.editor-divider {
+  position: relative;
+  z-index: 20;
+  height: 0;
+  border-top: var(--border-width-thin) solid var(--rule-color);
+  cursor: row-resize;
+}
+
+/* a hit area wider than the hairline, so the line is easy to grab */
+.editor-divider::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: 0;
+  left: 0;
+  height: 11px;
+}
+
+.editor-divider.is-dragging,
+.editor-divider:hover {
+  border-top-color: var(--link-visited);
+}
+
+.editor.is-side-by-side .editor-divider {
+  height: auto;
+  width: 0;
+  border-top: 0;
+  border-left: var(--border-width-thin) solid var(--rule-color);
+  cursor: col-resize;
+}
+
+.editor.is-side-by-side .editor-divider::before {
+  top: 0;
+  bottom: 0;
+  left: -5px;
+  right: auto;
+  width: 11px;
+  height: auto;
+}
+
+.editor.is-side-by-side .editor-divider.is-dragging,
+.editor.is-side-by-side .editor-divider:hover {
+  border-left-color: var(--link-visited);
+}
+
+/* controls ride on the line itself rather than in a bar of their own */
+.editor-chips {
+  position: absolute;
+  top: 50%;
+  right: 1.5rem;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.1rem 0.3rem;
+  background-color: var(--body-bg-color);
+  border: var(--border-width-thin) solid var(--rule-color);
+  border-radius: 999px;
+  cursor: default;
+  /* out of the way while reading, fully there the moment you reach for it */
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+
+.editor-chips:hover,
+.editor-chips:focus-within,
+.editor-divider.is-dragging .editor-chips {
+  opacity: 1;
+}
+
+/* single letters on the vertical seam — the words make the column too wide */
+.chip-short { display: none; }
+
+.editor.is-side-by-side .chip-long { display: none; }
+.editor.is-side-by-side .chip-short { display: inline; }
+
+.editor.is-side-by-side .editor-chips button {
+  padding: 0.1rem 0.25rem;
+}
+
+/* ⇅ swaps along whichever axis the panes lie on, so lay the arrows that way */
+.editor.is-side-by-side [data-editor-swap] {
+  transform: rotate(90deg);
+}
+
+/* Down at the foot of the seam, clear of the toolbar that now sits at the top
+   of the editor pane. */
+.editor.is-side-by-side .editor-chips {
+  top: auto;
+  bottom: 1.5rem;
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column;
+  padding: 0.3rem 0.1rem;
+}
+
+.editor-chips button {
+  padding: 0.1rem 0.4rem;
+  font: inherit;
+  font-size: 0.7rem;
+  color: var(--muted-color);
+  background-color: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.editor-chips button:hover {
+  color: var(--body-color);
+  background-color: var(--hover-color);
+}
+
+.editor-chips button[aria-pressed='true'] {
+  color: var(--link-visited);
+}
+
+.editor-chip-sep {
+  width: var(--border-width-thin);
+  align-self: stretch;
+  margin: 0.1rem 0.2rem;
+  background-color: var(--rule-color);
+}
+
+.editor.is-side-by-side .editor-chip-sep {
+  width: auto;
+  height: var(--border-width-thin);
+  margin: 0.2rem 0.1rem;
+}
+
+/* ---- the editor, with a highlighted layer behind a see-through textarea ---- */
+
+.editor-code {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.editor-code-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.editor-highlight,
+.editor-input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  tab-size: 4;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  border: 0;
+}
+
+.editor-highlight {
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--body-color);
+  background-color: transparent;
+}
+
+.editor-input {
+  color: transparent;
+  caret-color: var(--body-color);
+  background-color: transparent;
+  overflow-y: auto;
+  resize: none;
+  outline: none;
+}
+
+.editor-input.is-dropping {
+  background-color: var(--hover-color);
+  outline: var(--border-width-thick) dashed var(--link-visited);
+  outline-offset: -6px;
+}
+
+/* token colours, drawn from the site palette so both themes hold together */
+:root {
+  --tk-meta: hsl(0, 0%, 45%);
+  --tk-head: hsl(0, 100%, 33%);
+  --tk-marker: hsl(210, 25%, 45%);
+  --tk-code: hsl(155, 45%, 30%);
+  --tk-math: hsl(268, 45%, 45%);
+  --tk-link: hsl(212, 70%, 40%);
+  --tk-html: hsl(24, 60%, 38%);
+}
+
+[data-theme='dark'] {
+  --tk-meta: hsl(0, 0%, 58%);
+  --tk-head: hsl(196, 80%, 77%);
+  --tk-marker: hsl(210, 20%, 62%);
+  --tk-code: hsl(150, 50%, 62%);
+  --tk-math: hsl(268, 60%, 76%);
+  --tk-link: hsl(205, 80%, 72%);
+  --tk-html: hsl(25, 70%, 66%);
+}
+
+.tk-meta { color: var(--tk-meta); }
+.tk-head { color: var(--tk-head); font-weight: 700; }
+.tk-quote { color: var(--tk-meta); font-style: italic; }
+.tk-rule { color: var(--tk-marker); }
+.tk-marker { color: var(--tk-marker); font-weight: 700; }
+.tk-code { color: var(--tk-code); }
+.tk-math { color: var(--tk-math); }
+.tk-link { color: var(--tk-link); }
+.tk-html { color: var(--tk-html); }
+.tk-strong { font-weight: 700; }
+.tk-em { font-style: italic; }
+
+/* ---- preview ---- */
+
+/* No frame, no tint: the pane *is* the page, so what you see is what ships. */
+.editor-preview {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding: 0 0 4rem;
+}
+
+/* display: contents so the bar's containing block is the whole document, not
+   the slot — a sticky box can only travel inside its containing block, and a
+   slot exactly its own height leaves it nowhere to go. */
+.editor-nav-slot {
+  display: contents;
+}
+
+/* Nothing bespoke: give the preview the same --page-nav-height a real page has
+   and the stylesheet's own .page-nav rule does the rest, sticky included. */
+.editor-preview.has-preview-nav .editor-device {
+  --page-nav-height: 3rem;
+}
+
+.editor-nav-slot .page-nav {
+  margin-bottom: 0;
+  /* previewed content must not paint over the tool's own chrome — the site's
+     z-index 30 would put this bar on top of the seam and its buttons */
+  z-index: 1;
+}
+
+/* the contents rail has to clear that bar rather than slide under it */
+.editor-preview.has-preview-nav .page-toc-inner {
+  top: 4rem;
+  max-height: calc(100vh - 15rem);
+}
+
+.editor-device {
+  margin: 0 auto;
+  max-width: var(--preview-width, none);
+}
+
+/* 2rem here plus the h1's own 24px reproduces the 56px a real page leaves
+   between the top bar and the title — padding, not margin, so it cannot
+   collapse away. */
+.editor-preview > .editor-device > .markdown-body {
+  margin: 0 auto;
+  padding: 2rem 16px 0; /* sides match the container's px-3 on a real page */
+}
+
+/* The contents rail is sticky against the pane, not the window. */
+.editor-preview .page-toc-inner {
+  top: 1rem;
+  max-height: calc(100vh - 12rem);
+}
+
+/* Device widths. The narrow ones also fold the page the way latex.css does
+   below 1050px, so the preview does not promise a margin that will not exist. */
+.editor-preview.is-tablet { --preview-width: 820px; }
+.editor-preview.is-phone { --preview-width: 390px; }
+
+.editor-preview.is-tablet .editor-device,
+.editor-preview.is-phone .editor-device {
+  outline: var(--border-width-thin) solid var(--rule-color);
+  outline-offset: 1.5rem;
+}
+
+.editor-preview.is-phone .page-toc,
+.editor-preview.is-tablet .page-toc {
+  display: none;
+}
+
+.editor-body .editor-preview.is-phone .latex-extras.latex-extras .sidenote,
+.editor-body .editor-preview.is-tablet .latex-extras.latex-extras .sidenote {
+  display: block;
+  float: none;
+  width: auto;
+  margin: 0.5rem 0 1rem 1.5rem;
+  padding-left: 0.75rem;
+  border-left: var(--border-width-thin) solid var(--rule-color);
+}
+
+/* ---- link search ---- */
+
+.editor-complete {
+  position: fixed;
+  z-index: 50;
+  min-width: 18rem;
+  max-width: 32rem;
+  padding: 0.25rem;
+  background-color: var(--body-bg-color);
+  border: var(--border-width-thin) solid var(--rule-color);
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+.editor-complete[hidden] { display: none; }
+
+.editor-complete button {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.25rem 0.4rem;
+  font: inherit;
+  font-size: 0.78rem;
+  text-align: left;
+  color: var(--body-color);
+  background-color: transparent;
+  border: 0;
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+
+.editor-complete button[aria-selected='true'] {
+  background-color: var(--hover-color);
+}
+
+.editor-complete-kind {
+  flex: none;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--muted-color);
+}
+
+.editor-complete-title {
+  flex: none;
+  max-width: 14rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor-complete-url {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  color: var(--muted-color);
+}
+
+.editor-status {
+  padding: 0.3rem 0.75rem;
+  min-height: 1.6rem;
+  font-size: 0.75rem;
+  color: var(--muted-color);
+  border-top: var(--border-width-thin) solid var(--rule-color);
+}
+
+/* Side by side needs width; below that, stack and let the page scroll. */
+@media (max-width: 800px) {
+  .editor-body {
+    height: auto;
+    overflow: visible;
+  }
+
+  .editor {
+    height: auto;
+  }
+
+  .editor-panes,
+  .editor.is-side-by-side .editor-panes {
+    grid-template-rows: auto 0 auto;
+    grid-template-columns: 1fr;
+  }
+
+  /* everything stacks down here, so use the stacked order whatever is selected */
+  .editor.is-side-by-side .editor-preview { order: 1; }
+  .editor.is-side-by-side .editor-code { order: 3; }
+  .editor.is-side-by-side .editor-panes.is-swapped .editor-preview { order: 3; }
+  .editor.is-side-by-side .editor-panes.is-swapped .editor-code { order: 1; }
+
+  .editor.is-side-by-side .editor-divider {
+    height: 0;
+    width: auto;
+    border-left: 0;
+    border-top: var(--border-width-thin) solid var(--rule-color);
+    cursor: row-resize;
+  }
+
+  .editor.is-side-by-side .editor-chips {
+    top: 50%;
+    left: auto;
+    right: 1.5rem;
+    transform: translateY(-50%);
+    flex-direction: row;
+  }
+
+  .editor-code {
+    min-height: 60vh;
+  }
+
+  .editor-preview {
+    min-height: 60vh;
+  }
+}
+
 /* ---------- theme menu ---------- */
 
 /* Squared off and drawn with the same thin rule as the bar, the table borders
