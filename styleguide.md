@@ -5,9 +5,9 @@ nav:
   - title: Home
     url: /
   - title: Notes
-    url: /bcsc_memory_CN/
+    url: /notes
   - title: Style test
-    url: /styleguide.html
+    url: /styleguide
 ---
 
 # Style test

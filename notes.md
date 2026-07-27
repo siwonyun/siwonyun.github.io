@@ -1,13 +1,6 @@
 ---
 layout: default
 title: "Siwon Yun"
-nav:
-  - title: Home
-    url: /
-  - title: Notes
-    url: /bcsc_memory_CN/
-  - title: Style test
-    url: /styleguide
 ---
 
 # Siwon Yun
