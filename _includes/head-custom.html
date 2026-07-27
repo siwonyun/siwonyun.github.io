@@ -4,9 +4,17 @@
 
   Paths go through relative_url so they follow whatever baseurl the build uses.
 -->
-<link rel="icon" href="{{ '/assets/favicon/favicon.ico' | relative_url }}" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/favicon/favicon-32x32.png' | relative_url }}">
+{%- comment -%}
+  No sizes="any" on the .ico: that claims it scales to anything, so a browser
+  asking for a 64px icon would take the 16px one and blow it up. The list below
+  lets it pick the nearest real size instead — which matters on a retina screen,
+  where a 32px slot in a tab strip asks for 64 actual pixels.
+{%- endcomment -%}
+<link rel="icon" href="{{ '/assets/favicon/favicon.ico' | relative_url }}">
 <link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/favicon/favicon-16x16.png' | relative_url }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/favicon/favicon-32x32.png' | relative_url }}">
+<link rel="icon" type="image/png" sizes="96x96" href="{{ '/assets/favicon/favicon-96x96.png' | relative_url }}">
+<link rel="icon" type="image/png" sizes="192x192" href="{{ '/assets/favicon/android-icon-192x192.png' | relative_url }}">
 <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/favicon/apple-icon-180x180.png' | relative_url }}">
 <link rel="manifest" href="{{ '/assets/favicon/manifest.json' | relative_url }}">
 <meta name="theme-color" content="#f9fafb" media="(prefers-color-scheme: light)">

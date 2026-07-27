@@ -122,6 +122,47 @@
     });
   }
 
+  /* ---------- sidenotes ---------- */
+
+  /*
+   * A margin note is written as one tag — <span class="sn">…</span>, or
+   * <figure class="sn"> when it holds a picture — and the label and checkbox
+   * that fold it away on a narrow screen are built here.
+   *
+   * They cannot be written by hand without cost: each pair needs an id nothing
+   * else on the page uses, and hand-numbering them means renumbering every time
+   * a note is inserted in the middle. The visible number is a CSS counter, so it
+   * stays right whatever these ids say. The counter runs across redraws so the
+   * editor's preview cannot mint an id twice either.
+   *
+   * The long-hand form (label + input + .sidenote spelled out) still works; this
+   * only expands notes that have not been wired up yet.
+   */
+  var sidenoteSeq = 0;
+
+  function initSidenotes(root) {
+    var scope = root || document;
+    [].forEach.call(scope.querySelectorAll('.sn:not(.sidenote)'), function (note) {
+      var id = 'sn-auto-' + (++sidenoteSeq);
+
+      var label = document.createElement('label');
+      label.className = 'sidenote-toggle sidenote-number';
+      label.setAttribute('for', id);
+
+      var toggle = document.createElement('input');
+      toggle.className = 'sidenote-toggle';
+      toggle.type = 'checkbox';
+      toggle.id = id;
+
+      /* the stylesheet reaches the note with "+", so nothing may come between */
+      note.parentNode.insertBefore(label, note);
+      note.parentNode.insertBefore(toggle, note);
+      note.classList.add('sidenote');
+    });
+  }
+
+  window.initSidenotes = initSidenotes;
+
   /* ---------- table of contents ---------- */
 
   /*
@@ -335,6 +376,7 @@
   }
 
   function init() {
+    initSidenotes();
     renderMath();
     markExternalLinks();
     initToc();

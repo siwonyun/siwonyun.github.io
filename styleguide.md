@@ -141,4 +141,12 @@ enumerate도 3중까지 1. → a. → i. 순서로 바뀐다.
 
 ## Sidenote
 
-이 문장에 사이드노트를 단다.<label for="sn-1" class="sidenote-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="sidenote-toggle"><span class="sidenote">여백에 표시되는 노트. 화면이 좁으면 접힌다.</span>
+사이드노트는 태그 하나로 쓴다. 좁은 화면에서 접기 위한 label과 체크박스는
+`site.js`가 붙이므로, 번호도 id도 직접 적지 않는다.
+
+이 문장에 사이드노트를 단다.<span class="sn">여백에 표시되는 노트. 화면이 좁으면 접힌다. [링크](/)도 그대로 쓸 수 있다.</span>
+
+그림이 들어가면 `{::nomarkdown}`으로 감싼다. kramdown이 span 문맥의 `<figcaption>`을
+이스케이프하기 때문인데, 그 안에서는 마크다운이 꺼지므로 링크는 `<a>`로 적어야 한다.
+
+{::nomarkdown}<figure class="sn"><img src="https://placehold.co/480x120/eeeeee/333333.png?text=sidenote" alt="placeholder"><figcaption>여백 그림.</figcaption></figure>{:/}

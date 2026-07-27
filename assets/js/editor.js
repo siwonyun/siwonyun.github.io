@@ -149,24 +149,23 @@
   }
 
   /*
-   * A margin note needs a unique id to pair its label with its checkbox, and
-   * has to sit inside {::nomarkdown} — kramdown escapes <figcaption> inline,
-   * and the label must stay a sibling for the number and the small-screen
-   * toggle to work. With an image it is a whole figure; without, a plain span.
+   * One tag per margin note: site.js adds the label and checkbox that fold it
+   * away on a narrow screen, so nothing here has to invent a unique id.
+   *
+   * Only the figure form is wrapped in {::nomarkdown}: kramdown does not know
+   * <figcaption> in span context and would escape it. A note that is only text
+   * is left alone, because kramdown reads the inside of span-level HTML as
+   * markdown — so links and emphasis keep working there, which they cannot do
+   * inside {::nomarkdown}.
    */
   function applySidenote(kind, src) {
-    var n = 1;
-    while (input.value.indexOf('id="sn-' + n + '"') !== -1) n++;
-
-    var note = kind === 'figure'
-      ? '<figure class="sidenote"><img src="' + (src || './image/파일.png') + '" alt="설명">' +
-        '<figcaption>캡션</figcaption></figure>'
-      : '<span class="sidenote">여백에 들어갈 노트.</span>';
+    var text = kind === 'figure'
+      ? '{::nomarkdown}<figure class="sn"><img src="' + (src || './image/파일.png') + '" alt="설명">' +
+        '<figcaption>캡션</figcaption></figure>{:/}'
+      : '<span class="sn">여백에 들어갈 노트.</span>';
 
     var sel = selection();
-    insertAt(sel.start, sel.end,
-      '{::nomarkdown}<label for="sn-' + n + '" class="sidenote-toggle sidenote-number"></label>' +
-      '<input type="checkbox" id="sn-' + n + '" class="sidenote-toggle">' + note + '{:/}');
+    insertAt(sel.start, sel.end, text);
   }
 
   function applyFootnote() {
@@ -597,14 +596,67 @@
       return '%%MATH' + (store.length - 1) + '%%';
     }
 
-    src = src.replace(/(^|\n)[ \t]*\$\$([\s\S]*?)\$\$[ \t]*(?=\n|$)/g, function (m, lead, tex) {
-      return lead + stash(tex, true);
-    });
-    src = src.replace(/\$\$([\s\S]*?)\$\$/g, function (m, tex) {
-      return stash(tex, false);
+    /*
+     * One pass over the source, because the alternatives have to be able to
+     * outrank each other:
+     *
+     *  - Code comes first, and is handed back untouched. Otherwise the `$$` in a
+     *    sentence explaining the syntax would open a formula that closes on the
+     *    next real one, hiding a whole page of prose inside it. kramdown does not
+     *    read maths inside backticks either.
+     *  - Display maths is only what takes up whole lines by itself — fenced by a
+     *    lone $$, or a single line that is nothing but $$…$$. Neither may run past
+     *    the end of its line, or "…$$f$$의 값" (inline maths with text after it)
+     *    would fail to close and swallow the next display block's opening $$.
+     *  - Anything else between $$ … $$ is inline.
+     */
+    var TOKEN = new RegExp([
+      '```[\\s\\S]*?```',                                                       /* fenced code */
+      '(`+)[\\s\\S]*?\\1',                                                      /* code span */
+      '(^|\\n)[ \\t]*\\$\\$[ \\t]*\\n([\\s\\S]*?)\\n[ \\t]*\\$\\$[ \\t]*(?=\\n|$)', /* $$ on its own lines */
+      '(^|\\n)[ \\t]*\\$\\$([^\\n]+?)\\$\\$[ \\t]*(?=\\n|$)',                      /* a line that is just $$…$$ */
+      '\\$\\$([\\s\\S]*?)\\$\\$'                                                /* inline */
+    ].join('|'), 'g');
+
+    src = src.replace(TOKEN, function (m, tick, blockLead, blockTex, lineLead, lineTex, inlineTex) {
+      if (tick !== undefined || m.slice(0, 3) === '```') return m;
+      if (blockTex !== undefined) return blockLead + stash(blockTex, true);
+      if (lineTex !== undefined) return lineLead + stash(lineTex, true);
+      if (inlineTex !== undefined) return stash(inlineTex, false);
+      return m;
     });
 
     return { src: src, store: store };
+  }
+
+  /*
+   * A blank line anywhere in a list makes CommonMark call the whole list loose
+   * and wrap every item's text in <p>. kramdown is finer grained: an item that
+   * opens with a plain line running straight into a nested list keeps that line
+   * bare, and only the paragraph after the blank line becomes a <p>. Without
+   * this the item's first line picks up paragraph margins the real page has not
+   * got.
+   */
+  function tightenLists(html) {
+    var slate = document.createElement('template');
+    slate.innerHTML = html;
+
+    slate.content.querySelectorAll('li > p:first-child').forEach(function (p) {
+      var after = p.nextElementSibling;
+      if (!after || (after.tagName !== 'UL' && after.tagName !== 'OL')) return;
+      while (p.firstChild) p.parentNode.insertBefore(p.firstChild, p);
+      p.parentNode.removeChild(p);
+    });
+
+    return slate.innerHTML;
+  }
+
+  /* marked wraps a lone placeholder in <p>, but kramdown leaves display maths as
+     a block of its own — and a <p> here would pick up the first-line indent. */
+  function unwrapDisplay(html, store) {
+    return html.replace(/<p>\s*(%%MATH(\d+)%%)\s*<\/p>/g, function (m, holder, i) {
+      return store[Number(i)] && store[Number(i)].display ? holder : m;
+    });
   }
 
   function restoreMath(html, store) {
@@ -661,7 +713,8 @@
       .replace(/\{::nomarkdown\}/g, '')
       .replace(/\{:\/\}/g, '');
 
-    return restoreMath(window.marked.parse(body, { gfm: true }) + footnoteSection(notes), math.store);
+    var html = window.marked.parse(body, { gfm: true }) + footnoteSection(notes);
+    return restoreMath(tightenLists(unwrapDisplay(html, math.store)), math.store);
   }
 
   /* The real pages grow a contents rail in the left margin; the preview builds
@@ -747,10 +800,21 @@
      compared as source strings, so KaTeX's spans and the ids we hand out later
      never confuse the comparison: what the markdown did not change stays as the
      very same element, images and all. */
-  var blockNodes = [];   /* the live top-level elements, in order */
-  var blockHtml = [];    /* the markup each one was built from */
+  var blockNodes = [];   /* per block, the live nodes it owns, in order */
+  var blockHtml = [];    /* the markup each block was built from */
+
+  /* Display maths arrives as a bare "\[…\]" text node — that is what kramdown
+     writes — so a block is not always an element, and KaTeX may turn one text
+     node into several nodes. Hence a block owns a list, not a single node. */
+  function blockKey(node) {
+    return node.nodeType === 1 ? node.outerHTML : 'text:' + node.nodeValue;
+  }
 
   function dress(node) {
+    /* the same wiring a real page gets, so a <span class="sn"> previews as the
+       margin note it will become */
+    if (typeof window.initSidenotes === 'function') window.initSidenotes(node);
+
     if (typeof window.renderMathInElement === 'function') {
       window.renderMathInElement(node, {
         delimiters: [
@@ -763,11 +827,15 @@
       });
     }
 
+    /* the same test site.js makes, host check included — without it a link to
+       our own /coursework resolves to http://…/coursework and reads as external */
     node.querySelectorAll('a[href]').forEach(function (link) {
-      if (link.protocol === 'http:' || link.protocol === 'https:') {
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-      }
+      if (link.target) return;
+      if (link.protocol !== 'http:' && link.protocol !== 'https:') return;
+      if (link.host === window.location.host) return;
+
+      link.target = '_blank';
+      link.rel = link.rel ? link.rel + ' noopener noreferrer' : 'noopener noreferrer';
     });
   }
 
@@ -778,9 +846,9 @@
     slate.innerHTML = html;
 
     var next = [].filter.call(slate.content.childNodes, function (n) {
-      return n.nodeType === 1;
+      return n.nodeType === 1 || (n.nodeType === 3 && n.nodeValue.trim());
     });
-    var nextHtml = next.map(function (n) { return n.outerHTML; });
+    var nextHtml = next.map(blockKey);
 
     /* An edit almost always touches one block, so matching from both ends finds
        the run that actually changed without a full diff. */
@@ -794,19 +862,29 @@
 
     if (head === blockHtml.length && head === nextHtml.length) return;
 
-    var anchor = blockNodes[blockNodes.length - tail] || null;
+    var kept = blockNodes.slice(blockNodes.length - tail);
+    var anchor = (kept[0] && kept[0][0]) || null;
     var i;
-    for (i = head; i < blockNodes.length - tail; i++) render.removeChild(blockNodes[i]);
+    for (i = head; i < blockNodes.length - tail; i++) {
+      blockNodes[i].forEach(function (node) { render.removeChild(node); });
+    }
 
-    var fresh = next.slice(head, next.length - tail);
-    fresh.forEach(function (node) { render.insertBefore(node, anchor); });
+    /* KaTeX runs while the block is still off the page: it is a pure DOM build,
+       and doing it here means a "\[…\]" text node is already a rendered element
+       by the time we take note of what the block owns. */
+    var fresh = next.slice(head, next.length - tail).map(function (node) {
+      var holder = document.createElement('div');
+      holder.appendChild(node);
+      dress(holder);
+      var owned = [].slice.call(holder.childNodes);
+      owned.forEach(function (n) { render.insertBefore(n, anchor); });
+      return owned;
+    });
 
-    blockNodes = blockNodes.slice(0, head).concat(fresh,
-      blockNodes.slice(blockNodes.length - tail));
+    blockNodes = blockNodes.slice(0, head).concat(fresh, kept);
     blockHtml = nextHtml;
 
     if (Object.keys(pendingImages).length) showPendingImages();
-    fresh.forEach(dress);
   }
 
   var navSig = null;
