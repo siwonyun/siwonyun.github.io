@@ -10,45 +10,53 @@ nav:
     url: /styleguide
 ---
 
-# Siwon Yun
-hi
+# Siwon Yun (윤시원, 尹時元)
+> $$-\log \Pr(x)$$​
 
-## Freshman 1st semester
-> 20 credit
-
-- 이산수학<sup>Discrete Mathematics</sup>
-- 컴퓨터공학개론<sup>Introduction to Computer Engineering</sup>
-- 프로그래밍입문<sup>Introduction to Programming</sup>
-- 자료구조<sup>Data Structure</sup>
-- [대학수학(1)<sup>Calculus(1)</sup>]({{ '/calculus/note.pdf' | relative_url }})
-- Academic English
-- 확률및통계<sup>Probability and Statics</sup>
-- 미생물학입문<sup>Introduction to Microbiology, K-MOOC</sup>
-
-## Self study
-- [MQC-book]({{ '/self-study/MQC-book/note.pdf' | relative_url }})
-
-## Test file
-- [Test file 1]({{ '/example/note.pdf' | relative_url }})
+<div align="center">
+    <figure>
+        <img src="./image/goorm.png" alt="goorm" width="240">
+        <figcaption>my cat, Goorm</figcaption>
+    </figure>
+</div>
 
 
-| 차시 | materials                          | 발제 내용                                                    | 발제자 |
-|:----:|------------------------------------|--------------------------------------------------------------|--------|
-|   1  | Learning and Memory                | 1.01 Learning Theory and Behavior: Introduction and Overview | 공동   |
-|      |                                    | 1.02 A Typology of Memory Terms                              | 윤시원 |
-|      |                                    | 1.03 Retrieval From Memory                                   | 김태현 |
-|      |                                    | 1.15 Memory for Space, Time, and Episodes                    | 정유경 |
-|   2  | Cognitive Neuroscience of Memories | 1. Types of Memory and Brain Regions of Interest             | 윤시원 |
-|      |                                    | 2. The Tools of Cognitive Neuroscience                       | 정유경 |
-|   3  |                                    | 3. Brain Regions Associated with Long-Term Memory            | 윤시원 |
-|      |                                    | 4. Brain Timing Associated with Long-Term Memory             | 공동   |
-|      |                                    | 5. Long-Term Memory Failure                                  | 정유경 |
-|   4  |                                    | 6. Working Memory                                            | 윤시원 |
-|      |                                    | 7. Implicit Memory                                           | 정유경 |
-|   5  |                                    | 8. Memory and Other Cognitive Processes                      | 윤시원 |
-|      |                                    | 9. Explicit Memory and Disease                               | 김태현 |
-|   6  |                                    | 10. Long-Term Memory in Animals                              | 정유경 |
-|      |                                    | 11. The Future of Memory Research                            | 김태현 |
-|   7  | 논문                               | Engram                                                       | 김태현 |
-|      |                                    | Memory systems in AI                                         | 윤시원 |
-|      |                                    | Multimodal Brain Imaging in Memory Research                  | 정유경 |
+## Contact
+Email: yswysw421[at]gmail[dot]com\\
+GitHub: [siwonyun](https://github.com/siwonyun/)\\
+LinkedIn: [i-love-you](https://www.linkedin.com/in/i-love-you/)
+
+
+## Selected Honors & Awards
+- [Regeneron International Science and Engineering Fair (ISEF)](https://www.societyforscience.org/isef/) 2024{::nomarkdown}<label for="sn-isef" class="sidenote-toggle sidenote-number"></label><input type="checkbox" id="sn-isef" class="sidenote-toggle"><figure class="sidenote"><img src="./image/isef.png" alt="isef"><figcaption>ISEF</figcaption></figure>{:/}
+    - Los Angeles, CA
+    - Finalist, Society for Science [May 2024]
+- 디미고 IT역량 UP 프로그램
+    - GrandMaster 등급(2 of 189) [2024]
+- SmarTeen App+ Challenge (STA+C) 2023
+    - Bronze Medal, SK Planet / Ministry of SMEs and Startups [Oct 2023]
+- [E-icon World Contest](https://e-icon.or.kr/en/) 2022
+    - Bronze Medal, Ministry of Education [2022]
+
+## Experience
+- [Brain and Cognitive Science Community (BCSC)](https://bcscommunity123.wixstudio.com/bcsc) [Mar 2025 - Current]
+    - Committee Member [Mar 2026 - Current]
+- [GAI Lab](https://sites.google.com/view/gailab/)
+    - Intern [Sep 2025 - Current]
+- [Quantum Information Science Summer School](https://qschool.info) 2025
+    - Quantum Information Research Support Center [11 Jan - 16 Jan 2025]
+- [Counterspell: Seoul](https://counterspell-seoul.vercel.app)
+    - Co-organizer, Hack Club [23 Nov - 24 Nov 2024]
+- KAIST Creative and Global Leader Program (창의적 글로벌 리더 프로그램) 2023 Summer
+- [CANSAT COMPETITION KOREA](https://cansat.kaist.ac.kr) 2023{::nomarkdown}<label for="sn-cansat" class="sidenote-toggle sidenote-number"></label><input type="checkbox" id="sn-cansat" class="sidenote-toggle"><figure class="sidenote"><img src="./image/cansat.png" alt="cansat"><figcaption>cansat</figcaption></figure>{:/}
+    - First round qualifier selection
+- Korean Scholars Conference for Youth (KSCY) 2023
+    - Official Ambassadors, Computer Engineering Research Track
+
+
+## Education
+- [Incheon National University](https://inu.ac.kr), Incheon, Republic of Korea
+    - B.S., [Computer Science](https://cse.inu.ac.kr/)(Expected 2027) [Mar 2025 - Current]
+    - Grade: 4.4/4.5
+- [Korea Digital Media High School](https://dimigo.hs.kr/), Ansan, Republic of Korea
+    - Dept. web programming [Mar 2022 - Jan 2025]

@@ -300,6 +300,12 @@ body {
   text-decoration: none;
 }
 
+/* primer's stylesheet underlines every a:hover; the brand reads as the site's
+   title rather than something to follow, so it stays plain. */
+.page-nav-brand:hover {
+  text-decoration: none;
+}
+
 /* The bar is a fixed 3rem, so links scroll sideways on a narrow screen rather
    than wrapping onto a second line that would not fit. */
 .page-nav-links {
