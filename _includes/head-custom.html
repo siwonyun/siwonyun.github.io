@@ -1,0 +1,15 @@
+<!--
+  Overrides jekyll-theme-primer's _includes/head-custom.html, which is the hook
+  the layout already pulls in — so anything here lands on every page.
+
+  Paths go through relative_url so they follow whatever baseurl the build uses.
+-->
+<link rel="icon" href="{{ '/assets/favicon/favicon.ico' | relative_url }}" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/favicon/favicon-32x32.png' | relative_url }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/favicon/favicon-16x16.png' | relative_url }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/favicon/apple-icon-180x180.png' | relative_url }}">
+<link rel="manifest" href="{{ '/assets/favicon/manifest.json' | relative_url }}">
+<meta name="theme-color" content="#f9fafb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#292929" media="(prefers-color-scheme: dark)">
+
+{% include head-custom-google-analytics.html %}

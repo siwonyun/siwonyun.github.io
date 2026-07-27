@@ -1,0 +1,17 @@
+# actions/configure-pages fills in url and baseurl from the repo; the values
+# below are the ones it derives for a user site, spelled out so local preview
+# resolves paths exactly as production does.
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-seo-tag
+title: "Siwon Yun"
+url: "https://siwonyun.github.io"
+baseurl: ""
+exclude:
+  - vendor
+  - .bundle
+  - .jekyll-bundle
+  - serve-site.sh
+  - Gemfile
+  - Gemfile.lock
+  - tools-gen-latex-extras.sh

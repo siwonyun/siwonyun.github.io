@@ -1,0 +1,56 @@
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# LaTeX build artefacts.
+# Published note PDFs are tracked anyway — they are the deliverable — so adding
+# one needs `git add -f`.
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.out
+*.ps
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+*-blx.bib
+*.auxlock
+*.figlist
+*.nlo
+*.nls
+a.out
+latex.out/
+
+# beamer
+*.nav
+*.snm
+*.vrb
+
+*.pdf
+
+# local Jekyll preview. _config.yml is NOT here: it is the only place site.title
+# can be set, and without it GitHub Pages falls back to the repository name.
+Gemfile
+Gemfile.lock
+.jekyll-bundle/
+.jekyll-cache/
+_site/
+vendor/
+.bundle/
+serve-site.sh
