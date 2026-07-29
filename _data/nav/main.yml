@@ -1,0 +1,4 @@
+# The bar for the site's own pages. One file per bar: this is site.data.nav.main,
+# which a page asks for by writing `nav: main`.
+- title: Home
+  url: /

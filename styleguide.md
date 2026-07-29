@@ -1,15 +1,7 @@
 ---
 layout: default
 title: "Style Guide"
-nav:
-  - title: Home
-    url: /
-  - title: Notes
-    url: /notes
-  - title: Style Guide
-    url: /styleguide
-  - title: 한국어
-    url: /styleguide-ko
+nav: styleguide
 ---
 
 {% include examples/styleguide.md %}

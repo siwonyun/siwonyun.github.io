@@ -1,9 +1,9 @@
 ---
 layout: default
 title: "Siwon Yun"
-nav:
-  - title: Home
-    url: /
+nav: main
+#   - title: Home
+#     url: /
 #   - title: Notes
 #     url: /notes
 #   - title: Style test

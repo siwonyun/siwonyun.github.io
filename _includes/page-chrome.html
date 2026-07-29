@@ -1,15 +1,42 @@
 {%- comment -%}
-  The top bar is opt-in per page: a `nav:` list of {title, url} in the front
-  matter. Pages without one get no bar at all. The theme menu is always there.
+  The top bar is opt-in per page, and every page may have a different one — that
+  is the point of it: a section with its own bar reads as its own small site.
+
+    nav: main          the bar in _data/nav/main.yml, by file name
+    nav: [{title,url}] a bar for this page alone, written here
+    (nothing)          no bar
+
+  One file per bar under _data/nav/, so adding one is adding a file. The names
+  are only there so a bar shared by a whole section is written once instead of
+  copied into every page of it; a page's own list always wins. `nav: true` means
+  `nav: main`.
+
+  Liquid cannot run inside front matter — it is parsed as YAML before any tag is
+  seen — so a page cannot {% raw %}{% include %}{% endraw %} its nav. That is
+  what the data file is for.
+
+  The theme menu is always there.
 {%- endcomment -%}
-{%- if page.nav %}
+{%- assign nav = page.nav -%}
+{%- if nav == true -%}
+  {%- assign nav = site.data.nav.main -%}
+{%- elsif site.data.nav[nav] -%}
+  {%- assign nav = site.data.nav[nav] -%}
+{%- endif -%}
+{%- if nav.size > 0 %}
 <nav class="page-nav" aria-label="Site">
   <div class="page-nav-inner">
     <a class="page-nav-brand" href="{{ '/' | relative_url }}">{{ page.nav_title | default: site.title }}</a>
     <ul class="page-nav-links">
-      {%- for item in page.nav %}
+      {%- for item in nav %}
       <li>
-        <a href="{{ item.url | relative_url }}"{% if item.url == page.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
+        {%- comment -%}
+          Links are written without .html, since that is how the pages are served
+          — but page.url keeps the extension, so compare against both or the bar
+          never marks the page you are on.
+        {%- endcomment -%}
+        {%- assign here = page.url | remove: '.html' -%}
+        <a href="{{ item.url | relative_url }}"{% if item.url == page.url or item.url == here %} aria-current="page"{% endif %}>{{ item.title }}</a>
       </li>
       {%- endfor %}
     </ul>

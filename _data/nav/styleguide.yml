@@ -1,0 +1,7 @@
+# Shared by the two style guides, which sit apart from the rest of the site.
+- title: Home
+  url: /
+- title: Style Guide
+  url: /styleguide
+- title: 한국어
+  url: /styleguide-ko
