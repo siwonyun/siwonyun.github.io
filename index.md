@@ -41,7 +41,8 @@ LinkedIn: [i-love-you](https://www.linkedin.com/in/i-love-you/)
     - Bronze Medal, Ministry of Education [2022]
 
 ## Experience
-- [Brain and Cognitive Science Community (BCSC)](https://bcscommunity123.wixstudio.com/bcsc) [Mar 2025 - Current]
+- [Brain and Cognitive Science Community (BCSC)](https://bcscommunity123.wixstudio.com/bcsc)
+    - [Mar 2025 - Current]
     - Committee Member [Mar 2026 - Current]
 - [GAI Lab](https://sites.google.com/view/gailab/)
     - Intern [Sep 2025 - Current]
@@ -61,4 +62,4 @@ LinkedIn: [i-love-you](https://www.linkedin.com/in/i-love-you/)
     - B.S., [Computer Science](https://cse.inu.ac.kr/)(Expected 2027) [Mar 2025 - Current]
     - Grade: 4.4/4.5
 - [Korea Digital Media High School](https://dimigo.hs.kr/), Ansan, Republic of Korea
-    - Dept. web programming [Mar 2022 - Jan 2025]
+    - Dept. of Web Programming [Mar 2022 - Jan 2025]

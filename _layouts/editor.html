@@ -15,18 +15,27 @@
 
     <div class="editor">
       <div class="editor-topbar">
-        <label class="editor-file" title="마크다운 파일 열기">
+        <select class="editor-examples" data-editor-example aria-label="Example note"
+                title="Load an example into the editor">
+          <option value="">example…</option>
+          <option value="starter">starter</option>
+          <option value="styleguide">style guide</option>
+          <option value="styleguide-ko">style guide (한국어)</option>
+        </select>
+
+        <label class="editor-file" title="Open a markdown file">
           open<input type="file" accept=".md,.markdown,text/markdown" data-editor-open hidden>
         </label>
         <input type="text" class="editor-name" data-editor-name value="new-note.md"
-               aria-label="파일명" spellcheck="false">
+               aria-label="File name" spellcheck="false">
         <button type="button" class="editor-download" data-editor-download>download</button>
       </div>
 
       <div class="editor-panes">
         <div class="editor-preview" data-editor-preview>
           <div class="editor-device">
-            <div class="editor-nav-slot" data-editor-nav></div>
+            <div class="editor-nav-slot" data-editor-nav
+                 data-site-title="{{ site.title }}"></div>
             <div class="markdown-body latex-extras latex-page indent-pars" data-editor-render></div>
           </div>
         </div>
@@ -36,14 +45,14 @@
           ride on top of the line rather than in a bar of their own.
         {%- endcomment -%}
         <div class="editor-divider" data-editor-divider role="separator"
-             aria-label="크기 조절 — 끌어서 옮기고, 두 번 누르면 반반">
+             aria-label="Resize — drag to move, double-click for even halves">
           <div class="editor-chips">
-            <button type="button" data-editor-swap title="에디터와 미리보기 자리 바꾸기">⇅</button>
-            <button type="button" data-editor-split title="위아래 / 좌우 분할">⊞</button>
+            <button type="button" data-editor-swap title="Swap editor and preview">⇅</button>
+            <button type="button" data-editor-split title="Stack or split side by side">⊞</button>
             <span class="editor-chip-sep"></span>
-            <button type="button" data-device="full" aria-pressed="true" title="전체 폭"><span class="chip-long">full</span><span class="chip-short">F</span></button>
-            <button type="button" data-device="tablet" aria-pressed="false" title="태블릿 820px"><span class="chip-long">tablet</span><span class="chip-short">T</span></button>
-            <button type="button" data-device="phone" aria-pressed="false" title="모바일 390px"><span class="chip-long">phone</span><span class="chip-short">P</span></button>
+            <button type="button" data-device="full" aria-pressed="true" title="Full width"><span class="chip-long">full</span><span class="chip-short">F</span></button>
+            <button type="button" data-device="tablet" aria-pressed="false" title="Tablet, 820px"><span class="chip-long">tablet</span><span class="chip-short">T</span></button>
+            <button type="button" data-device="phone" aria-pressed="false" title="Phone, 390px"><span class="chip-long">phone</span><span class="chip-short">P</span></button>
           </div>
         </div>
 
@@ -60,11 +69,11 @@
 
         <div class="editor-tool-group">
           <button type="button" data-snippet="link" title="link">link</button>
-          <button type="button" data-editor-sitelink title="사이트 안 링크 — 본문에서 [[ 를 쳐도 열립니다">[[ site</button>
-          <button type="button" data-snippet="figure" title="figure — 이미지를 끌어다 놓아도 됩니다">figure</button>
+          <button type="button" data-editor-sitelink title="Link to a page on this site — typing [[ opens it too">[[ site</button>
+          <button type="button" data-snippet="figure" title="figure — you can also drop an image in">figure</button>
           <button type="button" data-snippet="footnote" title="footnote">footnote</button>
-          <button type="button" data-snippet="sidenote-text" title="sidenote (글만)">sidenote</button>
-          <button type="button" data-snippet="sidenote" title="sidenote + 그림">sidenote+img</button>
+          <button type="button" data-snippet="sidenote-text" title="sidenote, text only">sidenote</button>
+          <button type="button" data-snippet="sidenote" title="sidenote with a picture">sidenote+img</button>
         </div>
 
         <div class="editor-tool-group">
@@ -73,27 +82,27 @@
         </div>
 
         <div class="editor-tool-group">
-          <select data-snippet-menu aria-label="문단">
+          <select data-snippet-menu aria-label="Block">
             <option value="">paragraph…</option>
-            <option value="h4">H4 소제목</option>
-            <option value="quote">quote 인용</option>
-            <option value="hr">hr 구분선</option>
+            <option value="h4">H4 heading</option>
+            <option value="quote">quote</option>
+            <option value="hr">hr rule</option>
             <option value="codeblock">code block</option>
           </select>
-          <select data-snippet-menu aria-label="글자">
+          <select data-snippet-menu aria-label="Inline">
             <option value="">inline…</option>
-            <option value="code">code 인라인</option>
-            <option value="sup">sup 윗첨자</option>
+            <option value="code">code</option>
+            <option value="sup">sup</option>
             <option value="kbd">kbd</option>
             <option value="ol">ordered list</option>
           </select>
-          <select data-snippet-menu aria-label="수식">
+          <select data-snippet-menu aria-label="Math">
             <option value="">math…</option>
             <option value="aligned">aligned</option>
             <option value="cases">cases</option>
             <option value="matrix">matrix</option>
           </select>
-          <select data-snippet-menu aria-label="환경">
+          <select data-snippet-menu aria-label="Environment">
             <option value="">environment…</option>
             <option value="theorem">theorem</option>
             <option value="lemma">lemma</option>
@@ -106,13 +115,44 @@
           <div class="editor-code-body">
             <pre class="editor-highlight" data-editor-highlight aria-hidden="true"></pre>
             <textarea class="editor-input" data-editor-input spellcheck="false"
-                      aria-label="마크다운"></textarea>
+                      aria-label="Markdown"></textarea>
           </div>
         </div>
       </div>
 
       <div class="editor-status" data-editor-status aria-live="polite"></div>
     </div>
+
+    {%- comment -%}
+      The examples the topbar offers; the first is also what a new note starts
+      as. They live in _includes because a file under assets/ would have front
+      matter of its own and Jekyll would build it into a page.
+
+      The style guides are the very same includes the published pages use,
+      so the example cannot drift from the page it demonstrates. Its front matter
+      is written here rather than in the include, since the page carries its own.
+    {%- endcomment -%}
+    <script type="text/markdown" data-editor-starter data-example="starter">{% include examples/starter.md %}</script>
+
+    <script type="text/markdown" data-example="styleguide">---
+layout: default
+title: "Style Guide"
+nav:
+  - title: Home
+    url: /
+---
+
+{% include examples/styleguide.md %}</script>
+
+    <script type="text/markdown" data-example="styleguide-ko">---
+layout: default
+title: "Style Guide (한국어)"
+nav:
+  - title: Home
+    url: /
+---
+
+{% include examples/styleguide-ko.md %}</script>
 
     {%- comment -%}
       Jekyll writes the real page and PDF list in at build time, so the link
@@ -137,6 +177,12 @@
     </script>
 
     <div class="editor-complete" data-editor-complete hidden role="listbox"></div>
+
+    {%- comment -%}
+      The same heading anchors a real page grows on hover. editor.js re-adds them
+      after each redraw, so this only has to be on the page.
+    {%- endcomment -%}
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
 
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.17.0/katex.min.js"
             referrerpolicy="no-referrer"></script>

@@ -442,6 +442,25 @@ body {
   color: var(--body-color);
 }
 
+/* The rail is somewhere to click, not prose to read: holding the button down
+   was dragging a text selection across the entry, and on touch the browser drew
+   its own tap highlight over it. Keyboard focus still gets a ring — drawn in the
+   site's own colour rather than the browser's blue. */
+.page-toc a {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page-toc a:focus {
+  outline: none;
+}
+
+.page-toc a:focus-visible {
+  outline: var(--border-width-thin) solid var(--link-color);
+  outline-offset: 1px;
+}
+
 /* A tinted row, an accent rail and the link colour — all three change nothing
    about the text metrics. Bolding the current entry would widen it enough to
    push a long title onto a second line, so the list reflowed as you scrolled. */
@@ -555,7 +574,8 @@ body {
   padding: 0;
 }
 
-.editor-tools select {
+.editor-tools select,
+.editor-examples {
   max-width: 9rem;
   padding: 0.25rem 0.4rem;
   font: inherit;

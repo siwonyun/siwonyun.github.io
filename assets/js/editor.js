@@ -58,18 +58,13 @@
 
   /* ---------- snippets ---------- */
 
-  var STARTER = [
-    '---',
-    'layout: default',
-    'title: "제목"',
-    'nav:',
-    '  - title: Home',
-    '    url: /',
-    '---',
-    '',
-    '# 제목',
-    ''
-  ].join('\n');
+  /* _includes/examples/*.md, baked into the page by the layout */
+  function example(name) {
+    var tag = document.querySelector('[data-example="' + name + '"]');
+    return tag ? tag.textContent.replace(/^\n/, '') : '';
+  }
+
+  var STARTER = example('starter');
 
   var SNIPPETS = {
     h2: { line: '## ' },
@@ -79,17 +74,17 @@
     ol: { line: '1. ' },
     quote: { line: '> ' },
 
-    bold: { wrap: ['**', '**'], hint: '굵게' },
-    italic: { wrap: ['*', '*'], hint: '기울임' },
+    bold: { wrap: ['**', '**'], hint: 'bold text' },
+    italic: { wrap: ['*', '*'], hint: 'italic text' },
     code: { wrap: ['`', '`'], hint: 'code' },
-    sup: { wrap: ['<sup>', '</sup>'], hint: 'English' },
+    sup: { wrap: ['<sup>', '</sup>'], hint: 'text' },
     kbd: { wrap: ['<kbd>', '</kbd>'], hint: 'Ctrl' },
-    link: { wrap: ['[', '](https://)'], hint: '링크 텍스트' },
+    link: { wrap: ['[', '](https://)'], hint: 'link text' },
     'math-inline': { wrap: ['$$', '$$'], hint: 'x' },
 
     hr: { block: '---' },
-    codeblock: { block: '```\n코드\n```' },
-    'math-block': { block: '$$\n수식\n$$' },
+    codeblock: { block: '```\ncode\n```' },
+    'math-block': { block: '$$\nformula\n$$' },
 
     aligned: { block: '$$\n\\begin{aligned}\n  a &= b \\\\\n    &= c\n\\end{aligned}\n$$' },
     cases: { block: '$$\nf(x) =\n\\begin{cases}\n  x & x > 0 \\\\\n  0 & x \\le 0\n\\end{cases}\n$$' },
@@ -97,7 +92,7 @@
 
     table: {
       block: [
-        '| 왼쪽 | 가운데 | 오른쪽 |',
+        '| Left | Center | Right |',
         '|:-----|:------:|-------:|',
         '|      |        |        |',
         '|      |        |        |'
@@ -106,13 +101,13 @@
 
     /* The site numbers figures from <figure>; a bare <div> leaves them at 0. */
     figure: {
-      block: '<figure>\n  <img src="./image/파일.png" alt="설명">\n  <figcaption>캡션</figcaption>\n</figure>'
+      block: '<figure>\n  <img src="./image/file.png" alt="description">\n  <figcaption>Caption</figcaption>\n</figure>'
     },
 
-    theorem: { block: '<div class="theorem">\n  내용\n</div>' },
-    lemma: { block: '<div class="lemma">\n  내용\n</div>' },
-    definition: { block: '<div class="definition">\n  내용\n</div>' },
-    proof: { block: '<div class="proof">\n  자명하다.\n</div>' }
+    theorem: { block: '<div class="theorem">\n  Statement.\n</div>' },
+    lemma: { block: '<div class="lemma">\n  Statement.\n</div>' },
+    definition: { block: '<div class="definition">\n  Definition.\n</div>' },
+    proof: { block: '<div class="proof">\n  Trivial.\n</div>' }
   };
 
   function applyWrap(spec) {
@@ -160,9 +155,9 @@
    */
   function applySidenote(kind, src) {
     var text = kind === 'figure'
-      ? '{::nomarkdown}<figure class="sn"><img src="' + (src || './image/파일.png') + '" alt="설명">' +
-        '<figcaption>캡션</figcaption></figure>{:/}'
-      : '<span class="sn">여백에 들어갈 노트.</span>';
+      ? '{::nomarkdown}<figure class="sn"><img src="' + (src || './image/file.png') + '" alt="description">' +
+        '<figcaption>Caption</figcaption></figure>{:/}'
+      : '<span class="sn">A note for the margin.</span>';
 
     var sel = selection();
     insertAt(sel.start, sel.end, text);
@@ -177,7 +172,7 @@
     var tailNeedsBreak = /\n$/.test(input.value) ? '' : '\n';
     /* one insertion, so one undo step puts the marker and its definition back */
     insertAt(sel.start, input.value.length,
-      marker + input.value.slice(sel.end) + tailNeedsBreak + '\n[^' + n + ']: 각주 내용.\n',
+      marker + input.value.slice(sel.end) + tailNeedsBreak + '\n[^' + n + ']: Footnote text.\n',
       sel.start + marker.length, sel.start + marker.length);
   }
 
@@ -405,7 +400,7 @@
     var store = withStore('readwrite');
     if (!store) return;
     store.then(function (s) { s.put(file, file.name); }).catch(function () {
-      note('이미지를 브라우저에 저장하지 못했습니다 — 새로고침하면 사라집니다');
+      note('Could not store the image in this browser — it will be gone on reload');
     });
   }
 
@@ -451,7 +446,7 @@
   function pendingList() {
     var names = Object.keys(pendingImages);
     return names.length
-      ? '이미지 ' + names.length + '개는 아직 저장소에 없습니다 — image/ 에 넣어주세요: ' + names.join(', ')
+      ? names.length + ' image(s) are not in the repository yet — copy them into image/: ' + names.join(', ')
       : '';
   }
 
@@ -494,13 +489,13 @@
     var blocks = files.map(function (file) {
       holdImage(file.name, file);
       keepImage(file);
-      return '<figure>\n  <img src="./image/' + file.name + '" alt="설명">\n' +
-        '  <figcaption>캡션</figcaption>\n</figure>';
+      return '<figure>\n  <img src="./image/' + file.name + '" alt="description">\n' +
+        '  <figcaption>Caption</figcaption>\n</figure>';
     });
 
     var pad = padding(input.value.slice(0, at), input.value.slice(at));
     insertAt(at, at, pad.lead + blocks.join('\n\n') + pad.tail);
-    note(files.length + '개 넣음');
+    note(files.length + ' inserted');
   });
 
   function showPendingImages() {
@@ -566,7 +561,9 @@
     var brand = document.createElement('a');
     brand.className = 'page-nav-brand';
     brand.href = '#';
-    brand.textContent = meta.navTitle || meta.title || 'Siwon Yun';
+    /* page-chrome.html reads `page.nav_title | default: site.title` — the page's
+       own title is never the brand, so the preview must not fall back to it */
+    brand.textContent = meta.navTitle || navSlot.dataset.siteTitle || '';
     inner.appendChild(brand);
 
     var list = document.createElement('ul');
@@ -887,6 +884,17 @@
     if (Object.keys(pendingImages).length) showPendingImages();
   }
 
+  /* The link that appears beside a heading on hover. anchor-js skips headings it
+     has already done, so calling it after every redraw only touches new ones —
+     and it has to run after syncToc, which is what hands out the ids. */
+  function addAnchors() {
+    if (!window.anchors) return;
+    try {
+      window.anchors.add('[data-editor-render] h1, [data-editor-render] h2, ' +
+        '[data-editor-render] h3, [data-editor-render] h4');
+    } catch (e) {}
+  }
+
   var navSig = null;
   var lastHtml = null;
   var drawCost = 0;
@@ -901,7 +909,7 @@
       html = toHtml(input.value);
     } catch (e) {
       /* the message replaced everything, so nothing below may be reused */
-      render.textContent = '미리보기 오류: ' + e.message;
+      render.textContent = 'Preview error: ' + e.message;
       blockNodes = [];
       blockHtml = [];
       lastHtml = null;
@@ -921,6 +929,7 @@
     patch(html);
     syncToc();
     markCurrent();
+    addAnchors();
     preview.scrollTop = keepScroll;
 
     drawCost = Math.max(performance.now() - started, drawCost * 0.8);
@@ -956,11 +965,11 @@
     try {
       localStorage.setItem(DRAFT_KEY, input.value);
     } catch (e) {
-      note('브라우저 저장 실패 — 다운로드로 보관하세요');
+      note('Could not save in this browser — download the file to keep it');
     }
   }
 
-  var HINT = '본문에서 [[ 또는 ⌘K / Ctrl+K 로 사이트 안 링크 검색 · 경계선을 끌면 창 크기 조절';
+  var HINT = '[[ or \u2318K / Ctrl+K searches this site for a link \u00b7 drag the seam to resize';
 
   function idleStatus() {
     var pending = pendingList();
@@ -1115,13 +1124,15 @@
   document.querySelector('[data-editor-swap]').addEventListener('click', function () {
     view.swapped = !view.swapped;
     applyView();
-    note(view.swapped ? '에디터가 위' : '미리보기가 위');
+    note(view.side
+      ? (view.swapped ? 'preview on the left' : 'editor on the left')
+      : (view.swapped ? 'editor on top' : 'preview on top'));
   });
 
   document.querySelector('[data-editor-split]').addEventListener('click', function () {
     view.side = !view.side;
     applyView();
-    note((view.side ? '좌우 분할' : '위아래 분할') + ' · ' + device());
+    note((view.side ? 'side by side' : 'stacked') + ' \u00b7 ' + device());
   });
 
   document.querySelectorAll('[data-device]').forEach(function (button) {
@@ -1159,7 +1170,7 @@
     if (event.target.closest('.editor-chips')) return;
     view.split = null;
     applyView();
-    note('반반으로');
+    note('back to even halves');
   });
 
   applyView();
@@ -1176,7 +1187,7 @@
     link.download = name;
     link.click();
     URL.revokeObjectURL(url);
-    note(name + ' 내려받음');
+    note('downloaded ' + name);
   });
 
   document.querySelector('[data-editor-open]').addEventListener('change', function (event) {
@@ -1186,11 +1197,32 @@
     reader.onload = function () {
       insertAt(0, input.value.length, String(reader.result));
       nameField.value = file.name;
-      note(file.name + ' 불러옴');
+      note('opened ' + file.name);
     };
     reader.readAsText(file);
     event.target.value = '';
   });
+
+  /* Replacing the whole text goes through insertAt like every other helper, so
+     one ctrl+Z brings the draft back if an example was picked by mistake. */
+  var exampleMenu = document.querySelector('[data-editor-example]');
+
+  if (exampleMenu) {
+    exampleMenu.addEventListener('change', function () {
+      var name = exampleMenu.value;
+      exampleMenu.selectedIndex = 0;
+      if (!name) return;
+
+      var text = example(name);
+      if (!text) return note('no example called ' + name);
+
+      insertAt(0, input.value.length, text, 0, 0);
+      input.scrollTop = 0;
+      preview.scrollTop = 0;
+      nameField.value = name + '.md';
+      note('loaded the ' + name + ' example — ctrl+Z to go back');
+    });
+  }
 
   /* ---------- start ---------- */
 

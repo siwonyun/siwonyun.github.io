@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Style Guide"
+title: "Style Guide (한국어)"
 nav:
   - title: Home
     url: /
@@ -12,4 +12,4 @@ nav:
     url: /styleguide-ko
 ---
 
-{% include examples/styleguide.md %}
+{% include examples/styleguide-ko.md %}
