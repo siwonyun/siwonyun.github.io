@@ -512,6 +512,12 @@
     return value.trim().replace(/^["']|["']$/g, '');
   }
 
+  /* The named bars from _data/nav/, baked in by the layout. */
+  var navSets = {};
+  try {
+    navSets = JSON.parse(document.querySelector('[data-editor-navs]').textContent) || {};
+  } catch (e) {}
+
   /* Enough of the front matter to mirror what the layout does with it. */
   function frontMatter(src) {
     var match = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/.exec(src);
@@ -528,6 +534,15 @@
         inNav = top[1] === 'nav';
         if (top[1] === 'title') meta.title = unquote(top[2]);
         if (top[1] === 'nav_title') meta.navTitle = unquote(top[2]);
+
+        /* `nav: main` names a bar; a bare `nav:` opens a list written out below.
+           page-chrome.html reads `true` as `main`, so this does too. */
+        if (inNav) {
+          var named = unquote(top[2]);
+          if (named === 'true') named = 'main';
+          if (named) meta.nav = navSets[named] || [];
+        }
+
         current = null;
         return;
       }

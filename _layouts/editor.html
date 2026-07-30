@@ -155,16 +155,47 @@ nav:
 {% include examples/styleguide-ko.md %}</script>
 
     {%- comment -%}
+      The named bars from _data/nav/, so `nav: main` previews as the bar it will
+      actually be — page-chrome.html resolves the same names at build time.
+    {%- endcomment -%}
+    <script type="application/json" data-editor-navs>{{ site.data.nav | jsonify }}</script>
+
+    {%- comment -%}
       Jekyll writes the real page and PDF list in at build time, so the link
       search has nothing to fetch and nothing to keep in sync.
     {%- endcomment -%}
     <script type="application/json" data-editor-sitemap>
       [
+        {%- comment -%}
+          A section's index.md often has no title of its own, so listing only
+          titled pages hid exactly the pages worth linking to. Untitled ones are
+          listed under their path instead — the popup shows the url beside every
+          entry anyway, and the search matches on it too.
+        {%- endcomment -%}
         {%- assign first = true -%}
         {%- for p in site.pages -%}
-          {%- if p.title and p.url != page.url -%}
+          {%- comment -%}
+            site.pages also holds the stylesheets and manifests, which carry
+            front matter only so Liquid runs in them. Keep what is written as
+            prose.
+          {%- endcomment -%}
+          {%- assign ext = p.name | split: '.' | last -%}
+          {%- if ext != 'md' and ext != 'markdown' and ext != 'html' -%}
+            {%- continue -%}
+          {%- endif -%}
+          {%- if p.url != page.url -%}
+            {%- assign label = p.title -%}
+            {%- if label == nil or label == '' -%}
+              {%- comment -%}
+                split then join drops the slashes at both ends — Liquid 4 has
+                remove_first but no remove_last, so a folder would otherwise read
+                "education/".
+              {%- endcomment -%}
+              {%- assign label = p.url | remove_first: '/' | split: '/' | join: '/' -%}
+              {%- if label == '' -%}{%- assign label = p.url -%}{%- endif -%}
+            {%- endif -%}
             {%- unless first %},{% endunless -%}{%- assign first = false -%}
-            {"t":{{ p.title | jsonify }},"u":{{ p.url | relative_url | jsonify }},"k":"page"}
+            {"t":{{ label | jsonify }},"u":{{ p.url | relative_url | jsonify }},"k":"page"}
           {%- endif -%}
         {%- endfor -%}
         {%- for f in site.static_files -%}
