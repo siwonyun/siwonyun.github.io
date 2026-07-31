@@ -22,7 +22,7 @@ nav: main
 
 
 ## Contact
-Email: yswysw421[at]gmail[dot]com\\
+Email: siwonyunkr[at]gmail[dot]com\\
 GitHub: [siwonyun](https://github.com/siwonyun/)\\
 LinkedIn: [i-love-you](https://www.linkedin.com/in/i-love-you/)
 
