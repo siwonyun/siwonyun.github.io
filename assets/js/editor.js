@@ -808,6 +808,84 @@
 
   preview.addEventListener('scroll', markCurrent, { passive: true });
 
+  /* ---------- preview back to source ---------- */
+
+  /*
+   * Double-click a word in the preview and the caret goes to it in the markdown.
+   *
+   * There is no map from rendered text back to source — marked does not keep one
+   * and the source is preprocessed before it even gets there. So the word is
+   * looked up by *which* occurrence it is: count how many times it appears in the
+   * preview above the click, then take that same occurrence in the markdown. A
+   * word repeated twenty times still lands on the right one; only text the
+   * markdown spells differently (a link's label, say) can miss, and then it falls
+   * back to the first match.
+   *
+   * Only dblclick, never a plain drag — a drag across the preview is usually
+   * someone copying, and stealing focus would drop their selection.
+   */
+  function countBefore(haystack, needle) {
+    var n = 0;
+    var at = haystack.indexOf(needle);
+    while (at !== -1) { n++; at = haystack.indexOf(needle, at + needle.length); }
+    return n;
+  }
+
+  function nthIndexOf(haystack, needle, n) {
+    var at = haystack.indexOf(needle);
+    while (n > 0 && at !== -1) { at = haystack.indexOf(needle, at + needle.length); n--; }
+    return at;
+  }
+
+  /* Chrome does not always scroll a textarea to a selection it was given, and
+     when it does it puts the line at the very edge. Place it a third down. */
+  function showCaret(pos) {
+    var line = input.value.slice(0, pos).split('\n').length - 1;
+    var lineHeight = parseFloat(getComputedStyle(input).lineHeight) || 20;
+    var target = line * lineHeight - input.clientHeight / 3;
+    input.scrollTop = Math.max(0, target);
+  }
+
+  preview.addEventListener('dblclick', function (event) {
+    var selection = window.getSelection();
+    if (!selection || selection.isCollapsed) return;
+
+    var anchor = selection.anchorNode;
+    if (!anchor || !render.contains(anchor)) return;
+    if (tocNav && tocNav.contains(anchor)) return; /* the rail scrolls, it does not edit */
+
+    var needle = selection.toString().trim();
+    var nth = 0;
+
+    /* A formula renders as glyphs that appear nowhere in the markdown, but KaTeX
+       keeps the TeX it was given in the MathML — search for that instead. */
+    var host = anchor.parentElement && anchor.parentElement.closest('.katex');
+    if (host) {
+      var tex = host.querySelector('annotation[encoding="application/x-tex"]');
+      if (!tex) return;
+      needle = tex.textContent.trim();
+    } else {
+      if (needle.length < 2) return;
+      var range = document.createRange();
+      range.selectNodeContents(render);
+      if (tocNav) range.setStartAfter(tocNav);
+      try {
+        range.setEnd(selection.anchorNode, selection.anchorOffset);
+      } catch (e) {
+        return;
+      }
+      nth = countBefore(range.toString(), needle);
+    }
+
+    var pos = nthIndexOf(input.value, needle, nth);
+    if (pos === -1) pos = input.value.indexOf(needle);
+    if (pos === -1) return note('the markdown does not spell that the same way');
+
+    input.focus();
+    input.setSelectionRange(pos, pos + needle.length);
+    showCaret(pos);
+  });
+
   /* Everything below keeps the preview from being rebuilt wholesale. Blocks are
      compared as source strings, so KaTeX's spans and the ids we hand out later
      never confuse the comparison: what the markdown did not change stays as the
@@ -984,7 +1062,8 @@
     }
   }
 
-  var HINT = '[[ or \u2318K / Ctrl+K searches this site for a link \u00b7 drag the seam to resize';
+  var HINT = '[[ or \u2318K / Ctrl+K searches this site for a link \u00b7 ' +
+    'double-click the preview to jump to that line \u00b7 drag the seam to resize';
 
   function idleStatus() {
     var pending = pendingList();
