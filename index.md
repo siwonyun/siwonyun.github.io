@@ -56,10 +56,11 @@ LinkedIn: [i-love-you](https://www.linkedin.com/in/i-love-you/)
 - Korean Scholars Conference for Youth (KSCY) 2023
     - Official Ambassadors, Computer Engineering Research Track
 
-
-## Education
+## Education[^education]
 - [Incheon National University](https://inu.ac.kr), Incheon, Republic of Korea
     - B.S., [Computer Science](https://cse.inu.ac.kr/)(Expected 2027) [Mar 2025 - Current]
     - Grade: 4.4/4.5
 - [Korea Digital Media High School](https://dimigo.hs.kr/), Ansan, Republic of Korea
     - Dept. of Web Programming [Mar 2022 - Jan 2025]
+
+[^education]: Visit: [education page](/education/).
