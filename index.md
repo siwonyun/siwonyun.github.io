@@ -67,4 +67,4 @@ nav: main
 
 
 [^bcsc]: Visit: [BCSC](/bcsc/)
-[^education]: Visit: [Education](/education/).
+[^education]: Visit: [Education](/education/)
