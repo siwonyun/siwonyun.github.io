@@ -79,6 +79,7 @@ Visit: [Probabilistic Computational Neuroscience](/bcsc/probabilistic-computatio
 ## 10th (1st Semester, 2026)
 ### Term 1. Artificial Intelligence
 Visit: [Artificial Intelligence](/bcsc/artificial-intelligence/)
+- 🥇 Outstanding Study Award — 1st Place
 
 ### 7th IDEA HACKATHON
 - 7–9 Aug 2026
