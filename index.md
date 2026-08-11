@@ -41,15 +41,15 @@ LinkedIn: [i-love-you](https://www.linkedin.com/in/i-love-you/)
     - Bronze Medal, Ministry of Education [2022]
 
 ## Experience
-- [Brain and Cognitive Science Community (BCSC)](https://bcscommunity123.wixstudio.com/bcsc)
-    - [Mar 2025 - Current]
-    - Committee Member [Mar 2026 - Current]
+- [Brain and Cognitive Science Community (BCSC)](https://bcscommunity123.wixstudio.com/bcsc)[^bcsc]
+    - [Mar 2025 – Current]
+    - Committee Member [Mar 2026 – Current]
 - [GAI Lab](https://sites.google.com/view/gailab/)
-    - Intern [Sep 2025 - Current]
+    - Intern [Sep 2025 – Current]
 - [Quantum Information Science Summer School](https://qschool.info) 2025
-    - Quantum Information Research Support Center [11 Jan - 16 Jan 2025]
+    - Quantum Information Research Support Center [11 Jan – 16 Jan 2025]
 - [Counterspell: Seoul](https://counterspell-seoul.vercel.app)
-    - Co-organizer, Hack Club [23 Nov - 24 Nov 2024]
+    - Co-organizer, Hack Club [23 Nov – 24 Nov 2024]
 - [CANSAT COMPETITION KOREA](https://cansat.kaist.ac.kr) 2023{::nomarkdown}<figure class="sn"><img src="./image/cansat.png" alt="cansat"><figcaption>cansat</figcaption></figure>{:/}
     - First round qualifier selection
 - KAIST Creative and Global Leader Program (창의적 글로벌 리더 프로그램) 2023 Summer
@@ -58,9 +58,11 @@ LinkedIn: [i-love-you](https://www.linkedin.com/in/i-love-you/)
 
 ## Education[^education]
 - [Incheon National University](https://inu.ac.kr), Incheon, Republic of Korea
-    - B.S., [Computer Science](https://cse.inu.ac.kr/)(Expected 2027) [Mar 2025 - Current]
+    - B.S., [Computer Science](https://cse.inu.ac.kr/)(Expected 2027) [Mar 2025 – Current]
     - Grade: 4.4/4.5
 - [Korea Digital Media High School](https://dimigo.hs.kr/), Ansan, Republic of Korea
-    - Dept. of Web Programming [Mar 2022 - Jan 2025]
+    - Dept. of Web Programming [Mar 2022 – Jan, 2025]
 
-[^education]: Visit: [education page](/education/).
+
+[^bcsc]: Visit: [BCSC](/bcsc/)
+[^education]: Visit: [Education](/education/).

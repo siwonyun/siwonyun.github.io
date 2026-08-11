@@ -21,7 +21,3 @@ title: "DIMIGO-Coursework"
 - General Subjects: Korean Classical Literature, English, Industry Studies
 - Major Subjects: Database, Web Programming, Engineering Mathematics
 - AI Courses: Big Data, Artificial Intelligence
-
-## School Clubs
-- 🌿 Fregic (12th Generation) – Artificial Intelligence (AI) Study Club
-- Turing (1st Generation) – Artificial Intelligence (AI) Research Lab

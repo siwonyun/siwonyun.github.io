@@ -158,6 +158,9 @@ body {
    colour emoji at the end of the note. Drop the list marker and put the number
    in its place as the backlink, so the "1." is what jumps to the reference. */
 .latex-extras.latex-extras .footnotes {
+  /* the rule above is the separator; the notes should not sit on it */
+  padding-top: 0.9rem;
+
   ol {
     padding-left: 1.9rem;
     list-style: none;
@@ -167,6 +170,25 @@ body {
   li {
     position: relative;
     counter-increment: footnote;
+  }
+
+  /*
+   * kramdown wraps each note in a <p>, which arrives carrying a full paragraph's
+   * margin — a gap sized for body text, between two lines of small print. The
+   * notes are a list, so they get a list's spacing instead.
+   */
+  li > p {
+    margin: 0;
+  }
+
+  li > p + p {
+    margin-top: 0.5rem;
+  }
+
+  /* a list of short lines, so barely more than the leading between them —
+     enough to tell them apart, not enough to read as separate paragraphs */
+  li + li {
+    margin-top: 0.15rem;
   }
 
   .reversefootnote {
@@ -214,11 +236,80 @@ body {
     height: auto;
   }
 
+  /* latex.css shrink-wraps a table to its contents. Write {: .full-width } on
+     the line straight after a table to have it fill the text column instead. */
+  table.full-width {
+    width: 100%;
+  }
+
+  /* {: .col-rules } for a table whose columns need telling apart. Markdown has
+     no way to say "a line here", so it is all of them or none — and none is
+     right for most tables, which is why latex.css leaves them out. */
+  table.col-rules > * > tr > th:not(:last-child),
+  table.col-rules > * > tr > td:not(:last-child) {
+    border-right: var(--border-width-thin) solid var(--table-border-color);
+  }
+
+  /* A rule on one chosen edge of one chosen cell. Only an HTML table can carry
+     these: markdown has nowhere to hang a class on a single cell. */
+  table th.rule-top,
+  table td.rule-top {
+    border-top: var(--border-width-thin) solid var(--table-border-color);
+  }
+
+  table th.rule-bottom,
+  table td.rule-bottom {
+    border-bottom: var(--border-width-thin) solid var(--table-border-color);
+  }
+
+  table th.rule-left,
+  table td.rule-left {
+    border-left: var(--border-width-thin) solid var(--table-border-color);
+  }
+
+  table th.rule-right,
+  table td.rule-right {
+    border-right: var(--border-width-thin) solid var(--table-border-color);
+  }
+
   /* Margin figures: an image in a .sidenote fills the note's column, with the
      note's own text acting as the caption underneath. */
   .sidenote img {
     width: 100%;
     margin-bottom: 0.35rem;
+  }
+}
+
+/*
+ * Prose is justified, as LaTeX sets it — latex.css offers this as a .text-justify
+ * class and turns hyphenation on for the whole body, but the body rule is one we
+ * do not take, so neither was reaching the page.
+ *
+ * Hyphenation matters more than it looks: without it, justifying a column that
+ * holds long English words tears holes between the Korean ones to make the line
+ * fit. `word-break: keep-all` still stands, so Korean only ever breaks between
+ * words, never inside one.
+ *
+ * Only running text. Headings, table cells and captions keep their own
+ * alignment, and centred display maths keeps its.
+ */
+.latex-page.latex-page {
+  p,
+  li,
+  dd,
+  blockquote {
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
+  /* The rail is a list of names, not prose. Its column is narrow enough that
+     justifying a wrapped entry pulls two words to the edges with a gap between
+     them, and hyphenating a heading would cut it in half. */
+  .page-toc li {
+    text-align: left;
+    hyphens: manual;
+    -webkit-hyphens: manual;
   }
 }
 
@@ -782,12 +873,132 @@ body {
   overflow: hidden;
 }
 
+/* Rides beside the table the caret is in, in the same restrained key as the
+   controls on the seam: out of the way until you look for it. */
+.editor-rowbar {
+  position: absolute;
+  /* top and left come from the script; pinning `right` as well would stretch
+     the bar across the pane instead of letting it size to its buttons */
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: max-content;
+  gap: 0.05rem;
+  padding: 0.15rem 0.35rem;
+  background-color: var(--body-bg-color);
+  border: var(--border-width-thin) solid var(--rule-color);
+  /* a pill while it is one line; a rounded box once it grows to two */
+  border-radius: 0.85rem;
+}
+
+/* The background has to stay opaque: a long row leaves the bar sitting over the
+   text, and a see-through one reads as mangled characters rather than a bar.
+   Fading the writing instead keeps it quiet without hiding what it is. */
+.editor-rowbar button {
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.editor-rowbar:hover button,
+.editor-rowbar:focus-within button {
+  opacity: 1;
+}
+
+/* one bar, two sets of controls: what a markdown table can do, and what an HTML
+   one can. The bar carries the mode. An HTML table has enough of them to want a
+   second line — cheaper than a pill the width of the pane. */
+.editor-rowbar-line {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.editor-rowbar [data-mode='html'],
+.editor-rowbar.is-html [data-mode='md'] {
+  display: none;
+}
+
+.editor-rowbar.is-html [data-mode='html'] {
+  display: flex;
+}
+
+.editor-rowbar-label {
+  align-self: center;
+  padding-left: 0.2rem;
+  font-size: 0.65rem;
+  color: var(--muted-color);
+  opacity: 0.6;
+}
+
+.editor-rowbar button {
+  padding: 0.05rem 0.35rem;
+  font: inherit;
+  font-size: 0.7rem;
+  color: var(--muted-color);
+  background-color: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.editor-rowbar-sep {
+  width: var(--border-width-thin);
+  margin: 0.15rem 0.1rem;
+  background-color: var(--rule-color);
+}
+
+.editor-rowbar button:hover {
+  color: var(--body-color);
+}
+
+.editor-rowbar button[aria-pressed='true'] {
+  color: var(--link-visited);
+}
+
+/*
+ * The gutter is a third layer beside the other two, and it has to agree with
+ * them to the pixel: same font metrics, same top padding, and one entry per
+ * logical line whose height is however many rows that line wrapped onto.
+ */
+.editor-gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3.25rem;
+  /* no top padding: each number carries its line's own offset, which already
+     counts the editor's padding */
+  padding: 0 0.5rem 0 0;
+  overflow: hidden;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--muted-color);
+  text-align: right;
+  user-select: none;
+  opacity: 0.5;
+  border-right: var(--border-width-thin) solid var(--rule-color);
+}
+
+/* numbers sit at their line's own offset, so the column is a positioning
+   context and each entry is placed rather than stacked */
+.editor-gutter [data-gutter-inner] {
+  position: relative;
+}
+
+.editor-gutter [data-gutter-inner] > div {
+  position: absolute;
+  right: 0;
+  overflow: hidden;
+}
+
 .editor-highlight,
 .editor-input {
   position: absolute;
   inset: 0;
   margin: 0;
-  padding: 1rem 1.25rem;
+  padding: 1rem 1.25rem 1rem 4rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.85rem;
   line-height: 1.7;

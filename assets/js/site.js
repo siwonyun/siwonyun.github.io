@@ -166,18 +166,28 @@
   /* ---------- table of contents ---------- */
 
   /*
-   * Built from the page's own h2/h3, which kramdown already gave ids. The nav
-   * lives inside .latex-page so CSS can park it in the left gutter relative to
-   * the text column; it is only visible on screens wide enough to spare one.
+   * What a heading says, not everything it carries. A margin note hung on a
+   * heading is a remark about the section, not part of its name — and the note's
+   * caption would otherwise turn up in the rail as if it were.
    */
+  var NOT_HEADING_TEXT = '.anchorjs-link, .sidenote, .sn, .sidenote-toggle';
+
   function headingText(heading) {
     var clone = heading.cloneNode(true);
-    [].forEach.call(clone.querySelectorAll('.anchorjs-link'), function (link) {
-      link.remove();
+    [].forEach.call(clone.querySelectorAll(NOT_HEADING_TEXT), function (extra) {
+      extra.remove();
     });
     return clone.textContent.trim();
   }
 
+  /* the editor's preview builds the same rail from its own DOM */
+  window.headingText = headingText;
+
+  /*
+   * Built from the page's own h2/h3, which kramdown already gave ids. The nav
+   * lives inside .latex-page so CSS can park it in the left gutter relative to
+   * the text column; it is only visible on screens wide enough to spare one.
+   */
   function buildToc() {
     var page = document.querySelector('.latex-page');
     if (!page) return null;

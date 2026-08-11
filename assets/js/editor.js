@@ -163,6 +163,801 @@
     insertAt(sel.start, sel.end, text);
   }
 
+  /* ---------- tidying a table ---------- */
+
+  /*
+   * Widths are measured, not counted. The rule of thumb — a Hangul or CJK glyph
+   * is two columns — is a terminal convention, and it does not hold here: the
+   * monospace stack has no Korean glyphs of its own, so they come from a
+   * fallback font at whatever width it likes. Measured on this machine that is
+   * 1.44 ASCII columns, not 2, which is why counting characters left Korean
+   * tables crooked.
+   *
+   * Everything is expressed in space-widths, so an all-ASCII table pads exactly
+   * as before. A Korean one lands within half a space of true — as close as
+   * padding with spaces can get, short of a font whose Hangul really is double
+   * width.
+   */
+  var ruler = null;
+  var rulerFont = '';
+  var spaceWidth = 0;
+
+  function cellWidth(text) {
+    if (!ruler) ruler = document.createElement('canvas').getContext('2d');
+
+    var cs = getComputedStyle(input);
+    var font = cs.fontSize + ' ' + cs.fontFamily;
+    if (font !== rulerFont) {
+      rulerFont = font;
+      ruler.font = font;
+      spaceWidth = ruler.measureText(' ').width || 1;
+    }
+
+    return ruler.measureText(text).width / spaceWidth;
+  }
+
+  /* a backslash-escaped pipe is content, not a cell border */
+  function splitRow(line) {
+    var body = line.trim();
+    if (body.charAt(0) === '|') body = body.slice(1);
+    if (body.charAt(body.length - 1) === '|') body = body.slice(0, -1);
+
+    var cells = [];
+    var cell = '';
+    for (var i = 0; i < body.length; i++) {
+      var ch = body.charAt(i);
+      if (ch === '\\' && body.charAt(i + 1) === '|') { cell += '\\|'; i++; continue; }
+      if (ch === '|') { cells.push(cell.trim()); cell = ''; continue; }
+      cell += ch;
+    }
+    cells.push(cell.trim());
+    return cells;
+  }
+
+  function isRule(cells) {
+    return cells.length > 0 && cells.every(function (c) { return /^:?-+:?$/.test(c); });
+  }
+
+  function pad(text, room, align) {
+    var slack = Math.max(0, Math.round(room - cellWidth(text)));
+    if (align === 'right') return new Array(slack + 1).join(' ') + text;
+    if (align === 'center') {
+      var left = Math.floor(slack / 2);
+      return new Array(left + 1).join(' ') + text + new Array(slack - left + 1).join(' ');
+    }
+    return text + new Array(slack + 1).join(' ');
+  }
+
+  function blockAround(at) {
+    var value = input.value;
+    var from = value.lastIndexOf('\n', at - 1) + 1;
+    while (from > 0) {
+      var above = value.lastIndexOf('\n', from - 2) + 1;
+      if (!value.slice(above, from - 1).trim()) break;
+      from = above;
+    }
+
+    var to = value.indexOf('\n', at);
+    if (to === -1) to = value.length;
+    while (to < value.length) {
+      var next = value.indexOf('\n', to + 1);
+      if (next === -1) next = value.length;
+      if (!value.slice(to + 1, next).trim()) break;
+      to = next;
+    }
+    return { from: from, to: to };
+  }
+
+  /* which column the caret sits in: the unescaped pipes to its left, less the
+     one that opens the row */
+  function caretColumn(value, lineStart) {
+    var count = 0;
+    for (var i = lineStart; i < input.selectionStart; i++) {
+      if (value.charAt(i) === '\\') { i++; continue; }
+      if (value.charAt(i) === '|') count++;
+    }
+    return Math.max(0, count - 1);
+  }
+
+  /*
+   * Every table edit is the same job — read the block, change the cells, write
+   * it back lined up — so they share one path and only differ in `change`.
+   */
+  function withTable(change, quiet) {
+    var value = input.value;
+    var range = blockAround(input.selectionStart);
+    var lines = value.slice(range.from, range.to).split('\n');
+
+    /* Rows are arrays of cells; anything else in the block — an IAL line, say —
+       stays a string and is written back untouched. One array, so inserting a
+       row cannot slide the two out of step. */
+    var rows = lines.map(function (line) {
+      return line.trim().charAt(0) === '|' ? splitRow(line) : line;
+    });
+    if (!rows.some(Array.isArray)) return note('put the caret in a table first');
+
+    var caretLine = value.slice(range.from, input.selectionStart).split('\n').length - 1;
+    var caretAtColumn = caretColumn(value, value.lastIndexOf('\n', input.selectionStart - 1) + 1);
+
+    if (change) change(rows, caretAtColumn, caretLine);
+
+    var columns = 0;
+    rows.forEach(function (cells) {
+      if (Array.isArray(cells)) columns = Math.max(columns, cells.length);
+    });
+
+    /* the |:---:| row says how each column is set, and is rebuilt to match */
+    var align = [];
+    rows.forEach(function (cells) {
+      if (!Array.isArray(cells) || !isRule(cells)) return;
+      cells.forEach(function (cell, i) {
+        var left = cell.charAt(0) === ':';
+        var right = cell.charAt(cell.length - 1) === ':';
+        align[i] = left && right ? 'center' : (right ? 'right' : (left ? 'left' : ''));
+      });
+    });
+
+    var room = [];
+    rows.forEach(function (cells) {
+      if (!Array.isArray(cells) || isRule(cells)) return;
+      for (var i = 0; i < columns; i++) {
+        room[i] = Math.max(room[i] || 3, cellWidth(cells[i] || ''));
+      }
+    });
+    /* the dashes are ASCII, so a column is at least three of them wide, and the
+       room a column takes is rounded to whole spaces before anything is padded */
+    for (var i = 0; i < columns; i++) room[i] = Math.max(Math.ceil(room[i] || 3), 3);
+
+    var tidied = rows.map(function (cells) {
+      if (!Array.isArray(cells)) return cells;
+
+      var out = [];
+      for (var col = 0; col < columns; col++) {
+        var text = cells[col] || '';
+        if (isRule(cells)) {
+          var dashes = new Array(room[col] - 1).join('-');
+          out.push(
+            align[col] === 'center' ? ':' + dashes + ':' :
+            align[col] === 'right' ? '-' + dashes + ':' :
+            align[col] === 'left' ? ':' + dashes + '-' : '-' + dashes + '-');
+        } else {
+          out.push(pad(text, room[col], align[col]));
+        }
+      }
+      return '| ' + out.join(' | ') + ' |';
+    });
+
+    var text = tidied.join('\n');
+    if (text === lines.join('\n')) return quiet ? undefined : note('already tidy');
+
+    /* Back to the same cell, not just the same line: the column is what the
+       next press acts on, and landing at the start of the row would quietly
+       make it the first one. */
+    var line = Math.min(caretLine, tidied.length - 1);
+    var caret = range.from + tidied.slice(0, line).join('\n').length + (line ? 1 : 0);
+
+    var into = tidied[line] || '';
+    var pipes = -1;
+    for (var at = 0; at < into.length; at++) {
+      if (into.charAt(at) === '\\') { at++; continue; }
+      if (into.charAt(at) !== '|') continue;
+      pipes++;
+      if (pipes === caretAtColumn) { caret += Math.min(at + 2, into.length); break; }
+    }
+
+    insertAt(range.from, range.to, text, caret, caret);
+  }
+
+  function tidyTable() {
+    withTable(null);
+  }
+
+  /* A column is added to every row at once, the rule row included, and the whole
+     table is laid out again — which is the part that is miserable by hand. */
+  function addColumn(side) {
+    withTable(function (rows, column) {
+      var at = side === 'left' ? column : column + 1;
+      rows.forEach(function (cells) {
+        if (!Array.isArray(cells)) return;
+        cells.splice(Math.min(at, cells.length), 0, isRule(cells) ? '---' : '');
+      });
+    }, true);
+  }
+
+  /*
+   * Merged cells are the one thing markdown tables cannot express, so this hands
+   * the table over to HTML — where colspan and rowspan exist — rather than
+   * leaving you to retype it.
+   *
+   * kramdown does not read markdown inside a block HTML element, so the cells
+   * are converted here: marked handles the links and emphasis, and $$…$$ becomes
+   * the \(…\) that KaTeX picks up on the page. Any classes on the IAL move onto
+   * the <table> itself, since the line they were on is going away.
+   */
+  function tableToHtml() {
+    var value = input.value;
+    var range = blockAround(input.selectionStart);
+    var lines = value.slice(range.from, range.to).split('\n');
+
+    var rows = [];
+    var classes = [];
+    lines.forEach(function (line) {
+      if (line.trim().charAt(0) === '|') return rows.push(splitRow(line));
+      var ial = /^\{:(?![:/])[ \t]*([^}]*)\}/.exec(line.trim());
+      if (!ial) return;
+      ial[1].split(/\s+/).forEach(function (part) {
+        if (part.charAt(0) === '.') classes.push(part.slice(1));
+      });
+    });
+    if (rows.length < 2) return note('put the caret in a table first');
+
+    var align = [];
+    var head = rows.shift();
+    if (isRule(rows[0])) {
+      rows.shift().forEach(function (cell, i) {
+        var left = cell.charAt(0) === ':';
+        var right = cell.charAt(cell.length - 1) === ':';
+        align[i] = left && right ? 'center' : (right ? 'right' : (left ? 'left' : ''));
+      });
+    }
+
+    function cellHtml(tag, text, column) {
+      var style = align[column] ? ' style="text-align: ' + align[column] + '"' : '';
+
+      /* marked reads \( as an escaped bracket and eats the backslash, so the
+         maths is held aside while it works and put back afterwards */
+      var maths = [];
+      var body = text.replace(/\$\$([\s\S]*?)\$\$/g, function (m, tex) {
+        maths.push(tex);
+        return '@@MATH' + (maths.length - 1) + '@@';
+      });
+
+      try { body = window.marked.parseInline(body); } catch (e) {}
+
+      body = body.replace(/@@MATH(\d+)@@/g, function (m, i) {
+        return '\\(' + maths[Number(i)] + '\\)';
+      });
+
+      return '      <' + tag + style + '>' + body + '</' + tag + '>';
+    }
+
+    function rowHtml(cells, tag) {
+      return ['    <tr>'].concat(cells.map(function (text, i) {
+        return cellHtml(tag, text, i);
+      }), ['    </tr>']).join('\n');
+    }
+
+    var html = ['<table' + (classes.length ? ' class="' + classes.join(' ') + '"' : '') + '>',
+      '  <thead>', rowHtml(head, 'th'), '  </thead>', '  <tbody>']
+      .concat(rows.map(function (cells) { return rowHtml(cells, 'td'); }),
+        ['  </tbody>', '</table>'])
+      .join('\n');
+
+    insertAt(range.from, range.to, html, range.from, range.from);
+    note('now HTML — colspan and rowspan work here');
+  }
+
+  /* ---------- an HTML table, once it has merged cells ---------- */
+
+  /*
+   * Past `to html` the table is markup, so it is read back as markup: parsed
+   * into a real table, changed as a DOM, and written out again. Which cell the
+   * caret is in is worked out by counting the <td>/<th> tags above it, which
+   * holds as long as the source keeps one cell per tag — which is how we write
+   * it, and how anyone writes it by hand.
+   */
+  function htmlTableAt() {
+    var value = input.value;
+    var range = blockAround(input.selectionStart);
+    var text = value.slice(range.from, range.to);
+    if (!/^\s*<table[\s>]/i.test(text)) return null;
+
+    var holder = document.createElement('div');
+    holder.innerHTML = text;
+    var table = holder.querySelector('table');
+    if (!table) return null;
+
+    var before = text.slice(0, input.selectionStart - range.from);
+    var opened = before.match(/<(?:td|th)\b/gi);
+    var cells = [].slice.call(table.querySelectorAll('th, td'));
+
+    return {
+      range: range,
+      table: table,
+      cells: cells,
+      cell: opened ? cells[Math.min(opened.length - 1, cells.length - 1)] : null
+    };
+  }
+
+  /* Where each cell actually sits once spans are taken into account: grid[r][c]
+     is whichever cell covers that square. */
+  function tableGrid(table) {
+    var rows = [].slice.call(table.rows);
+    var grid = rows.map(function () { return []; });
+
+    rows.forEach(function (row, r) {
+      var c = 0;
+      [].forEach.call(row.cells, function (cell) {
+        while (grid[r][c]) c++;
+        var down = cell.rowSpan || 1;
+        var across = cell.colSpan || 1;
+        for (var i = 0; i < down; i++) {
+          for (var j = 0; j < across; j++) {
+            if (grid[r + i]) grid[r + i][c + j] = cell;
+          }
+        }
+        c += across;
+      });
+    });
+
+    return { rows: rows, grid: grid };
+  }
+
+  function cellCorner(model, cell) {
+    for (var r = 0; r < model.grid.length; r++) {
+      for (var c = 0; c < model.grid[r].length; c++) {
+        if (model.grid[r][c] === cell) return { row: r, column: c };
+      }
+    }
+    return null;
+  }
+
+  /* `keep` is the cell to leave the caret in — without it every edit would throw
+     the caret to the top of the table and the next press would find no cell. */
+  function writeHtmlTable(found, table, keep) {
+    var indent = '  ';
+    var out = [];
+    var keepLine = -1;
+
+    function openTag(el) {
+      return el.outerHTML.slice(0, el.outerHTML.indexOf('>') + 1);
+    }
+
+    function writeRows(host, depth) {
+      [].forEach.call(host.children, function (row) {
+        out.push(indent.repeat(depth) + '<tr>');
+        [].forEach.call(row.cells, function (cell) {
+          if (cell === keep) keepLine = out.length;
+          out.push(indent.repeat(depth + 1) + cell.outerHTML);
+        });
+        out.push(indent.repeat(depth) + '</tr>');
+      });
+    }
+
+    out.push(openTag(table));
+    [].forEach.call(table.children, function (section) {
+      if (!/^(thead|tbody|tfoot)$/i.test(section.tagName)) return;
+      out.push(indent + '<' + section.tagName.toLowerCase() + '>');
+      writeRows(section, 2);
+      out.push(indent + '</' + section.tagName.toLowerCase() + '>');
+    });
+    out.push('</table>');
+
+    var text = out.join('\n');
+    var caret = found.range.from;
+    if (keepLine !== -1) {
+      /* just inside the cell's opening tag, so the next press finds this cell */
+      caret += out.slice(0, keepLine).join('\n').length + 1 +
+        out[keepLine].indexOf('>') + 1;
+    }
+
+    insertAt(found.range.from, found.range.to, text, caret, caret);
+  }
+
+  function mergeCell(direction) {
+    var found = htmlTableAt();
+    if (!found || !found.cell) return note('put the caret in a cell first');
+
+    var model = tableGrid(found.table);
+    var at = cellCorner(model, found.cell);
+    if (!at) return;
+
+    var cell = found.cell;
+    var across = cell.colSpan || 1;
+    var down = cell.rowSpan || 1;
+    var next = direction === 'right'
+      ? (model.grid[at.row] || [])[at.column + across]
+      : (model.grid[at.row + down] || [])[at.column];
+
+    if (!next || next === cell) return note('there is nothing to merge with');
+
+    /* only squares of the same shape can join and stay a rectangle */
+    if (direction === 'right' && (next.rowSpan || 1) !== down) {
+      return note('those two do not line up');
+    }
+    if (direction === 'down' && (next.colSpan || 1) !== across) {
+      return note('those two do not line up');
+    }
+
+    var text = next.innerHTML.trim();
+    if (text) cell.innerHTML = cell.innerHTML.trim() + ' ' + text;
+
+    if (direction === 'right') cell.colSpan = across + (next.colSpan || 1);
+    else cell.rowSpan = down + (next.rowSpan || 1);
+
+    next.parentNode.removeChild(next);
+    writeHtmlTable(found, found.table, cell);
+  }
+
+  function unmergeCell() {
+    var found = htmlTableAt();
+    if (!found || !found.cell) return note('put the caret in a cell first');
+
+    var cell = found.cell;
+    var across = cell.colSpan || 1;
+    var down = cell.rowSpan || 1;
+    if (across === 1 && down === 1) return note('that cell is not merged');
+
+    var model = tableGrid(found.table);
+    var at = cellCorner(model, found.cell);
+    var tag = cell.tagName.toLowerCase();
+
+    cell.removeAttribute('colspan');
+    cell.removeAttribute('rowspan');
+
+    /* put back a plain cell for every square the merge had swallowed */
+    for (var i = 0; i < down; i++) {
+      var row = model.rows[at.row + i];
+      if (!row) continue;
+      for (var j = 0; j < across; j++) {
+        if (i === 0 && j === 0) continue;
+        var fresh = document.createElement(tag);
+        var neighbour = (model.grid[at.row + i] || [])[at.column + j + 1];
+        if (neighbour && neighbour.parentNode === row) row.insertBefore(fresh, neighbour);
+        else row.appendChild(fresh);
+      }
+    }
+
+    writeHtmlTable(found, found.table, cell);
+  }
+
+  /*
+   * A rule on one edge of one cell — the thing .col-rules cannot do, since it
+   * draws between every column for want of any way to name one. Here there is a
+   * cell to hang a class on, so the line goes exactly where it is asked for.
+   */
+  var RULES = ['rule-top', 'rule-bottom', 'rule-left', 'rule-right'];
+
+  function toggleCellRule(name) {
+    var found = htmlTableAt();
+    if (!found || !found.cell) return note('put the caret in a cell first');
+
+    found.cell.classList.toggle(name);
+    if (!found.cell.className) found.cell.removeAttribute('class');
+    writeHtmlTable(found, found.table, found.cell);
+  }
+
+  /* Alignment is a style rather than a class, because that is what kramdown
+     writes for |:---:| and the two have to agree. Pressing the one already on
+     takes it off again, back to whatever the stylesheet says. */
+  var ALIGN = {
+    'align-left': ['textAlign', 'left'],
+    'align-center': ['textAlign', 'center'],
+    'align-right': ['textAlign', 'right'],
+    'valign-top': ['verticalAlign', 'top'],
+    'valign-middle': ['verticalAlign', 'middle'],
+    'valign-bottom': ['verticalAlign', 'bottom']
+  };
+
+  function setCellAlign(key) {
+    var found = htmlTableAt();
+    if (!found || !found.cell) return note('put the caret in a cell first');
+
+    var how = ALIGN[key];
+    var cell = found.cell;
+    cell.style[how[0]] = cell.style[how[0]] === how[1] ? '' : how[1];
+    if (!cell.getAttribute('style')) cell.removeAttribute('style');
+    writeHtmlTable(found, found.table, cell);
+  }
+
+  function htmlRow(side, remove) {
+    var found = htmlTableAt();
+    if (!found || !found.cell) return note('put the caret in a cell first');
+
+    var row = found.cell.parentNode;
+
+    if (remove) {
+      if (found.table.rows.length < 2) return note('the last row has to stay');
+      var after = row.nextElementSibling || row.previousElementSibling;
+      row.parentNode.removeChild(row);
+      return writeHtmlTable(found, found.table, after && after.cells[0]);
+    }
+
+    var fresh = document.createElement('tr');
+    var width = 0;
+    [].forEach.call(row.cells, function (cell) { width += cell.colSpan || 1; });
+    for (var i = 0; i < width; i++) fresh.appendChild(document.createElement('td'));
+
+    row.parentNode.insertBefore(fresh, side === 'above' ? row : row.nextSibling);
+    writeHtmlTable(found, found.table, fresh.cells[0]);
+  }
+
+  function toggleHtmlClass(name) {
+    var found = htmlTableAt();
+    if (!found) return;
+
+    var had = found.table.classList.contains(name);
+    found.table.classList.toggle(name, !had);
+    if (!found.table.className) found.table.removeAttribute('class');
+    writeHtmlTable(found, found.table, found.cell);
+  }
+
+  /*
+   * In markdown the |:---:| row is the only place alignment can be said, and it
+   * speaks for a whole column — there is no per-cell equivalent, which is what
+   * the HTML side is for. Pressing the one already set clears it.
+   */
+  var COLUMN_ALIGN = {
+    'col-align-left': 'left',
+    'col-align-center': 'center',
+    'col-align-right': 'right'
+  };
+
+  function ruleFor(align) {
+    if (align === 'center') return ':---:';
+    if (align === 'right') return '---:';
+    if (align === 'left') return ':---';
+    return '---';
+  }
+
+  function readAlign(cell) {
+    var left = cell.charAt(0) === ':';
+    var right = cell.charAt(cell.length - 1) === ':';
+    return left && right ? 'center' : (right ? 'right' : (left ? 'left' : ''));
+  }
+
+  function markdownAlign() {
+    var value = input.value;
+    var range = blockAround(input.selectionStart);
+    var lines = value.slice(range.from, range.to).split('\n');
+    var lineStart = value.lastIndexOf('\n', input.selectionStart - 1) + 1;
+    var column = caretColumn(value, lineStart);
+
+    for (var i = 0; i < lines.length; i++) {
+      if (lines[i].trim().charAt(0) !== '|') continue;
+      var cells = splitRow(lines[i]);
+      if (isRule(cells)) return readAlign(cells[column] || '');
+    }
+    return null;
+  }
+
+  function setColumnAlign(key) {
+    var wanted = COLUMN_ALIGN[key];
+
+    withTable(function (rows, column) {
+      var rule = null;
+      rows.forEach(function (cells) {
+        if (Array.isArray(cells) && isRule(cells)) rule = cells;
+      });
+      if (!rule) return note('this table has no |:---:| row');
+
+      var now = readAlign(rule[column] || '');
+      rule[column] = ruleFor(now === wanted ? '' : wanted);
+    }, true);
+  }
+
+  function cutColumn() {
+    withTable(function (rows, column) {
+      var width = 0;
+      rows.forEach(function (cells) {
+        if (Array.isArray(cells)) width = Math.max(width, cells.length);
+      });
+      if (width < 2) return note('a table needs a column');
+
+      rows.forEach(function (cells) {
+        if (Array.isArray(cells)) cells.splice(column, 1);
+      });
+    }, true);
+  }
+
+  function cutRow() {
+    withTable(function (rows, column, line) {
+      var cells = rows[line];
+      if (!Array.isArray(cells) || isRule(cells)) return note('that is not a row');
+
+      var first = rows.findIndex(Array.isArray);
+      if (line === first) return note('the header row has to stay');
+
+      rows.splice(line, 1);
+    }, true);
+  }
+
+  function addRow(side) {
+    withTable(function (rows, column, line) {
+      var width = 0;
+      rows.forEach(function (cells) {
+        if (Array.isArray(cells)) width = Math.max(width, cells.length);
+      });
+
+      var blank = [];
+      for (var i = 0; i < width; i++) blank.push('');
+
+      /* never above the header or its rule — a row put there would be read as
+         the header itself */
+      var at = side === 'above' ? line : line + 1;
+      var floor = rows.reduce(function (found, cells, index) {
+        return Array.isArray(cells) && isRule(cells) ? index + 1 : found;
+      }, 0);
+
+      rows.splice(Math.max(at, floor), 0, blank);
+    }, true);
+  }
+
+  /*
+   * The two things you do to a table are only ever done to the table you are in,
+   * so they ride beside it instead of sitting in the toolbar all day. The bar
+   * appears at the table's first line and goes away as soon as the caret leaves.
+   */
+  var cellbar = document.querySelector('[data-editor-cellbar]');
+  var tablebar = document.querySelector('[data-editor-tablebar]');
+  var wideButton = tablebar && tablebar.querySelector('[data-snippet="full-width"]');
+
+  /* park a bar just past the end of a line, and keep it inside the pane */
+  function placeBar(bar, offset, nudge) {
+    var at = measureCaret(offset);
+    var host = bar.parentNode.getBoundingClientRect();
+    bar.hidden = false;
+
+    var top = at.top - at.lineHeight - host.top;
+    var left = at.left - host.left + 12 + (nudge || 0);
+    top = Math.max(4, Math.min(host.height - bar.offsetHeight - 4, top));
+    left = Math.max(4, Math.min(host.width - bar.offsetWidth - 12, left));
+
+    bar.style.top = top + 'px';
+    bar.style.left = left + 'px';
+    return { top: top, left: left, width: bar.offsetWidth, height: bar.offsetHeight };
+  }
+
+  function overlaps(a, b) {
+    return a.left < b.left + b.width && b.left < a.left + a.width &&
+      a.top < b.top + b.height && b.top < a.top + a.height;
+  }
+
+  function syncRowbar() {
+    if (!cellbar || !tablebar) return;
+
+    var value = input.value;
+    var range = blockAround(input.selectionStart);
+
+    function lineEndAt(from) {
+      var found = value.indexOf('\n', from);
+      return found === -1 || found > range.to ? range.to : found;
+    }
+
+    var lineStart = value.lastIndexOf('\n', input.selectionStart - 1) + 1;
+    var onRow = value.slice(lineStart, lineEndAt(lineStart)).trim().charAt(0) === '|';
+    var isTable = value.slice(range.from, lineEndAt(range.from)).trim().charAt(0) === '|';
+
+    var html = isTable ? null : htmlTableAt();
+    if (!isTable && !html) {
+      cellbar.hidden = true;
+      tablebar.hidden = true;
+      return;
+    }
+
+    [cellbar, tablebar].forEach(function (bar) { bar.classList.toggle('is-html', !!html); });
+    if (html) onRow = !!html.cell;
+
+    wideButton.setAttribute('aria-pressed', String(html
+      ? /\bfull-width\b/.test(html.table.className)
+      : /\{:(?![:/])[^}\n]*\.full-width/.test(value.slice(range.from, range.to))));
+
+    RULES.forEach(function (name) {
+      var button = cellbar.querySelector('[data-snippet="' + name + '"]');
+      if (!button) return;
+      button.setAttribute('aria-pressed',
+        String(!!(html && html.cell && html.cell.classList.contains(name))));
+    });
+
+    var columnAlign = html ? null : markdownAlign();
+    Object.keys(COLUMN_ALIGN).forEach(function (key) {
+      var button = cellbar.querySelector('[data-snippet="' + key + '"]');
+      if (button) button.setAttribute('aria-pressed', String(columnAlign === COLUMN_ALIGN[key]));
+    });
+
+    Object.keys(ALIGN).forEach(function (key) {
+      var button = cellbar.querySelector('[data-snippet="' + key + '"]');
+      if (!button) return;
+      var how = ALIGN[key];
+      button.setAttribute('aria-pressed',
+        String(!!(html && html.cell && html.cell.style[how[0]] === how[1])));
+    });
+
+    /* cells: beside the row being edited. whole table: at its last line, which
+       is where its IAL sits — the same place `wide` writes to. */
+    var cell = null;
+    cellbar.hidden = !onRow;
+    if (onRow) cell = placeBar(cellbar, lineEndAt(lineStart));
+
+    var last = placeBar(tablebar, range.to);
+
+    /* the cell bar runs to two lines for an HTML table, so "same line" is not
+       enough to tell whether they clash — compare the boxes */
+    if (cell && overlaps(cell, last)) {
+      last = placeBar(tablebar, range.to, cell.left + cell.width + 8 - last.left);
+      if (overlaps(cell, last)) {
+        tablebar.style.top = (cell.top + cell.height + 4) + 'px';
+      }
+    }
+  }
+
+  [cellbar, tablebar].forEach(function (bar) {
+    if (!bar) return;
+    ['keyup', 'click', 'scroll'].forEach(function (type) {
+      input.addEventListener(type, syncRowbar, { passive: true });
+    });
+    input.addEventListener('blur', function () {
+      /* a click on a bar itself must not close it before it runs */
+      window.setTimeout(function () {
+        if (bar.contains(document.activeElement)) return;
+        if (document.activeElement === input) return;
+        bar.hidden = true;
+      }, 120);
+    });
+  });
+
+  /*
+   * kramdown attaches an IAL to the block directly above it, and a blank line in
+   * between makes it vanish — so this walks down to the last line of the block
+   * the caret is in and writes it there. If that block already carries an IAL,
+   * the class joins it rather than starting a second one.
+   */
+  function applyIal(className, onlyTables) {
+    var value = input.value;
+    var IAL = /^\{:(?![:/])[ \t]*([^}]*)\}/;
+
+    function lineEnd(at) {
+      var found = value.indexOf('\n', at);
+      return found === -1 ? value.length : found;
+    }
+
+    var start = value.lastIndexOf('\n', input.selectionEnd - 1) + 1;
+    var end;
+
+    if (IAL.test(value.slice(start, lineEnd(start)))) {
+      /* the caret is on the block's IAL already — writing another below it would
+         attach to nothing, which is where a second press used to land */
+      end = start - 1;
+    } else {
+      end = lineEnd(input.selectionEnd);
+      while (end < value.length) {
+        var next = lineEnd(end + 1);
+        var line = value.slice(end + 1, next);
+        if (!line.trim() || IAL.test(line)) break;
+        end = next;
+      }
+    }
+
+    /* .full-width means nothing anywhere else, so say so rather than quietly
+       hanging a class on a paragraph */
+    if (onlyTables) {
+      var lastLine = value.slice(value.lastIndexOf('\n', end - 1) + 1, end);
+      if (lastLine.trim().charAt(0) !== '|') {
+        return note('put the caret in a table first');
+      }
+    }
+
+    var after = value.slice(end + 1, lineEnd(end + 1));
+    var existing = IAL.exec(after);
+
+    if (!existing) return insertAt(end, end, '\n{: .' + className + ' }');
+
+    /* pressing it again takes the class off, and takes the whole line with it if
+       that was all it held */
+    var rest = existing[1].split(/\s+/).filter(function (part) { return part; });
+    var had = rest.indexOf('.' + className);
+
+    if (had !== -1) {
+      rest.splice(had, 1);
+      if (!rest.length) return insertAt(end, end + 1 + existing[0].length, '');
+      return insertAt(end + 1, end + 1 + existing[0].length,
+        '{: ' + rest.join(' ') + ' }');
+    }
+
+    rest.push('.' + className);
+    insertAt(end + 1, end + 1 + existing[0].length, '{: ' + rest.join(' ') + ' }');
+  }
+
   function applyFootnote() {
     var n = 1;
     while (input.value.indexOf('[^' + n + ']:') !== -1) n++;
@@ -180,6 +975,27 @@
     if (key === 'sidenote') return applySidenote('figure');
     if (key === 'sidenote-text') return applySidenote('text');
     if (key === 'footnote') return applyFootnote();
+    /* the same three buttons serve both kinds of table; which one the caret is
+       in decides what they do */
+    var html = htmlTableAt();
+
+    if (key === 'full-width') return html ? toggleHtmlClass('full-width') : applyIal('full-width', true);
+    if (key === 'tidy-table') return html ? writeHtmlTable(html, html.table, html.cell) : tidyTable();
+    if (key === 'row-above') return html ? htmlRow('above') : addRow('above');
+    if (key === 'row-below') return html ? htmlRow('below') : addRow('below');
+    if (key === 'row-cut') return html ? htmlRow(null, true) : cutRow();
+
+    if (key === 'col-left') return addColumn('left');
+    if (key === 'col-right') return addColumn('right');
+    if (key === 'col-cut') return cutColumn();
+    if (COLUMN_ALIGN[key]) return setColumnAlign(key);
+    if (key === 'to-html') return tableToHtml();
+
+    if (key === 'merge-right') return mergeCell('right');
+    if (key === 'merge-down') return mergeCell('down');
+    if (key === 'unmerge') return unmergeCell();
+    if (RULES.indexOf(key) !== -1) return toggleCellRule(key);
+    if (ALIGN[key]) return setCellAlign(key);
 
     var spec = SNIPPETS[key];
     if (!spec) return;
@@ -206,17 +1022,39 @@
    * Typing [[ anywhere in the body opens a search over the site's own pages and
    * PDFs, baked in at build time. Picking one writes a normal markdown link.
    */
+  /* Safari only grew String.normalize late enough to be worth guarding. */
+  function normalise(text) {
+    return text && text.normalize ? text.normalize('NFC') : text;
+  }
+
   var sitemap = [];
   try {
     sitemap = JSON.parse(document.querySelector('[data-editor-sitemap]').textContent);
-    /* GitHub Pages serves foo.html at /foo — link to the tidier form */
-    sitemap.forEach(function (item) { item.u = item.u.replace(/\.html$/, ''); });
+    /*
+     * GitHub Pages serves foo.html at /foo — link to the tidier form.
+     *
+     * Each entry also gets a key to search against, and that key is normalised:
+     * a Korean file name comes off a Mac's disk decomposed, so "논문" there is
+     * three jamo where the same word typed at the keyboard is one syllable, and
+     * a plain string search between the two never matches. The url is decoded
+     * into the key as well, so a path can be searched in Korean too — but the
+     * url itself is left exactly as the file is named, since that is what has
+     * to survive into the link.
+     */
+    sitemap.forEach(function (item) {
+      item.u = item.u.replace(/\.html$/, '');
+      item.t = normalise(item.t);
+
+      var path = item.u;
+      try { path = decodeURIComponent(item.u); } catch (e) {}
+      item.key = normalise(item.t + ' ' + path).toLowerCase();
+    });
   } catch (e) {}
 
   var completeBox = document.querySelector('[data-editor-complete]');
   var completeState = null;
 
-  function measureCaret() {
+  function measureCaret(offset) {
     var mirror = document.createElement('div');
     var cs = getComputedStyle(input);
     ['fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'letterSpacing',
@@ -229,7 +1067,8 @@
     mirror.style.whiteSpace = 'pre-wrap';
     mirror.style.wordWrap = 'break-word';
     mirror.style.width = input.clientWidth + 'px';
-    mirror.textContent = input.value.slice(0, input.selectionStart);
+    mirror.textContent = input.value.slice(0,
+      offset === undefined ? input.selectionStart : offset);
 
     var marker = document.createElement('span');
     marker.textContent = '​';
@@ -252,10 +1091,9 @@
   }
 
   function openComplete(from, query) {
-    var needle = query.toLowerCase();
+    var needle = normalise(query).toLowerCase();
     var hits = sitemap.filter(function (item) {
-      return item.t.toLowerCase().indexOf(needle) !== -1 ||
-        item.u.toLowerCase().indexOf(needle) !== -1;
+      return item.key.indexOf(needle) !== -1;
     }).slice(0, 8);
 
     if (!hits.length) return closeComplete();
@@ -649,7 +1487,7 @@
    * this the item's first line picks up paragraph margins the real page has not
    * got.
    */
-  function tightenLists(html) {
+  function tightenLists(html, ials) {
     var slate = document.createElement('template');
     slate.innerHTML = html;
 
@@ -659,6 +1497,32 @@
       while (p.firstChild) p.parentNode.insertBefore(p.firstChild, p);
       p.parentNode.removeChild(p);
     });
+
+    /*
+     * marked writes a table's alignment as the old align="" attribute, kramdown
+     * as an inline style. A presentational attribute loses to any stylesheet
+     * rule, and latex.css has `th, td { text-align: left }` — so the preview
+     * ignored the |:---:| row while the published page did not.
+     */
+    slate.content.querySelectorAll('th[align], td[align]').forEach(function (cell) {
+      cell.style.textAlign = cell.getAttribute('align');
+      cell.removeAttribute('align');
+    });
+
+    /* the same pass, so an IAL costs no extra parse of the document */
+    if (ials && ials.length) {
+      var walker = document.createTreeWalker(slate.content, NodeFilter.SHOW_COMMENT);
+      var marks = [];
+      while (walker.nextNode()) marks.push(walker.currentNode);
+
+      marks.forEach(function (mark) {
+        var found = /^ial(\d+)$/.exec(mark.nodeValue.trim());
+        if (!found) return;
+        var target = mark.previousElementSibling;
+        mark.parentNode.removeChild(mark);
+        if (target) applyIals(target, ials[Number(found[1])]);
+      });
+    }
 
     return slate.innerHTML;
   }
@@ -677,6 +1541,35 @@
       var tex = item.tex.replace(/&/g, '&amp;').replace(/</g, '&lt;');
       return item.display ? '\\[' + tex + '\\]' : '\\(' + tex + '\\)';
     });
+  }
+
+  /*
+   * kramdown's block IAL: a line holding nothing but {: .cls #id key="v" } right
+   * after a block hangs those attributes on it. marked has never heard of it and
+   * would print the braces, so the line becomes an HTML comment now and the
+   * attributes are put on the element after parsing.
+   *
+   * {::nomarkdown} and {:/} start with two colons or a slash, and are left alone.
+   * A line like this inside a fenced code block would be taken for an IAL, which
+   * kramdown would not do — the one place this is a likeness rather than a copy.
+   */
+  function extractIals(src) {
+    var list = [];
+    src = src.replace(/^\{:(?![:/])[ \t]*([^}\n]*)\}[ \t]*$/gm, function (m, attrs) {
+      list.push(attrs);
+      return '<!--ial' + (list.length - 1) + '-->';
+    });
+    return { src: src, list: list };
+  }
+
+  function applyIals(target, attrs) {
+    attrs.replace(/([.#])([\w-]+)|([\w-]+)="([^"]*)"/g,
+      function (m, sign, name, key, value) {
+        if (sign === '.') target.classList.add(name);
+        else if (sign === '#') target.id = name;
+        else if (key) target.setAttribute(key, value);
+        return '';
+      });
   }
 
   /* marked has no footnotes, so build what kramdown emits — including the
@@ -719,14 +1612,16 @@
     src = src.replace(/^---\n[\s\S]*?\n---[ \t]*(\n|$)/, '');
 
     var math = extractMath(src);
-    var notes = extractFootnotes(math.src);
+    var ials = extractIals(math.src);
+    var notes = extractFootnotes(ials.src);
     var body = notes.src
       .replace(/\\{1,2}[ \t]*$/gm, '  ')
       .replace(/\{::nomarkdown\}/g, '')
       .replace(/\{:\/\}/g, '');
 
     var html = window.marked.parse(body, { gfm: true }) + footnoteSection(notes);
-    return restoreMath(tightenLists(unwrapDisplay(html, math.store)), math.store);
+    return restoreMath(
+      tightenLists(unwrapDisplay(html, math.store), ials.list), math.store);
   }
 
   /* The real pages grow a contents rail in the left margin; the preview builds
@@ -737,12 +1632,16 @@
   var tocSig = null;
 
   function syncToc() {
+    /* the same reading of a heading the real page uses, so a margin note hung on
+       one does not turn up in the rail */
+    var label = window.headingText || function (h) { return h.textContent.trim(); };
+
     var headings = [].filter.call(render.querySelectorAll('h2, h3'), function (h) {
-      return h.textContent.trim();
+      return label(h);
     });
     if (headings.length < 2) headings = [];
 
-    var sig = headings.map(function (h) { return h.tagName + h.textContent; }).join('\u0000');
+    var sig = headings.map(function (h) { return h.tagName + label(h); }).join('\u0000');
     if (sig === tocSig) return;
     tocSig = sig;
 
@@ -768,7 +1667,7 @@
       var li = document.createElement('li');
       var link = document.createElement('a');
       link.href = '#' + heading.id;
-      link.textContent = heading.textContent;
+      link.textContent = label(heading);
       link.addEventListener('click', function (event) {
         event.preventDefault();
         preview.scrollTop += heading.getBoundingClientRect().top -
@@ -897,7 +1796,7 @@
      writes — so a block is not always an element, and KaTeX may turn one text
      node into several nodes. Hence a block owns a list, not a single node. */
   function blockKey(node) {
-    return node.nodeType === 1 ? node.outerHTML : 'text:' + node.nodeValue;
+    return node.nodeType === 1 ? node.outerHTML : 'text:' + node.nodeValue;
   }
 
   function dress(node) {
@@ -1055,6 +1954,7 @@
   function changed() {
     repaint();
     schedule();
+    syncRowbar();
     try {
       localStorage.setItem(DRAFT_KEY, input.value);
     } catch (e) {
@@ -1097,12 +1997,53 @@
   });
   input.addEventListener('click', refreshComplete);
 
-  /* Tab indents instead of leaving the editor — unless the search is open. */
+  /*
+   * Tab indents instead of leaving the editor — unless the search is open.
+   *
+   * With nothing selected it types two spaces. With a selection, or with shift
+   * held, it works on whole lines: every line the selection touches moves in or
+   * out together, which is what nested lists and indented code need. Two spaces,
+   * because that is the nesting step markdown itself uses.
+   */
+  var INDENT = '  ';
+
   input.addEventListener('keydown', function (event) {
     if (event.key !== 'Tab' || completeState) return;
     event.preventDefault();
+
+    var value = input.value;
     var sel = selection();
-    insertAt(sel.start, sel.end, '    ');
+
+    if (sel.start === sel.end && !event.shiftKey) {
+      insertAt(sel.start, sel.end, INDENT);
+      return;
+    }
+
+    /* Selecting down to the next line leaves the caret at that line's start; it
+       should not drag a line nobody meant to touch. */
+    var last = sel.end;
+    if (last > sel.start && value.charAt(last - 1) === '\n') last--;
+
+    var from = value.lastIndexOf('\n', sel.start - 1) + 1;
+    var to = value.indexOf('\n', last);
+    if (to === -1) to = value.length;
+
+    var lines = value.slice(from, to).split('\n');
+    var moved = lines.map(function (line) {
+      return event.shiftKey ? line.replace(/^(\t| {1,2})/, '') : INDENT + line;
+    });
+    var text = moved.join('\n');
+    if (text === lines.join('\n')) return; /* already flush left */
+
+    if (sel.start === sel.end) {
+      /* keep the caret where it was in the line, not on the whole line */
+      var shift = moved[0].length - lines[0].length;
+      var caret = Math.max(from, sel.start + shift);
+      insertAt(from, to, text, caret, caret);
+      return;
+    }
+
+    insertAt(from, to, text, from, from + text.length);
   });
 
   /* ---------- syntax colours ---------- */
@@ -1162,7 +2103,84 @@
       var marked = markInline(escaped);
       return marked.replace(/^(\s*)([-*+]|\d+\.)(\s)/,
         '$1<span class="tk-marker">$2</span>$3');
+    }).map(function (html) {
+      /* one wrapper per logical line, so the gutter can ask each how many rows
+         it wrapped onto — the <pre> is the only thing that wraps exactly as the
+         textarea does, so it is the only honest place to measure */
+      return '<span class="ln">' + (html === '' ? '\u200b' : html) + '</span>';
     }).join('\n');
+  }
+
+  /* ---------- line numbers ---------- */
+
+  /*
+   * A number per logical line, at the top of however many rows that line takes.
+   *
+   * How many rows is read from where the next line begins, not from counting
+   * the line's own boxes: a line ending in a space gets an extra empty box that
+   * takes up no room, and counting boxes put the numbers a row out from there
+   * on. Advance between lines is what the numbers have to follow, so that is
+   * what is measured.
+   *
+   * Every line therefore needs a box to measure — hence the zero-width space in
+   * an otherwise empty one, which changes nothing on screen.
+   */
+  var gutter = document.querySelector('[data-editor-gutter]');
+  var gutterRows = [];
+
+  function syncGutter() {
+    if (!gutter) return;
+
+    var spans = codeLayer.querySelectorAll('.ln');
+    if (!spans.length) return;
+
+    /* Each number is placed at its own line's offset rather than stacked on the
+       heights of the ones above it. Stacking means one bad measurement moves
+       every number below it; placing them independently means a line that
+       cannot be measured costs only itself. */
+    var lineHeight = parseFloat(getComputedStyle(codeLayer).lineHeight) || 20;
+    var origin = codeLayer.getBoundingClientRect().top - codeLayer.scrollTop;
+
+    /*
+     * A span's client rect is its glyph box, which sits half the leading below
+     * the top of the line box it lives on. The number is drawn in a line box of
+     * its own, so it has to be placed at the *line box* top for the two to end
+     * up on the same baseline — otherwise every number rides a few pixels high.
+     */
+    var last = 0;
+    var tops = [].map.call(spans, function (span, i) {
+      var rect = span.getClientRects()[0];
+      if (!rect) {
+        last += i ? lineHeight : 0;
+        return Math.round(last);
+      }
+      var lead = (lineHeight - rect.height) / 2;
+      last = rect.top - lead - origin;
+      return Math.round(last);
+    });
+
+    var same = tops.length === gutterRows.length && tops.every(function (n, i) {
+      return n === gutterRows[i];
+    });
+    if (same) return;
+    gutterRows = tops;
+
+    gutter.innerHTML = '<div data-gutter-inner>' + tops.map(function (top, i) {
+      return '<div style="top:' + top + 'px"><span>' + (i + 1) + '</span></div>';
+    }).join('') + '</div>';
+    trackGutter();
+  }
+
+  /*
+   * The numbers are moved rather than scrolled. A scrollport can only travel as
+   * far as its own content, and the gutter's is shorter than the textarea's by
+   * its bottom padding — so at the end of a long note the numbers would stop
+   * while the text kept going, and the two drifted apart.
+   */
+  function trackGutter() {
+    if (!gutter) return;
+    var inner = gutter.firstElementChild;
+    if (inner) inner.style.transform = 'translateY(' + (-input.scrollTop) + 'px)';
   }
 
   function repaint() {
@@ -1170,12 +2188,26 @@
     codeLayer.innerHTML = paint(input.value) + '\n';
     codeLayer.scrollTop = input.scrollTop;
     codeLayer.scrollLeft = input.scrollLeft;
+    syncGutter();
   }
 
   input.addEventListener('scroll', function () {
     codeLayer.scrollTop = input.scrollTop;
     codeLayer.scrollLeft = input.scrollLeft;
+    trackGutter();
   }, { passive: true });
+
+  /*
+   * A narrower pane rewraps every line, so the row counts all have to go. The
+   * pane changes width without the window doing so — dragging the seam, the
+   * split, a device preview — so watch the box itself rather than the window.
+   */
+  if (window.ResizeObserver && gutter) {
+    new ResizeObserver(function () {
+      gutterRows = [];
+      syncGutter();
+    }).observe(gutter.parentNode);
+  }
 
   /* ---------- layout ---------- */
 

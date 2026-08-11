@@ -102,6 +102,16 @@ The two can be mixed, and an item may hold maths.
 | Baseline | 0.71 | reference |
 | Ours | 0.88 | best |
 
+A table is only as wide as it needs to be. `{: .full-width }` on the line
+straight after it — no blank line, or kramdown drops it — makes it fill the text
+column instead.
+
+| Method | Accuracy | Notes |
+|---|---|---|
+| Baseline | 0.71 | reference |
+| Ours | 0.88 | best |
+{: .full-width }
+
 ## Footnote
 
 A footnote goes here.[^one] And a second one.[^two]

@@ -113,7 +113,75 @@
 
       </div>
           <div class="editor-code-body">
+            <div class="editor-gutter" data-editor-gutter aria-hidden="true"></div>
             <pre class="editor-highlight" data-editor-highlight aria-hidden="true"></pre>
+
+            {%- comment -%}
+              Table controls belong to the table, not to the toolbar. They split
+              by what they act on: the cell bar edits the row and column the
+              caret is in and rides beside it, while tidy and wide act on the
+              whole table and wait at its last line, where its IAL would go.
+            {%- endcomment -%}
+            <div class="editor-rowbar" data-editor-cellbar hidden>
+              <div class="editor-rowbar-line" data-mode="md">
+                <span class="editor-rowbar-label">col</span>
+                <button type="button" data-snippet="col-left" title="add a column to the left">+←</button>
+                <button type="button" data-snippet="col-right" title="add a column to the right">+→</button>
+                <button type="button" data-snippet="col-cut" title="delete this column">✕</button>
+                <span class="editor-rowbar-sep"></span>
+                <span class="editor-rowbar-label">row</span>
+                <button type="button" data-snippet="row-above" title="add a row above">+↑</button>
+                <button type="button" data-snippet="row-below" title="add a row below">+↓</button>
+                <button type="button" data-snippet="row-cut" title="delete this row">✕</button>
+              </div>
+
+              <div class="editor-rowbar-line" data-mode="md">
+                <span class="editor-rowbar-label">align</span>
+                <button type="button" data-snippet="col-align-left" aria-pressed="false" title="align this column left">L</button>
+                <button type="button" data-snippet="col-align-center" aria-pressed="false" title="centre this column">C</button>
+                <button type="button" data-snippet="col-align-right" aria-pressed="false" title="align this column right">R</button>
+              </div>
+
+              <div class="editor-rowbar-line" data-mode="html">
+                <span class="editor-rowbar-label">cell</span>
+                <button type="button" data-snippet="merge-right" title="merge with the cell to the right">merge→</button>
+                <button type="button" data-snippet="merge-down" title="merge with the cell below">merge↓</button>
+                <button type="button" data-snippet="unmerge" title="split this cell back apart">split</button>
+                <span class="editor-rowbar-sep"></span>
+                <span class="editor-rowbar-label">row</span>
+                <button type="button" data-snippet="row-above" title="add a row above">+↑</button>
+                <button type="button" data-snippet="row-below" title="add a row below">+↓</button>
+                <button type="button" data-snippet="row-cut" title="delete this row">✕</button>
+              </div>
+
+              <div class="editor-rowbar-line" data-mode="html">
+                <span class="editor-rowbar-label">rule</span>
+                <button type="button" data-snippet="rule-top" aria-pressed="false" title="rule along the top of this cell">↑</button>
+                <button type="button" data-snippet="rule-left" aria-pressed="false" title="rule down the left of this cell">←</button>
+                <button type="button" data-snippet="rule-right" aria-pressed="false" title="rule down the right of this cell">→</button>
+                <button type="button" data-snippet="rule-bottom" aria-pressed="false" title="rule along the bottom of this cell">↓</button>
+                <span class="editor-rowbar-sep"></span>
+                <span class="editor-rowbar-label">align</span>
+                <button type="button" data-snippet="align-left" aria-pressed="false" title="align left">L</button>
+                <button type="button" data-snippet="align-center" aria-pressed="false" title="align centre">C</button>
+                <button type="button" data-snippet="align-right" aria-pressed="false" title="align right">R</button>
+                <span class="editor-rowbar-sep"></span>
+                <button type="button" data-snippet="valign-top" aria-pressed="false" title="sit at the top">T</button>
+                <button type="button" data-snippet="valign-middle" aria-pressed="false" title="sit in the middle">M</button>
+                <button type="button" data-snippet="valign-bottom" aria-pressed="false" title="sit at the bottom">B</button>
+              </div>
+            </div>
+
+            <div class="editor-rowbar" data-editor-tablebar hidden>
+              <div class="editor-rowbar-line">
+                <button type="button" data-snippet="tidy-table"
+                        title="lay this table out again">tidy</button>
+                <button type="button" data-snippet="full-width" aria-pressed="false"
+                        title="let this table fill the text column — press again to undo">wide</button>
+                <button type="button" data-mode="md" data-snippet="to-html"
+                        title="rewrite this table as HTML, where cells can be merged">to html</button>
+              </div>
+            </div>
             <textarea class="editor-input" data-editor-input spellcheck="false"
                       aria-label="Markdown"></textarea>
           </div>
@@ -183,6 +251,11 @@ nav:
           {%- if ext != 'md' and ext != 'markdown' and ext != 'html' -%}
             {%- continue -%}
           {%- endif -%}
+          {%- comment -%}
+            `search: false` in a page's front matter keeps it out of the list —
+            404 is somewhere the reader is sent, never somewhere to link to.
+          {%- endcomment -%}
+          {%- if p.search == false -%}{%- continue -%}{%- endif -%}
           {%- if p.url != page.url -%}
             {%- assign label = p.title -%}
             {%- if label == nil or label == '' -%}
@@ -201,7 +274,7 @@ nav:
         {%- for f in site.static_files -%}
           {%- if f.extname == '.pdf' -%}
             {%- unless first %},{% endunless -%}{%- assign first = false -%}
-            {"t":{{ f.path | jsonify }},"u":{{ f.path | relative_url | jsonify }},"k":"pdf"}
+            {"t":{{ f.basename | jsonify }},"u":{{ f.path | relative_url | jsonify }},"k":"pdf"}
           {%- endif -%}
         {%- endfor -%}
       ]

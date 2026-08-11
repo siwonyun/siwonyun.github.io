@@ -96,6 +96,15 @@ enumerate도 3중까지 1. → a. → i. 순서로 바뀐다.
 | Baseline | 0.71 | reference |
 | Ours | 0.88 | best |
 
+표는 내용에 맞는 만큼만 넓어진다. 표 **바로 다음 줄**에 `{: .full-width }`를 적으면
+본문 폭을 꽉 채운다. 빈 줄을 사이에 두면 kramdown이 무시한다.
+
+| Method | Accuracy | Notes |
+|---|---|---|
+| Baseline | 0.71 | reference |
+| Ours | 0.88 | best |
+{: .full-width }
+
 ## Footnote
 
 본문에 각주를 단다.[^one] 두 번째 각주도 단다.[^two]
