@@ -22,9 +22,9 @@ nav: main
 
 
 ## Contact
-Email: siwonyunkr[at]gmail[dot]com\\
-GitHub: [siwonyun](https://github.com/siwonyun/)\\
-LinkedIn: [i-love-you](https://www.linkedin.com/in/i-love-you/)
+**Email**: siwonyunkr[at]gmail[dot]com\\
+**GitHub**: [siwonyun](https://github.com/siwonyun/)\\
+**LinkedIn**: [i-love-you](https://www.linkedin.com/in/i-love-you/)
 
 
 ## Selected Honors & Awards
