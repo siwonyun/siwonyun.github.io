@@ -31,6 +31,8 @@ nav: main
 - [Regeneron International Science and Engineering Fair (ISEF)](https://www.societyforscience.org/isef/) 2024{::nomarkdown}<figure class="sn"><img src="./image/isef.png" alt="isef"><figcaption>ISEF</figcaption></figure>{:/}
     - Los Angeles, CA
     - Finalist, Society for Science [May 2024]
+- BCSC 7th IDEA HACKATHON 2026
+    - Win [7–9 Aug 2026]
 - 디미고 IT역량 UP 프로그램
     - GrandMaster 등급(2 of 189) [2024]
 - Korea Code Fair (KCF) 2023
