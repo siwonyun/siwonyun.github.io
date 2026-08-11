@@ -379,11 +379,12 @@ body {
   font-size: 16px;
 }
 
+/* Never shrinks: a flex line short on space takes it from every shrinkable item
+   at once, so a brand that could shrink lost characters to an ellipsis while the
+   links beside it were already handling the overflow by scrolling. Absorbing it
+   is .page-nav-links' job alone — see it below. */
 .page-nav-brand {
-  flex: 0 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex: 0 0 auto;
   white-space: nowrap;
   font-size: 0.9rem;
   font-weight: 600;
