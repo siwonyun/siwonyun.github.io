@@ -83,7 +83,7 @@ Visit: [Artificial Intelligence](/bcsc/artificial-intelligence/)
 
 ### 7th IDEA HACKATHON
 - 7–9 Aug 2026
-- 🥇🥇🥇 Team 8{::nomarkdown}<figure class="sn"><img src="./image/7th-hackathon.png" alt="7th-hackathon"><figcaption>7th idea hackathon</figcaption></figure>{:/}
+- 🥇🥇🥇 Team 8{::nomarkdown}<figure class="sn"><img src="./image/7th-hackathon.png" alt="7th-hackathon"><figcaption>7th idea hackathon</figcaption></figure>{:/} — 1st Place
 
 #### Photos
 - [Instagram Post I](https://www.instagram.com/p/Dbwrx7YCfbP/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
