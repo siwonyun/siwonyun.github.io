@@ -26,13 +26,13 @@ nav: bcsc
 - Week 6: [Hopfield Network is All You Need](https://arxiv.org/pdf/2008.02217) — Hubert Ramsauer et al.
 
 ### Additional Materials
-- Week 2: https://www.youtube.com/watch?v=ozyNz5-2Ek0
-- Week 3: https://www.youtube.com/watch?v=tk9FTdKOL5Q
+- Week 2: <https://www.youtube.com/watch?v=ozyNz5-2Ek0>
+- Week 3: <https://www.youtube.com/watch?v=tk9FTdKOL5Q>
 - Week 4: Deep Learning — Yann LeCun, Yoshua Bengio, and Geoffrey Hinton
-- Week 4: https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/
-- Week 5: https://jalammar.github.io/illustrated-transformer/
+- Week 4: <https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/>
+- Week 5: <https://jalammar.github.io/illustrated-transformer/>
 - Week 6: [Dense Associative Memory for Pattern Recognition](https://arxiv.org/pdf/1606.01164) — Dmitry Krotov and John J. Hopfield
-- Week 6: https://ml-jku.github.io/hopfield-layers/
+- Week 6: <https://ml-jku.github.io/hopfield-layers/>
 
 
 ## Schedule

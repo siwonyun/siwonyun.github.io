@@ -7,9 +7,9 @@
 ehthumbs.db
 Thumbs.db
 
-# LaTeX build artefacts.
-# Published note PDFs are tracked anyway — they are the deliverable — so adding
-# one needs `git add -f`.
+# LaTeX build artefacts. `*.pdf` is deliberately not among them: the note PDFs
+# are the deliverable and nothing in this repo compiles LaTeX any more, so they
+# are tracked like any other asset. GitHub Pages serves only committed files.
 *.aux
 *.bbl
 *.bcf
@@ -41,8 +41,6 @@ latex.out/
 *.nav
 *.snm
 *.vrb
-
-*.pdf
 
 # What the local preview *produces* — never what it needs to run. serve-site.sh,
 # the Gemfile and _config.yml are all tracked, so a fresh clone can preview the
