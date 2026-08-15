@@ -43,7 +43,7 @@ nav: bcsc
 - [논문리뷰: The Neurally Controlled Animat](/bcsc/pdf/20250810-%EB%85%BC%EB%AC%B8%EB%A6%AC%EB%B7%B0-The%20Neurally%20Controlled%20Animat.pdf)
 
 ### 5th IDEA HACKATHON
-### Visit to [KBRI](https://www.kbri.re.kr)
+### Visit to [Korea Brain Research Institute (KBRI)](https://www.kbri.re.kr)
 ### Neuroinsight Workshop 2025
 
 ### Term 2. Science of Memory
