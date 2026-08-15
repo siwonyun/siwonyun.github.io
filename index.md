@@ -32,9 +32,9 @@ nav: main
     - Los Angeles, CA
     - Finalist, Society for Science [May 2024]
 - BCSC 7th IDEA HACKATHON 2026
-    - Win [7–9 Aug 2026]
+    - 1st Place [7–9 Aug 2026]
 - 디미고 IT역량 UP 프로그램
-    - GrandMaster 등급(2 of 189) [2024]
+    - GrandMaster — 2nd of 189 [2024]
 - Korea Code Fair (KCF) 2023
     - Bronze Medal, Ministry of Science and ICT
 - SmarTeen App+ Challenge (STA+C) 2023
@@ -53,17 +53,17 @@ nav: main
 - [Counterspell: Seoul](https://counterspell-seoul.vercel.app)
     - Co-organizer, Hack Club [23 Nov – 24 Nov 2024]
 - [CANSAT COMPETITION KOREA](https://cansat.kaist.ac.kr) 2023{::nomarkdown}<figure class="sn"><img src="./image/cansat.png" alt="cansat"><figcaption>cansat</figcaption></figure>{:/}
-    - First round qualifier selection
+    - First-round qualifier
 - KAIST Creative and Global Leader Program (창의적 글로벌 리더 프로그램) 2023 Summer
 - Korean Scholars Conference for Youth (KSCY) 2023
     - Official Ambassadors, Computer Engineering Research Track
 
 ## Education[^education]
 - [Incheon National University](https://inu.ac.kr), Incheon, Republic of Korea
-    - B.S., [Computer Science](https://cse.inu.ac.kr/)(Expected 2027) [Mar 2025 – Current]
+    - B.S., [Computer Science](https://cse.inu.ac.kr/) (Expected 2027) [Mar 2025 – Current]
     - Grade: 4.4/4.5
 - [Korea Digital Media High School](https://dimigo.hs.kr/), Ansan, Republic of Korea
-    - Dept. of Web Programming [Mar 2022 – Jan, 2025]
+    - Dept. of Web Programming [Mar 2022 – Jan 2025]
 
 
 [^bcsc]: Visit: [BCSC](/bcsc/)

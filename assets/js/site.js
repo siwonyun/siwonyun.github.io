@@ -168,9 +168,13 @@
   /*
    * What a heading says, not everything it carries. A margin note hung on a
    * heading is a remark about the section, not part of its name — and the note's
-   * caption would otherwise turn up in the rail as if it were.
+   * caption would otherwise turn up in the rail as if it were. A footnote marker
+   * is the same case, and reads worse: kramdown renders it as a superscript
+   * numeral inside the h2, so `## Education[^education]` reaches the rail as
+   * "Education2".
    */
-  var NOT_HEADING_TEXT = '.anchorjs-link, .sidenote, .sn, .sidenote-toggle';
+  var NOT_HEADING_TEXT =
+    '.anchorjs-link, .sidenote, .sn, .sidenote-toggle, [role="doc-noteref"]';
 
   function headingText(heading) {
     var clone = heading.cloneNode(true);

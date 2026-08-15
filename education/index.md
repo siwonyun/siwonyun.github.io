@@ -7,7 +7,7 @@ nav: education
 # Education
 
 ## University
-Visit: [B.S. Page](/education/bs/)
+Visit: [B.S.](/education/bs/)
 
 ## High School
-Visit: [DIMIGO page](/education/dimigo/)
+Visit: [DIMIGO](/education/dimigo/)

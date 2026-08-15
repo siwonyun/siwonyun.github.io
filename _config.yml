@@ -2,15 +2,21 @@
 # below are the ones it derives for a user site, spelled out so local preview
 # resolves paths exactly as production does.
 theme: jekyll-theme-primer
+# Both ship with the github-pages bundle the Actions build uses, so listing them
+# is all it takes. jekyll-sitemap writes /sitemap.xml and the /robots.txt that
+# points at it, covering every page and every published PDF; it skips /404.html
+# on its own and anything carrying `sitemap: false` in its front matter.
 plugins:
   - jekyll-seo-tag
+  - jekyll-sitemap
 title: "Siwon Yun"
 url: "https://siwonyun.github.io"
 baseurl: ""
+# Only what Jekyll would otherwise copy into the build. Dot-directories are not
+# on the list because Jekyll already skips every entry whose name starts with a
+# dot; `vendor` needs naming precisely because it does not start with one.
 exclude:
   - vendor
-  - .bundle
-  - .jekyll-bundle
   - serve-site.sh
   - Gemfile
   - Gemfile.lock
