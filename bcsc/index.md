@@ -94,4 +94,10 @@ Visit: [Artificial Intelligence](/bcsc/artificial-intelligence/)
 - [Slides](/bcsc/pdf/20260810-bcsc_hackathon.pdf)
 
 ### Term 2. Extracting Biomarkers from Grayscale
+#### Results
+- [Poster](/bcsc/pdf/grayscale-poster.pdf)
+
 ### Term 2. Neural Speech Decoding for Brain Computer Interfaces
+#### Results
+- [Poster](/bcsc/pdf/eeg-poster.pdf)
+- [Slides](/bcsc/pdf/eeg-slide.pdf)
