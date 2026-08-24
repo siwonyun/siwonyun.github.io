@@ -10,6 +10,16 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 title: "Siwon Yun"
+# Empty on purpose, and load-bearing. Left unset, jekyll-github-metadata installs
+# a lazy fallback that fetches this from the repository over the GitHub API — a
+# call made on every build whose answer here is nothing, since the repository has
+# no description of its own. It is also a call that can take the build down with
+# it: the gem rescues a refused connection but not a 5xx, so a slow minute at
+# api.github.com ends the local preview with a Liquid Exception. Naming the value,
+# even as "", stops the lookup being installed at all. Replacing "" with a real
+# sentence is a content decision — it becomes the search-result snippet and
+# og:description — not a build one.
+description: ""
 url: "https://siwonyun.github.io"
 baseurl: ""
 # Only what Jekyll would otherwise copy into the build. Dot-directories are not

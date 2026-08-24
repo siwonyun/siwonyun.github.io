@@ -103,22 +103,41 @@
     });
   }
 
-  /* ---------- external links ---------- */
+  /* ---------- links that open in their own tab ---------- */
 
   /*
-   * Anything pointing off this host opens in its own tab. Same-host links —
-   * including the note PDFs and in-page anchors — are left alone, so navigating
-   * the site never scatters tabs. rel="noopener" keeps the opened page from
-   * reaching back through window.opener.
+   * Two kinds of link leave this page rather than replace it: anything on
+   * another host, and the note PDFs. A PDF is something to consult alongside
+   * the page that cited it, and opening one in place costs you that page —
+   * coming back means going back through a viewer rather than to where you
+   * were. Every other same-host link is ordinary navigation between pages of
+   * one site, and replacing the page is exactly right for it.
+   *
+   * The PDFs are the only files linked this way — no other extension appears in
+   * a site-relative href — so the test is the extension itself rather than a
+   * list. It reads link.pathname, which drops any ?query or #fragment, so a
+   * link into a numbered page still matches.
+   *
+   * rel="noopener" stops the opened page reaching back through window.opener.
+   * noreferrer is added only off-host: a referrer within this site reveals
+   * nothing this site does not already know.
    */
-  function markExternalLinks() {
+  function opensInOwnTab(link) {
+    if (link.host !== window.location.host) return 'external';
+    return link.pathname.toLowerCase().slice(-4) === '.pdf' ? 'file' : null;
+  }
+
+  function markNewTabLinks() {
     [].forEach.call(document.querySelectorAll('a[href]'), function (link) {
       if (link.target) return;
       if (link.protocol !== 'http:' && link.protocol !== 'https:') return;
-      if (link.host === window.location.host) return;
 
+      var kind = opensInOwnTab(link);
+      if (!kind) return;
+
+      var rel = kind === 'external' ? 'noopener noreferrer' : 'noopener';
       link.target = '_blank';
-      link.rel = link.rel ? link.rel + ' noopener noreferrer' : 'noopener noreferrer';
+      link.rel = link.rel ? link.rel + ' ' + rel : rel;
     });
   }
 
@@ -392,7 +411,7 @@
   function init() {
     initSidenotes();
     renderMath();
-    markExternalLinks();
+    markNewTabLinks();
     initToc();
   }
 
