@@ -86,8 +86,9 @@ Visit: [Artificial Intelligence](/bcsc/artificial-intelligence/)
 - 🥇🥇🥇 Team 8{::nomarkdown}<figure class="sn"><img src="./image/7th-hackathon.png" alt="7th-hackathon"><figcaption>7th idea hackathon</figcaption></figure>{:/} — 1st Place
 
 #### Photos
-- [Instagram Post I](https://www.instagram.com/p/Dbwrx7YCfbP/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
-- [Instagram Post II](https://www.instagram.com/p/DbyZfiwkzlx/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
+- [Instagram Post I](https://www.instagram.com/p/DcS2uO9o4hw/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==)
+- [Instagram Post II](https://www.instagram.com/p/Dbwrx7YCfbP/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
+- [Instagram Post III](https://www.instagram.com/p/DbyZfiwkzlx/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
 
 #### Results
 - [Slides](/bcsc/pdf/20260810-bcsc_hackathon.pdf)
