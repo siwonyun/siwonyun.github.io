@@ -35,15 +35,13 @@ nav:
 | :--: | :-----: | :---------------------------------------------------------------------------------- | :--------: |
 |  1   | Sep 27  | [Overview & McCulloch-Pitts Neuron](/bcsc/artificial-intelligence-2026/pdf/w1.pdf)  |    윤시원    |
 |  2   |  Oct 4  | Hopfield Model I                                                                    |    차민경    |
-|  3   | Oct 11  | Hopfield Model II                                                                   |    권가민    |
-|  4   | Oct 25  | Boltzmann Machines                                                                  |    박정욱    |
-|  5   |  Nov 1  | Deep Learning (RBM, DBN)                                                            |    이한나    |
+|  3   | Oct 25  | Hopfield Model II                                                                   |    권가민    |
+|  4   |  Nov 1  | Boltzmann Machines                                                                  |    박정욱    |
+|  5   |  Nov 8  | Deep Learning (RBM, DBN)                                                            |    이한나    |
 |  6   | Nov 15  | Attention is All You Need & Memory                                                  |    정윤호    |
 |  7   | Nov 22  | Hopfield Network is All You Need                                                    |    권가민    |
 
-ToDo: Oct 11 휴회?
-
-## 출석
+## Attendance
 
 |  이름  | Week 1  | Week 2  | Week 3  | Week 4  | Week 5  | Week 6  | Week 7  |
 | :---: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
@@ -59,7 +57,7 @@ ToDo: Oct 11 휴회?
 ❌: 무단결석
 
 
-## 장부
+## Book
 
 |  Date   | Amount (₩)  | Total (₩)  |
 | :-----: | :---------: | :--------: |
