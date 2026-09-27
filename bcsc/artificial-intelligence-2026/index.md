@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "BCSC: Artificial Intelligence"
+title: "BCSC: Artificial Neural Network"
 nav:
 ---
 
@@ -34,10 +34,34 @@ nav:
 | Week |  Date   | Contents (Slides)                                                                   | Presenter  |
 | :--: | :-----: | :---------------------------------------------------------------------------------- | :--------: |
 |  1   | Sep 27  | [Overview & McCulloch-Pitts Neuron](/bcsc/artificial-intelligence-2026/pdf/w1.pdf)  |    윤시원    |
-|  2   |         | Hopfield Model I                                                                    |            |
-|  3   |         | Hopfield Model II                                                                   |            |
-|  4   |         | Boltzmann Machines                                                                  |            |
-|  5   |         | Deep Learning (RBM, DBN)                                                            |            |
-|  6   |         | Attention is All You Need & Memory                                                  |            |
-|  7   |         | Hopfield Network is All You Need                                                    |            |
+|  2   |  Oct 4  | Hopfield Model I                                                                    |    차민경    |
+|  3   | Oct 11  | Hopfield Model II                                                                   |    권가민    |
+|  4   | Oct 25  | Boltzmann Machines                                                                  |    박정욱    |
+|  5   |  Nov 1  | Deep Learning (RBM, DBN)                                                            |    이한나    |
+|  6   | Nov 15  | Attention is All You Need & Memory                                                  |    정윤호    |
+|  7   | Nov 22  | Hopfield Network is All You Need                                                    |    권가민    |
 
+ToDo: Oct 11 휴회?
+
+## 출석
+
+|  이름  | Week 1  | Week 2  | Week 3  | Week 4  | Week 5  | Week 6  | Week 7  |
+| :---: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
+| 윤시원  |   ✅    |         |         |         |         |         |         |
+| 권가민  |    ✔    |         |         |         |         |         |         |
+| 박정욱  |   ✅    |         |         |         |         |         |         |
+| 이한나  |   ✅    |         |         |         |         |         |         |
+| 정윤호  |   ✅    |         |         |         |         |         |         |
+| 차민경  |   ✅    |         |         |         |         |         |         |
+
+✅: 출석,
+✔: 비대면 출석,
+❌: 무단결석
+
+
+## 장부
+
+|  Date   | Amount (₩)  | Total (₩)  |
+| :-----: | :---------: | :--------: |
+| Sep 27  |   14,000    |   14,000   |
+|  Oct 4  |   14,000    |   28,000   |
