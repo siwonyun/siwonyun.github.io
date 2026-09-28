@@ -35,7 +35,7 @@ nav:
 | :--: | :-----: | :---------------------------------------------------------------------------------- | :--------: |
 |  1   | Sep 27  | [Overview & McCulloch-Pitts Neuron](/bcsc/artificial-intelligence-2026/pdf/w1.pdf)  |    윤시원    |
 |  2   |  Oct 4  | Hopfield Model I                                                                    |    차민경    |
-|  3   | Oct 11  | Hopfield Model II                                                                   |    권가민    |
+|  3   | Oct 25  | Hopfield Model II                                                                   |    권가민    |
 |  4   |  Nov 1  | Boltzmann Machines                                                                  |    박정욱    |
 |  5   |  Nov 8  | Deep Learning (RBM, DBN)                                                            |    이한나    |
 |  6   | Nov 15  | Attention is All You Need & Memory                                                  |    정윤호    |
