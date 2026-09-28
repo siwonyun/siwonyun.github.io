@@ -35,7 +35,7 @@ nav:
 | :--: | :-----: | :---------------------------------------------------------------------------------- | :--------: |
 |  1   | Sep 27  | [Overview & McCulloch-Pitts Neuron](/bcsc/artificial-intelligence-2026/pdf/w1.pdf)  |    윤시원    |
 |  2   |  Oct 4  | Hopfield Model I                                                                    |    차민경    |
-|  3   | Oct 25  | Hopfield Model II                                                                   |    권가민    |
+|  3   | Oct 11  | Hopfield Model II                                                                   |    권가민    |
 |  4   |  Nov 1  | Boltzmann Machines                                                                  |    박정욱    |
 |  5   |  Nov 8  | Deep Learning (RBM, DBN)                                                            |    이한나    |
 |  6   | Nov 15  | Attention is All You Need & Memory                                                  |    정윤호    |
@@ -63,3 +63,9 @@ nav:
 | :-----: | :---------: | :--------: |
 | Sep 27  |   14,000    |   14,000   |
 |  Oct 4  |   14,000    |   28,000   |
+
+#### 환급 규칙:
+- 모든 팀원이 최소 6회의 스터디에 모두 참여함
+   => 1인당 7000원
+- 모든 팀원이 최소 6회의 스터디에 모두 참여하지는 못했으나, 스터디 전체로 봤을 때는 대면 1회 포함 총 활동 6회를 충족했을 때
+   => 1인당 5000원
