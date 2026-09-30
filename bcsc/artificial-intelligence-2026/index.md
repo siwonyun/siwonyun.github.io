@@ -5,7 +5,36 @@ nav:
 ---
 
 # BCSC: Artificial Neural Network
-- 27 Sep – 22 Nov 2026
+
+<table class="full-width">
+  <tbody>
+    <tr>
+      <td style="text-align: center;">스터디장</td>
+      <td style="text-align: left;">윤시원</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">스터디원</td>
+      <td style="text-align: left;">권가민, 박정욱, 이한나, 정윤호, 차민경</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">기간</td>
+      <td style="text-align: left;">27 Sep – 22 Nov 2026</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">시간</td>
+      <td style="text-align: left;">일 18:00–20:00</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">장소</td>
+      <td style="text-align: left;">사당역</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">모집글</td>
+      <td style="text-align: left;"><a href="https://naver.me/5kPfVLGc" target="_blank">https://naver.me/5kPfVLGc</a></td>
+    </tr>
+  </tbody>
+</table>
+
 
 ## Introduction
 1. 뇌의 지능을 컴퓨터에 구현하기 위한 노력을 탐구하고
