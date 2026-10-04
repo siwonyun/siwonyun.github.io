@@ -63,25 +63,25 @@ nav:
 | Week |  Date   | Contents (Slides)                                 | Presenter  |
 | :--: | :-----: | :------------------------------------------------ | :--------: |
 |  1   | 27 Sep  | [Overview & McCulloch-Pitts Neuron](./pdf/w1.pdf) |    윤시원    |
-|  2   |  4 Oct  | Hopfield Model I                                  |    차민경    |
+|  2   |  4 Oct  | [Hopfield Model I](./pdf/w2.pdf)                  |    차민경    |
 |  3   | 11 Oct  | Hopfield Model II                                 |    권가민    |
-|  4   | 18 Oct  | 시험 주간                                           |            |
-|  5   | 25 Oct  | 시험 주간                                           |            |
-|  6   |  1 Nov  | Boltzmann Machines                                |    박정욱    |
-|  7   |  8 Nov  | Deep Learning (RBM, DBN)                          |    이한나    |
-|  8   | 15 Nov  | Attention is All You Need & Memory                |    정윤호    |
-|  9   | 22 Nov  | Hopfield Network is All You Need                  |    권가민    |
+|      | 18 Oct  | 시험 주간                                           |            |
+|      | 25 Oct  | 시험 주간                                           |            |
+|  4   |  1 Nov  | Boltzmann Machines                                |    박정욱    |
+|  5   |  8 Nov  | Deep Learning (RBM, DBN)                          |    이한나    |
+|  6   | 15 Nov  | Attention is All You Need & Memory                |    정윤호    |
+|  7   | 22 Nov  | Hopfield Network is All You Need                  |    권가민    |
 
 ## Attendance
 
 |  이름  | Week 1  | Week 2  | Week 3  | Week 4  | Week 5  | Week 6  | Week 7  |
 | :---: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
-| 윤시원  |   ✅    |         |         |         |         |         |         |
-| 권가민  |    ✔    |         |         |         |         |         |         |
-| 박정욱  |   ✅    |         |         |         |         |         |         |
-| 이한나  |   ✅    |         |         |         |         |         |         |
-| 정윤호  |   ✅    |         |         |         |         |         |         |
-| 차민경  |   ✅    |         |         |         |         |         |         |
+| 윤시원  |   ✅    |   ✅    |         |         |         |         |         |
+| 권가민  |    ✔    |    ✔    |         |         |         |         |         |
+| 박정욱  |   ✅    |   ✅    |         |         |         |         |         |
+| 이한나  |   ✅    |   ✅    |         |         |         |         |         |
+| 정윤호  |   ✅    |   ✅    |         |         |         |         |         |
+| 차민경  |   ✅    |    ✔    |         |         |         |         |         |
 
 ✅: 출석,
 ✔: 비대면 출석,
