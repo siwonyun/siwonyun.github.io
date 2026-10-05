@@ -43,19 +43,19 @@ nav:
 
 ## Materials
 ### Main Materials
-- Week 1–3: [*Introduction to the Theory of Neural Computation*](https://www.taylorfrancis.com/books/mono/10.1201/9780429499661/introduction-theory-neural-computation-john-hertz) — Hertz, Krogh, and Palmer
-- Week 4: [A Fast Learning Algorithm for Deep Belief Nets](https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf) — Geoffrey E. Hinton, Simon Osindero, and Yee-Whye Teh
-- Week 5: [Attention is All You Need](https://arxiv.org/pdf/1706.03762) — Ashish Vaswani et al.
+- Week 1–4: [*Introduction to the Theory of Neural Computation*](https://www.taylorfrancis.com/books/mono/10.1201/9780429499661/introduction-theory-neural-computation-john-hertz) — Hertz, Krogh, and Palmer
+- Week 5: [A Fast Learning Algorithm for Deep Belief Nets](https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf) — Geoffrey E. Hinton, Simon Osindero, and Yee-Whye Teh
+- Week 6: [Attention is All You Need](https://arxiv.org/pdf/1706.03762) — Ashish Vaswani et al.
 - Week 6: [Hopfield Network is All You Need](https://arxiv.org/pdf/2008.02217) — Hubert Ramsauer et al.
 
 ### Additional Materials
 - Week 2: <https://www.youtube.com/watch?v=ozyNz5-2Ek0>
-- Week 3: <https://www.youtube.com/watch?v=tk9FTdKOL5Q>
-- Week 4: Deep Learning — Yann LeCun, Yoshua Bengio, and Geoffrey Hinton
-- Week 4: <https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/>
-- Week 5: <https://jalammar.github.io/illustrated-transformer/>
-- Week 6: [Dense Associative Memory for Pattern Recognition](https://arxiv.org/pdf/1606.01164) — Dmitry Krotov and John J. Hopfield
-- Week 6: <https://ml-jku.github.io/hopfield-layers/>
+- Week 4: <https://www.youtube.com/watch?v=tk9FTdKOL5Q>
+- Week 5: Deep Learning — Yann LeCun, Yoshua Bengio, and Geoffrey Hinton
+- Week 6: <https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/>
+- Week 6: <https://jalammar.github.io/illustrated-transformer/>
+- Week 7: [Dense Associative Memory for Pattern Recognition](https://arxiv.org/pdf/1606.01164) — Dmitry Krotov and John J. Hopfield
+- Week 7: <https://ml-jku.github.io/hopfield-layers/>
 
 
 ## Schedule
