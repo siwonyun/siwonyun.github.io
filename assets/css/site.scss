@@ -1363,3 +1363,30 @@ body {
     display: none;
   }
 }
+
+/* A photo grid for a page's Markdown: write <figure class="photo-grid"> with
+   the <img>s and a <figcaption> inside, and it is three across on every
+   screen — the pictures shrink rather than the columns giving way — with the
+   pictures cropped square so the rows stay even. */
+/* four classes deep: latex.css sets figure to display: table with more
+   weight than a plain class would beat */
+.markdown-body.latex-extras.latex-page figure.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 1rem 0 1.5rem;
+}
+
+.markdown-body.latex-extras.latex-page figure.photo-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  margin: 0;
+}
+
+.markdown-body.latex-extras.latex-page figure.photo-grid figcaption {
+  grid-column: 1 / -1;
+  margin-top: 0.4rem;
+  text-align: center;
+}
