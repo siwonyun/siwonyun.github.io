@@ -46,7 +46,7 @@ nav:
 - Week 1–4: [*Introduction to the Theory of Neural Computation*](https://www.taylorfrancis.com/books/mono/10.1201/9780429499661/introduction-theory-neural-computation-john-hertz) — Hertz, Krogh, and Palmer
 - Week 5: [A Fast Learning Algorithm for Deep Belief Nets](https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf) — Geoffrey E. Hinton, Simon Osindero, and Yee-Whye Teh
 - Week 6: [Attention is All You Need](https://arxiv.org/pdf/1706.03762) — Ashish Vaswani et al.
-- Week 6: [Hopfield Network is All You Need](https://arxiv.org/pdf/2008.02217) — Hubert Ramsauer et al.
+- Week 7: [Hopfield Network is All You Need](https://arxiv.org/pdf/2008.02217) — Hubert Ramsauer et al.
 
 ### Additional Materials
 - Week 2: <https://www.youtube.com/watch?v=ozyNz5-2Ek0>
