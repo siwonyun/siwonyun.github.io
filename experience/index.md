@@ -10,15 +10,15 @@ nav: main
 
 <div align="center">
     <figure class="photo-grid">
-        <img src="./image/isef/isef-1.png" alt="isef 1">
-        <img src="./image/isef/isef-2.png" alt="isef 2">
-        <img src="./image/isef/isef-3.png" alt="isef 3">
-        <img src="./image/isef/isef-4.png" alt="isef 4">
-        <img src="./image/isef/isef-5.png" alt="isef 5">
-        <img src="./image/isef/isef-6.png" alt="isef 6">
-        <img src="./image/isef/isef-7.png" alt="isef 7">
-        <img src="./image/isef/isef-8.png" alt="isef 8">
-        <img src="./image/isef/isef-9.png" alt="isef 9">
+        <img src="./image/isef/isef-1.webp" alt="isef 1">
+        <img src="./image/isef/isef-2.webp" alt="isef 2">
+        <img src="./image/isef/isef-3.webp" alt="isef 3">
+        <img src="./image/isef/isef-4.webp" alt="isef 4">
+        <img src="./image/isef/isef-5.webp" alt="isef 5">
+        <img src="./image/isef/isef-6.webp" alt="isef 6">
+        <img src="./image/isef/isef-7.webp" alt="isef 7">
+        <img src="./image/isef/isef-8.webp" alt="isef 8">
+        <img src="./image/isef/isef-9.webp" alt="isef 9">
         <figcaption>isef</figcaption>
     </figure>
 </div>
@@ -28,9 +28,9 @@ nav: main
 
 <div align="center">
     <figure class="photo-grid">
-        <img src="./image/cgl/cgl-1.png" alt="cgl 1">
-        <img src="./image/cgl/cgl-2.png" alt="cgl 2">
-        <img src="./image/cgl/cgl-3.png" alt="cgl 3">
+        <img src="./image/cgl/cgl-1.webp" alt="cgl 1" loading="lazy">
+        <img src="./image/cgl/cgl-2.webp" alt="cgl 2" loading="lazy">
+        <img src="./image/cgl/cgl-3.webp" alt="cgl 3" loading="lazy">
         <figcaption>creative and global leader program</figcaption>
     </figure>
 </div>
@@ -40,12 +40,12 @@ nav: main
 
 <div align="center">
     <figure class="photo-grid">
-        <img src="./image/counterspell/counterspell-1.png" alt="counterspell 1">
-        <img src="./image/counterspell/counterspell-2.png" alt="counterspell 2">
-        <img src="./image/counterspell/counterspell-3.png" alt="counterspell 3">
-        <img src="./image/counterspell/counterspell-4.png" alt="counterspell 4">
-        <img src="./image/counterspell/counterspell-5.png" alt="counterspell 5">
-        <img src="./image/counterspell/counterspell-6.png" alt="counterspell 6">
+        <img src="./image/counterspell/counterspell-1.webp" alt="counterspell 1" loading="lazy">
+        <img src="./image/counterspell/counterspell-2.webp" alt="counterspell 2" loading="lazy">
+        <img src="./image/counterspell/counterspell-3.webp" alt="counterspell 3" loading="lazy">
+        <img src="./image/counterspell/counterspell-4.webp" alt="counterspell 4" loading="lazy">
+        <img src="./image/counterspell/counterspell-5.webp" alt="counterspell 5" loading="lazy">
+        <img src="./image/counterspell/counterspell-6.webp" alt="counterspell 6" loading="lazy">
         <figcaption>counterspell</figcaption>
     </figure>
 </div>
@@ -54,12 +54,12 @@ nav: main
 
 <div align="center">
     <figure class="photo-grid">
-        <img src="./image/cansat/cansat-1.png" alt="cansat 1">
-        <img src="./image/cansat/cansat-2.png" alt="cansat 2">
-        <img src="./image/cansat/cansat-3.png" alt="cansat 3">
-        <img src="./image/cansat/cansat-4.png" alt="cansat 4">
-        <img src="./image/cansat/cansat-5.png" alt="cansat 5">
-        <img src="./image/cansat/cansat-6.png" alt="cansat 6">
+        <img src="./image/cansat/cansat-1.webp" alt="cansat 1" loading="lazy">
+        <img src="./image/cansat/cansat-2.webp" alt="cansat 2" loading="lazy">
+        <img src="./image/cansat/cansat-3.webp" alt="cansat 3" loading="lazy">
+        <img src="./image/cansat/cansat-4.webp" alt="cansat 4" loading="lazy">
+        <img src="./image/cansat/cansat-5.webp" alt="cansat 5" loading="lazy">
+        <img src="./image/cansat/cansat-6.webp" alt="cansat 6" loading="lazy">
         <figcaption>cansat</figcaption>
     </figure>
 </div>
@@ -68,12 +68,12 @@ nav: main
 
 <div align="center">
     <figure class="photo-grid">
-        <img src="./image/kcf/kcf-1.png" alt="kcf 1">
-        <img src="./image/kcf/kcf-2.png" alt="kcf 2">
-        <img src="./image/kcf/kcf-3.png" alt="kcf 3">
-        <img src="./image/kcf/kcf-4.png" alt="kcf 4">
-        <img src="./image/kcf/kcf-5.png" alt="kcf 5">
-        <img src="./image/kcf/kcf-6.png" alt="kcf 6">
+        <img src="./image/kcf/kcf-1.webp" alt="kcf 1" loading="lazy">
+        <img src="./image/kcf/kcf-2.webp" alt="kcf 2" loading="lazy">
+        <img src="./image/kcf/kcf-3.webp" alt="kcf 3" loading="lazy">
+        <img src="./image/kcf/kcf-4.webp" alt="kcf 4" loading="lazy">
+        <img src="./image/kcf/kcf-5.webp" alt="kcf 5" loading="lazy">
+        <img src="./image/kcf/kcf-6.webp" alt="kcf 6" loading="lazy">
         <figcaption>Korea code fair</figcaption>
     </figure>
 </div>
@@ -82,9 +82,9 @@ nav: main
 
 <div align="center">
     <figure class="photo-grid">
-        <img src="./image/kscy/kscy-1.png" alt="kscy 1">
-        <img src="./image/kscy/kscy-2.png" alt="kscy 2">
-        <img src="./image/kscy/kscy-3.png" alt="kscy 3">
+        <img src="./image/kscy/kscy-1.webp" alt="kscy 1" loading="lazy">
+        <img src="./image/kscy/kscy-2.webp" alt="kscy 2" loading="lazy">
+        <img src="./image/kscy/kscy-3.webp" alt="kscy 3" loading="lazy">
         <figcaption>kscy</figcaption>
     </figure>
 </div>
