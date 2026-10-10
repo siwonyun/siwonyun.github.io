@@ -28,6 +28,7 @@ baseurl: ""
 exclude:
   - vendor
   - serve-site.sh
+  - shrink-images.py
   - Gemfile
   - Gemfile.lock
   - tools-gen-latex-extras.sh
