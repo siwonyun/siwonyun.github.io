@@ -141,7 +141,9 @@ nav:
 surprise: $$-\log \Pr(x)$$
 
 $$H=-\frac{1}{2N}\sum_{\mu=1}^p{\left(\sum_i{S_i\xi_i^\mu}\right)^2} = -\frac{1}{\beta}\log\Pr(S) - \frac{1}{\beta}\log Z$$
+
 $$\Pr(S) = \frac{1}{Z}\exp\!\left(\frac{\beta}{2N}\sum_{\mu=1}^{p}\Big(\sum_i S_i\xi_i^\mu\Big)^2\right)$$
+
 $$Z = \sum_{S \,\in\, \{\pm1\}^N}\exp\!\left(\frac{\beta}{2N}\sum_{\mu=1}^{p}\Big(\sum_i S_i\xi_i^\mu\Big)^2\right)$$
 
 $$\Longrightarrow$$ softmax?
