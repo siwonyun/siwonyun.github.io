@@ -64,9 +64,9 @@ nav:
 | :--: | :-----: | :------------------------------------------------ | :--------: |
 |  1   | 27 Sep  | [Overview & McCulloch-Pitts Neuron](./pdf/w1.pdf) |    윤시원    |
 |  2   |  4 Oct  | [Hopfield Model I](./pdf/w2.pdf)                  |    차민경    |
-|  3   | 11 Oct  | Hopfield Model II                                 |    권가민    |
+|      | 11 Oct  | 시험 주간                                           |            |
 |      | 18 Oct  | 시험 주간                                           |            |
-|      | 25 Oct  | 시험 주간                                           |            |
+|  3   | 25 Oct  | Hopfield Model II                                 |    권가민    |
 |  4   |  1 Nov  | Boltzmann Machines                                |    박정욱    |
 |  5   |  8 Nov  | Deep Learning (RBM, DBN)                          |    이한나    |
 |  6   | 15 Nov  | Attention is All You Need & Memory                |    정윤호    |
