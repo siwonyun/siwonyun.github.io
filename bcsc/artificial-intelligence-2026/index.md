@@ -67,9 +67,9 @@ nav:
 |      | 11 Oct  | 시험 주간                                           |            |
 |      | 18 Oct  | 시험 주간                                           |            |
 |  3   | 25 Oct  | Hopfield Model II                                 |    권가민    |
-|  4   |  1 Nov  | Boltzmann Machines                                |    박정욱    |
+|  4   |  1 Nov  | Boltzmann Machines                                |    정윤호    |
 |  5   |  8 Nov  | Deep Learning (RBM, DBN)                          |    이한나    |
-|  6   | 15 Nov  | Attention is All You Need & Memory                |    정윤호    |
+|  6   | 15 Nov  | Attention is All You Need & Memory                |    박정욱    |
 |  7   | 22 Nov  | Hopfield Network is All You Need                  |    권가민    |
 
 ## Attendance
