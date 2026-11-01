@@ -68,7 +68,7 @@ nav:
 |      | 11 Oct  | 시험 주간                                           |            |
 |      | 18 Oct  | 시험 주간                                           |            |
 |  3   | 25 Oct  | Hopfield Model II                                 |    권가민    |
-|  4   |  1 Nov  | Boltzmann Machines                                |    정윤호    |
+|  4   |  1 Nov  | [Boltzmann Machines](./pdf/w4.pdf)                |    정윤호    |
 |  5   |  8 Nov  | Deep Learning (RBM, DBN)                          |    이한나    |
 |  6   | 15 Nov  | Attention is All You Need & Memory                |    박정욱    |
 |  7   | 22 Nov  | Hopfield Network is All You Need                  |    권가민    |
@@ -77,11 +77,11 @@ nav:
 
 |  이름  | Week 1  | Week 2  | Week 3  | Week 4  | Week 5  | Week 6  | Week 7  |
 | :---: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
-| 윤시원  |   ✅    |   ✅    |   ✅    |         |         |         |         |
-| 권가민  |    ✔    |    ✔    |   ❌    |         |         |         |         |
-| 박정욱  |   ✅    |   ✅    |   ✅    |         |         |         |         |
-| 이한나  |   ✅    |   ✅    |   ✅    |         |         |         |         |
-| 정윤호  |   ✅    |   ✅    |   ✅    |         |         |         |         |
+| 윤시원  |   ✅    |   ✅    |   ✅    |   ✅    |         |         |         |
+| 권가민  |    ✔    |    ✔    |   ❌    |    ✔    |         |         |         |
+| 박정욱  |   ✅    |   ✅    |   ✅    |   ✅    |         |         |         |
+| 이한나  |   ✅    |   ✅    |   ✅    |   ✅    |         |         |         |
+| 정윤호  |   ✅    |   ✅    |   ✅    |   ✅    |         |         |         |
 | 차민경  |   ✅    |    ✔    |         |         |         |         |         |
 
 ✅: 출석,
@@ -96,11 +96,14 @@ nav:
 | 27 Sep  |   14,000    |   14,000   |
 |  4 Oct  |   14,000    |   28,000   |
 | 25 Oct  |   14,000    |   42,000   |
+|  1 Nov  |   10,000    |   52,000   |
+|  8 Nov  |   10,000    |   62,000   |
 
 스터디룸 예약은 스터디 장이 진행하며, 스터디 마지막날 환급 금액 반영 후 정산 예정.
 
 #### BCSC 환급 규칙:
-- 모든 팀원이 최소 6회의 스터디에 모두 참여함: 1인당 7000원
+- 모든 팀원이 최소 6회의 스터디에 모두 참여함: 1
+인당 7000원
 - 모든 팀원이 최소 6회의 스터디에 모두 참여하지는 못했으나, 스터디 전체로 봤을 때는 대면 1회 포함 총 활동 6회를 충족했을 때: 1인당 5000원
 
 
@@ -148,6 +151,27 @@ $$\Pr(S) = \frac{1}{Z}\exp\!\left(\frac{\beta}{2N}\sum_{\mu=1}^{p}\Big(\sum_i S_
 $$Z = \sum_{S \,\in\, \{\pm1\}^N}\exp\!\left(\frac{\beta}{2N}\sum_{\mu=1}^{p}\Big(\sum_i S_i\xi_i^\mu\Big)^2\right)$$
 
 $$\Longrightarrow$$ softmax?
+
+### Week 4
+$$E$$는 relative entropy(또는 흔히 KL divergence, [[wikipedia]](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) 참고: information theory서 거리(엄밀히는 거리가 아닌 분포의 차이) 역할을 하는 굉장히 중요한 요소입니다)로 다음과 같이 정의 됩니다:
+
+$$
+E=\sum_\alpha {R_\alpha \log{\frac{R_\alpha}{P_\alpha}}}
+$$
+
+desired probabilities $$R_\alpha$$와 model의 결과값 $$P_\alpha$$에 대하여 $E$는 최소화해야 하는 값입니다. 즉, $$R_\alpha$$와 $$P_\alpha$$의 차이를 최소화해야 합니다.
+
+이는 Boltzmann machine서 공학자가 model에 만든 **목적**입니다(현대 ML의 objective function의 역할과 동치입니다). 이 목적을 위해 우리는 gradient descent를 사용합니다.
+
+Hopfield Network 또한 model의 목적을 가지고 있었을까요?: 이미 저장된 기억이 있을 때 새로운 data가 들어오면 자연스러운 과정에 의해 기억으로 수렴합니다.
+
+BM의 주요 요소:
+
+- energy function에 실질적으로 온도를 추가한 model
+- hidden units 추가
+- E(KL divergence) 도입 = loss function의 시작 (gradient descent 기법 활용)
+- 기억 저장이 아닌 분포 학습
+- simulated annealing 도입
 
 
 ## Discussion
