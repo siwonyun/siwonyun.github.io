@@ -37,23 +37,31 @@ nav:
 
 
 ## Introduction
-1. 뇌의 지능을 컴퓨터에 구현하기 위한 노력을 탐구하고
-2. 뇌를 모방한 신경망을 컴퓨터서 학습하기 위한 공학적 요소를 탐구합니다.
-3. 최종적으로 (1)과 (2)의 bridge가 있는지 탐구합니다.
+1. Part I: 뇌의 지능을 컴퓨터에 구현하기 위한 노력을 탐구하고
+2. Part II: 뇌를 모방한 신경망을 컴퓨터서 학습하기 위한 공학적 요소를 탐구합니다.
+3. Part III: 최종적으로 (1)과 (2)의 bridge가 있는지 탐구합니다.
 
 ## Materials
 ### Main Materials
+**Part I:**
+{: .no-indent}
 - Week 1–4: [*Introduction to the Theory of Neural Computation*](https://www.taylorfrancis.com/books/mono/10.1201/9780429499661/introduction-theory-neural-computation-john-hertz) — Hertz, Krogh, and Palmer
 - Week 4: [Boltzmann Machines as Generalized Hopfield Networks: A Review of Recent Results and Outlooks](https://www.mdpi.com/1099-4300/23/1/34) — Chiara Marullo and Elena Agliari
 - Week 5: [A Fast Learning Algorithm for Deep Belief Nets](https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf) — Geoffrey E. Hinton, Simon Osindero, and Yee-Whye Teh
+
+**Part II:**
+{: .no-indent}
+- Week 5: Deep Learning — Yann LeCun, Yoshua Bengio, and Geoffrey Hinton
 - Week 6: [Attention is All You Need](https://arxiv.org/pdf/1706.03762) — Ashish Vaswani et al.
+
+**Part III:**
+{: .no-indent}
 - Week 7: [Hopfield Network is All You Need](https://arxiv.org/pdf/2008.02217) — Hubert Ramsauer et al.
 
 ### Additional Materials
 - Week 2: <https://www.youtube.com/watch?v=ozyNz5-2Ek0>
 - Week 4: <https://www.youtube.com/watch?v=tk9FTdKOL5Q>
-- Week 5: Deep Learning — Yann LeCun, Yoshua Bengio, and Geoffrey Hinton
-- Week 6: <https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/>
+- Week 5: <https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/>
 - Week 6: <https://jalammar.github.io/illustrated-transformer/>
 - Week 7: [Dense Associative Memory for Pattern Recognition](https://arxiv.org/pdf/1606.01164) — Dmitry Krotov and John J. Hopfield
 - Week 7: <https://ml-jku.github.io/hopfield-layers/>
@@ -212,3 +220,31 @@ BM의 주요 요소:
 
 - 💬 기억은 점인가, 궤적인가
 > 대칭 weight는 고정점만 만든다. 에너지가 계속 내려가니 결국 멈출 수밖에 없다. 3.5는 비대칭 항 $$w_{ij} \propto \sum_\mu \xi_i^{\mu+1}\xi_j^\mu$$를 더해 패턴이 $$\xi^1 \to \xi^2 \to \xi^3$$으로 흘러가게 하고, 각 패턴이 자리잡을 때까지 시간 지연을 둔다. 노래를 떠올릴 때 한 음이 다음 음을 불러오듯, 우리는 순서를 통째로 기억한다. 기억의 기본 단위는 하나의 상태(점)인가, 상태들의 흐름(궤적)인가? 둘 중 하나가 다른 하나의 특수한 경우인가?
+
+### Week 4
+- 💬 Hebb은 가정인가, 결과인가
+> Hopfield에서 Hebb rule은 생물학적 동기로 가져온 가정이었다. Boltzmann machine에서는 KL divergence를 줄이는 gradient를 계산했더니 $$\Delta w_{ij} = \eta\beta\left[\overline{\langle S_iS_j\rangle}_{\text{clamped}} - \langle S_iS_j\rangle_{\text{free}}\right]$$라는 Hebb 꼴이 저절로 나왔다. 에너지가 쌍별 상호작용 $$-\frac12\sum w_{ij}S_iS_j$$이면, 확률분포를 맞추는 학습은 필연적으로 "같이 켜지는 정도"를 보게 된다. 그렇다면 뇌가 Hebb 꼴의 가소성을 쓰는 것은 진화의 우연인가, 쌍별 상호작용을 하는 시스템이 분포를 배우려면 피할 수 없는 귀결인가? 순수 Hebb과 달리 BM 규칙은 꿈의 상관이 현실의 상관과 같아지면 멈춘다. 이 "멈춤"은 Hebb에 무엇을 더한 것인가?
+
+- 💬 낮에 배우고 밤에 지우면, 학습 규칙이 성립하는가
+> HKP는 앞 항을 Hebb, 뒤 항을 Hebbian unlearning이라 부른다. 입력에 묶인 상태를 각성, 자유롭게 도는 상태를 꿈이라 읽으면 그럴듯하다. 그런데 BM은 weight를 한 번 갱신할 때마다 두 평균을 모두 새로 구한다. 뇌는 하루 종일 앞 항만 쌓고 밤에 뒤 항을 몰아서 처리한다. 두 항이 이렇게 큰 시간 차를 두고 계산되어도 같은 학습이 되는가? 안 된다면 뇌는 무엇을 잃고, 무엇으로 보완하는가?
+
+- 💬 지금 보는 것이 현실인지 꿈인지, 뉴런은 어떻게 아는가
+> HKP는 뒤 항이 없거나, hidden unit에게 지금 입력이 묶여 있는지를 알려 줄 다른 방법이 없으면, 네트워크가 외부 신호뿐 아니라 스스로 만든 요동까지 학습해서 "자기 환상에 빠진다(absorbed in its own fantasies)"고 쓴다. 학습 규칙이 작동하려면 "지금은 clamped 상태다"라는 전역 신호가 필요하다. 뇌에서 이 신호는 무엇일 수 있는가? REM 수면에서는 아세틸콜린은 깨어 있을 때만큼 높지만 노르에피네프린과 세로토닌은 거의 꺼진다. 이처럼 넓게 퍼지는 느린 신경조절물질이 그 신호 역할을 하는가? 신호가 고장 나면, 즉 깨어 있는데 free 상태처럼 학습하면 무슨 일이 생기는가?
+
+- 💬 붙잡아야 하는 기억, 돌아다녀야 하는 꿈
+> 인출이 성공하려면 상태가 단서가 정해 준 골짜기에 갇혀야 한다. 즉 에르고딕성이 깨져야 한다. 반대로 학습의 뒤 항 $$\langle S_iS_j\rangle_{\text{free}}$$는 전체 분포에 대한 평균이라, 모든 골짜기를 올바른 비율로 돌아다녀야 정확하다. 같은 네트워크, 같은 동역학인데 깨어 있을 때는 갇혀야 하고 꿈에서는 갇히면 안 된다. HKP가 simulated annealing을 쓰는 이유가 이것이다. 기억을 잘 붙잡는 네트워크일수록 꿈에서 골고루 돌아다니기 어렵다면, 뇌는 이 두 요구를 어떻게 함께 만족하는가? 수면이 갇혀 있던 골짜기에서 빠져나오게 하는 "온도 올리기" 역할을 하는가?
+
+- 💬 꿈은 어떤 상태를 골라서 지우는가
+> BM의 뒤 항은 상태를 열적 가중치 $$e^{-\beta H}/Z$$에 따라 고른다. Hopfield, Feinstein, Palmer(1983)는 무작위 상태에서 $$T=0$$으로 굴러 도착한 곳을 지우는데, HKP 170쪽은 이 경우 상태들이 흡인 영역의 크기에 비례해 가중된다고 지적한다. 덜 엄밀하지만 훨씬 빠르고, 용량도 크게 늘어난다. 한쪽은 "확률이 높은 상태"를, 다른 쪽은 "자주 빠지는 상태"를 지운다. 둘은 언제 같고 언제 다른가? 실제 꿈의 내용(최근 일, 감정적인 일)은 어느 쪽 가중치에 더 가까운가?
+
+- 💬 꿈을 꾸지 않고도 잘 수 있는가
+> Dreaming 모델은 수면을 표본추출 없이 결합 행렬의 연산 $$J(t) = \frac1N\,\xi^T\frac{1+t}{1+tC}\,\xi$$으로 쓴다. 분모가 mixture를 지우고, 분자 $$1+t$$가 진짜 기억을 강화한다. Hopfield 등(1983)의 unlearning은 과하게 하면 진짜 기억까지 지우는데, 이 모델은 강화 항으로 이를 막는다. 꿈이라는 "경험", 즉 상태를 하나씩 샘플링하는 과정 없이 시냅스 연산만으로 같은 일을 할 수 있다면, 꿈은 수면의 본질인가 부산물인가? 뇌가 지우기(REM)와 굳히기(서파 수면)를 번갈아 하는 것은 이 두 항에 대응하는가?
+
+- 💬 잠은 국소 규칙으로 비국소 규칙을 계산하는 방법인가
+> 3주차의 pseudo-inverse rule은 모든 패턴의 정보($$Q^{-1}$$)가 필요해서 생물학적으로 해석할 수 없었다(HKP 52쪽). 그런데 끝까지 자면($$t \to \infty$$) Dreaming 커널은 정확히 이 pseudo-inverse가 된다. Fachechi 등(2018)의 수면 갱신 $$J \leftarrow J + \varepsilon(J - J^2)$$에서 $$(J^2)_{ij} = \sum_k J_{ik}J_{kj}$$는 $$i \to k \to j$$로 두 번 전파된 활동의 상관이다. 네트워크가 스스로 돌면서 이 값을 만들어 낼 수 있다는 뜻이다. 그렇다면 잠은 시냅스 하나가 볼 수 없는 전체 정보를, 활동의 전파로 대신 모아 오는 과정인가?
+
+- 💬 RBM은 패턴을 기억하는가, 공간을 기억하는가
+> binary visible과 Gaussian hidden을 가진 RBM(HRBM)에서 hidden을 적분하면, visible의 분포는 결합 $$J = \frac1N WW^T$$를 가진 Hopfield의 Gibbs 분포와 정확히 같아진다. 그래서 학습된 weight를 "저장된 패턴", hidden의 수를 "패턴의 수"라고 부른다. 그런데 Gaussian hidden은 회전 대칭이라 $$W$$ 대신 $$WO$$($$O$$는 임의의 직교행렬)를 써도 분포가 똑같다. 학습이 정하는 것은 개별 패턴이 아니라 패턴들이 펼치는 공간뿐이다. 그렇다면 RBM이 "기억을 저장한다"고 할 때 저장되는 것은 무엇인가? 뇌에서 찾는 기억의 흔적(engram)은 개별 패턴이어야 하는가, 공간이어야 하는가? 그리고 hidden이 binary인 보통 RBM에서는 이 등가성이 왜 깨지는가?
+
+- 💬 한 그림의 학습이 다른 그림의 구조가 된다
+> Hopfield 그림에서 잠은 $$J$$를 고치는 일이다. 그런데 Marullo와 Agliari는 Dreaming 모델을 visible, hidden에 층 하나를 더한 삼분 구조의 Boltzmann machine으로 옮긴다. 한 그림에서 "weight 수정"인 것이 다른 그림에서는 "층 추가"가 된다. 학습과 구조 변화는 서로 다른 일인가, 같은 일을 다르게 표현한 것인가?
