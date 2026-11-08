@@ -237,6 +237,11 @@ output: loss $$L\in\mathbb{R}$$ ← scalar
   <figcaption>Problem 1</figcaption>
 </figure>
 
+<figure>
+  <img src="./image/beautiful-ai.png" alt="beautiful ai">
+  <figcaption>박치기 공룡과 ai</figcaption>
+</figure>
+
 
 ## Discussion
 
