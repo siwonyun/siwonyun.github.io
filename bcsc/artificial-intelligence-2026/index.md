@@ -181,6 +181,62 @@ BM의 주요 요소:
 - 기억 저장이 아닌 분포 학습
 - simulated annealing 도입
 
+### Week 5
+#### ReLU
+> In past decades, neural nets used smoother non-linearities, such as $$\tanh(z)$$ or $$1/(1+\exp(-z))$$, but the ReLU typically learns much faster in networks with many layers, allowing training of a deep supervised network without unsupervised pre-training.
+
+vanishing gradient 문제 해결 → 공학적 요소
+
+- Explaining away:
+"화재경보가 울렸다. 화재 때문인가, 요리 때문인가?"
+→ 결과를 보고 원인들의 기여를 분리해야 함
+
+- Credit assignment:
+"출력이 틀렸다. 어떤 뉴런/층/가중치 때문인가?"
+→ 결과를 보고 각 요소의 기여를 분리해야 함
+
+- 둘 다: "여러 원인 → 하나의 결과" 에서
+각 원인의 책임을 나누는 문제
+
+#### Practice: Backpropagation & Automatic Differentiation
+
+gradient descent, Newton’s method 등을 활용하기 위해서는 ✨미분✨ 값을 알아야…
+
+→ 미분값을 구하는 알고리듬 Automatic Differentiation(자동 미분) ‼️ 미분 연산자는 선형이고, 미분의 결과는 선형임을 기억하길…
+
+$$\frac{\partial y}{\partial x}=\frac{\partial y}{\partial b}\frac{\partial b}{\partial a}\frac{\partial a}{\partial x}$$, $$f:\mathbb{R}^n \to \mathbb{R}^m$$의 Jacobian $$J\in\mathbb{R}^{m\times n}$$에 대하여…
+
+Method 1: Forward mode (JVP, Jacobian-Vector Product) $$Jv$$를 계산.
+
+e.g., $$\frac{\partial y}{\partial x}=\frac{\partial y}{\partial b}\left(\frac{\partial b}{\partial a}\frac{\partial a}{\partial x}\right)$$
+
+cost: $$O(n)\cdot \text{cost}(f)$$
+
+Method 2: Reverse mode (VJP, Vector-Jacobian Product) $$w^TJ$$를 계산. (신경망 분야서는 이를 backpropagation이라고 부름.)
+
+e.g., $$\frac{\partial y}{\partial x}=\left(\frac{\partial y}{\partial b}\frac{\partial b}{\partial a}\right)\frac{\partial a}{\partial x}$$
+
+cost: $$O(m)\cdot \text{cost}(f)$$
+
+⚠️ 주의: memory 필요!
+
+신경망:
+
+input: parameter $$\theta\in\mathbb{R}^n$$ ← $$n$$은 짱 큰 수일 수도…??
+
+→ Forward mode cost: $$O(n)\cdot \text{cost}(f)$$
+
+output: loss $$L\in\mathbb{R}$$ ← scalar
+
+→ Reverse mode cost: $$O(1)\cdot \text{cost}(f)$$
+
+다음을 풀어봅시다: ⚠️ memory가 필요하다는 것의 의미를 고찰하며…
+
+<figure>
+  <img src="./image/comp-graph.png" alt="Problem 1">
+  <figcaption>Problem 1</figcaption>
+</figure>
+
 
 ## Discussion
 
