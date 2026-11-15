@@ -244,6 +244,32 @@ output: loss $$L\in\mathbb{R}$$ ← scalar
 </figure>
 
 
+### Week 6
+이전 기수와 본 기수는 스터디 진행에 있어 다른 특징이 드러납니다:
+- **10<sup>th</sup>**: 보다 토론 위주의 스터디
+- **11<sup>th</sup>**: 보다 내용 위주의 스터디
+
+이전 기수서는 스터디 토론을 진행하며 언제나 **‘이해’에 대한 정의가 존재하지 아니하여 난항**을 거듭하곤 하였습니다.
+
+때문에, 특별히 ‘이해’를 다음과 같이 정의하고 이에 기반하여(이를 first principle로 하여) 토의를 진행하였습니다.
+
+소개합니다: **세계의 구조를 내재화하면서도, 경험하지 아니한 맥락서도 작동하는(즉, 경험한 맥락에 종속되지 아니하는) 내부 모델을 갖는 것**
+
+1. ⭐️ 이 정의는 ‘내재화한다’와 ‘경험하지 아니한 맥락서도 작동한다’의 기준과 측도를 제공하지 아니합니다. ⭐️
+2. 기존 제가 생명체를 ‘세상과 동기화하면서도 자기 자신을 유지하는 존재’라고 정의한 것과 동일한 맥락입니다.
+3. 이 정의는 우리 스터디서 학습한 바와 연관지을 수 있습니다. BM서는 다음과 같은 수식이 등장하였습니다:
+
+$$
+\Delta w=\eta\left[ \overline{\langle S_iS_j\rangle}_{\text{clamped}}-\langle S_iS_j\rangle_{\text{free}} \right]
+$$
+
+- **생명**:  동기화 v.s. 자기 유지
+- **이해**:  외부 모델링 v.s. 맥락 독립성
+- **BM**:   $$\overline{\langle S_iS_j \rangle}_{\text{clamped}}$$ vs $$\langle S_iS_j\rangle_{\text{free}}$$
+- **Sleep-Wake model**: wake v.s. sleep
+- **FEP**: accuracy v.s. complexity (trade-off)
+
+
 ## Discussion
 
 ### Week 2
