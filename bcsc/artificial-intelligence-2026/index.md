@@ -265,7 +265,7 @@ $$
 
 - **생명**:  동기화 v.s. 자기 유지
 - **이해**:  외부 모델링 v.s. 맥락 독립성
-- **BM**:   $$\overline{\langle S_iS_j \rangle}_{\text{clamped}}$$ vs $$\langle S_iS_j\rangle_{\text{free}}$$
+- **BM**:   $$\overline{\langle S_iS_j \rangle}_{\text{clamped}}$$ v.s. $$\langle S_iS_j\rangle_{\text{free}}$$
 - **Sleep-Wake model**: wake v.s. sleep
 - **FEP**: accuracy v.s. complexity (trade-off)
 
