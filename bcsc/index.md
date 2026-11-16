@@ -31,7 +31,7 @@ nav: bcsc
 - [Card News](https://www.instagram.com/p/DLSK4O5yLjP/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
 - [Report](https://cafe.naver.com/f-e/cafes/30493637/articles/901?menuid=73&referrerAllArticles=false)
 
-### 자율스터디 — Guide to Research Techniques in Neuroscience{::nomarkdown}<figure class="sn"><img src="./image/independent-study.png" alt="independent-study"><figcaption>자율스터디 마지막 날</figcaption></figure>{:/}
+### 자율스터디 — Guide to Research Techniques in Neuroscience{::nomarkdown}<figure class="sn"><img src="./image/independent-study.webp" alt="independent-study"><figcaption>자율스터디 마지막 날</figcaption></figure>{:/}
 
 #### Materials
 - [*Guide to Research Techniques in Neuroscience*](https://www.amazon.com/Guide-Research-Techniques-Neuroscience-Carter/dp/0128186461) — Matt Carter, Rachel Essner, Nitsan Goldstein, and Manasi Iyer
@@ -83,7 +83,7 @@ Visit: [Artificial Intelligence](/bcsc/artificial-intelligence/)
 
 ### 7th IDEA HACKATHON
 - 7–9 Aug 2026
-- 🥇🥇🥇 Team 8{::nomarkdown}<figure class="sn"><img src="./image/7th-hackathon.png" alt="7th-hackathon"><figcaption>7th idea hackathon</figcaption></figure>{:/} — 1st Place
+- 🥇🥇🥇 Team 8{::nomarkdown}<figure class="sn"><img src="./image/7th-hackathon.webp" alt="7th-hackathon"><figcaption>7th idea hackathon</figcaption></figure>{:/} — 1st Place
 
 #### Photos
 - [Instagram Post I](https://www.instagram.com/p/DcS2uO9o4hw/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==)

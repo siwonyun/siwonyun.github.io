@@ -10,12 +10,12 @@ nav: education
 - Dept. of Web Programming
 
 <figure>
-  <img src="./image/dimigo.png" alt="dimigo">
+  <img src="./image/dimigo.webp" alt="dimigo">
   <figcaption>Dimigo</figcaption>
 </figure>
 
 ## 디미고 IT역량 UP 프로그램
-- 🏆 GrandMaster — 2nd of 189 [2024]{::nomarkdown}<figure class="sn"><img src="./image/dimigo-grandmaster.png" alt="dimigo-grandmaster"><figcaption>grand master badge</figcaption></figure>{:/}
+- 🏆 GrandMaster — 2nd of 189 [2024]{::nomarkdown}<figure class="sn"><img src="./image/dimigo-grandmaster.webp" alt="dimigo-grandmaster"><figcaption>grand master badge</figcaption></figure>{:/}
 
 ## Coursework
 ### 1st Year

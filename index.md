@@ -15,7 +15,7 @@ nav: main
 
 <div align="center">
     <figure>
-        <img src="./image/goorm.png" alt="goorm" width="240">
+        <img src="./image/goorm.webp" alt="goorm" width="240">
         <figcaption>my cat, Goorm</figcaption>
     </figure>
 </div>
@@ -28,7 +28,7 @@ nav: main
 
 
 ## Selected Honors & Awards
-- [Regeneron International Science and Engineering Fair (ISEF)](https://www.societyforscience.org/isef/) 2024{::nomarkdown}<figure class="sn"><img src="./image/isef.png" alt="isef"><figcaption>ISEF</figcaption></figure>{:/}
+- [Regeneron International Science and Engineering Fair (ISEF)](https://www.societyforscience.org/isef/) 2024{::nomarkdown}<figure class="sn"><img src="./image/isef.webp" alt="isef"><figcaption>ISEF</figcaption></figure>{:/}
     - Los Angeles, CA
     - Finalist, Society for Science [May 2024]
 - BCSC 7th IDEA HACKATHON 2026
@@ -52,7 +52,7 @@ nav: main
     - Quantum Information Research Support Center [11 Jan – 16 Jan 2025]
 - [Counterspell: Seoul](https://counterspell-seoul.vercel.app)
     - Co-organizer, Hack Club [23 Nov – 24 Nov 2024]
-- [CANSAT COMPETITION KOREA](https://cansat.kaist.ac.kr) 2023{::nomarkdown}<figure class="sn"><img src="./image/cansat.png" alt="cansat"><figcaption>cansat</figcaption></figure>{:/}
+- [CANSAT COMPETITION KOREA](https://cansat.kaist.ac.kr) 2023{::nomarkdown}<figure class="sn"><img src="./image/cansat.webp" alt="cansat"><figcaption>cansat</figcaption></figure>{:/}
     - First-round qualifier
 - KAIST Creative and Global Leader Program (창의적 글로벌 리더 프로그램) 2023 Summer
 - Korean Scholars Conference for Youth (KSCY) 2023
