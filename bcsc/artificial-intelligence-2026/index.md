@@ -69,27 +69,27 @@ nav:
 
 ## Schedule
 
-| Week |  Date   | Contents (Slides)                                 | Presenter  |
-| :--: | :-----: | :------------------------------------------------ | :--------: |
-|  1   | 27 Sep  | [Overview & McCulloch-Pitts Neuron](./pdf/w1.pdf) |    윤시원    |
-|  2   |  4 Oct  | [Hopfield Model I](./pdf/w2.pdf)                  |    차민경    |
-|      | 11 Oct  | 시험 주간                                           |            |
-|      | 18 Oct  | 시험 주간                                           |            |
-|  3   | 25 Oct  | Hopfield Model II                                 |    권가민    |
-|  4   |  1 Nov  | [Boltzmann Machines](./pdf/w4.pdf)                |    정윤호    |
-|  5   |  8 Nov  | [DBN & Deep Learning](./pdf/w5.pdf)               |    이한나    |
-|  6   | 15 Nov  | Attention is All You Need & Memory                |    박정욱    |
-|  7   | 22 Nov  | Hopfield Network is All You Need                  |    권가민    |
+| Week |  Date   | Contents (Slides)                                   | Presenter  |
+| :--: | :-----: | :-------------------------------------------------- | :--------: |
+|  1   | 27 Sep  | [Overview & McCulloch-Pitts Neuron](./pdf/w1.pdf)   |    윤시원    |
+|  2   |  4 Oct  | [Hopfield Model I](./pdf/w2.pdf)                    |    차민경    |
+|      | 11 Oct  | 시험 주간                                             |            |
+|      | 18 Oct  | 시험 주간                                             |            |
+|  3   | 25 Oct  | Hopfield Model II                                   |    권가민    |
+|  4   |  1 Nov  | [Boltzmann Machines](./pdf/w4.pdf)                  |    정윤호    |
+|  5   |  8 Nov  | [DBN & Deep Learning](./pdf/w5.pdf)                 |    이한나    |
+|  6   | 15 Nov  | [Attention is All You Need & Memory](./pdf/w6.pdf)  |    박정욱    |
+|  7   | 22 Nov  | Hopfield Network is All You Need                    |    권가민    |
 
 ## Attendance
 
 |  이름  | Week 1  | Week 2  | Week 3  | Week 4  | Week 5  | Week 6  | Week 7  |
 | :---: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
-| 윤시원  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |         |         |
-| 권가민  |    ✔    |    ✔    |   ❌    |    ✔    |    ✔    |         |         |
-| 박정욱  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |         |         |
-| 이한나  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |         |         |
-| 정윤호  |   ✅    |   ✅    |   ✅    |   ✅    |    ✔    |         |         |
+| 윤시원  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |         |
+| 권가민  |    ✔    |    ✔    |   ❌    |    ✔    |    ✔    |    ✔    |         |
+| 박정욱  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |         |
+| 이한나  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |         |
+| 정윤호  |   ✅    |   ✅    |   ✅    |   ✅    |    ✔    |   ✅    |         |
 | 차민경  |   ✅    |    ✔    |         |         |         |         |         |
 
 ✅: 출석,
@@ -107,6 +107,7 @@ nav:
 |  1 Nov  |   10,000    |   52,000   |
 |  8 Nov  |   10,000    |   62,000   |
 | 15 Nov  |   10,000    |   72,000   |
+| 22 Nov  |   10,000    |   82,000   |
 
 스터디룸 예약은 스터디 장이 진행하며, 스터디 마지막날 환급 금액 반영 후 정산 예정.
 
