@@ -23,8 +23,14 @@
 <link rel="stylesheet" href="{{ '/assets/css/latex-extras.css' | relative_url }}?v={{ include.asset_version }}">
 <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}?v={{ include.asset_version }}">
 
+{%- comment -%}
+  The default layout passes math=false for a page with none. The editor passes
+  nothing, since the note it previews may hold math whatever the page is.
+{%- endcomment -%}
+{%- unless include.math == false %}
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.17.0/katex.min.css"
       referrerpolicy="no-referrer">
+{%- endunless %}
 
 {% include head-custom.html %}

@@ -90,6 +90,7 @@
    * it is kept as a display delimiter so math inside <div class="theorem"> works.
    */
   function renderMath() {
+    /* a page without math never loads KaTeX (see _layouts/default.html) */
     if (typeof renderMathInElement !== 'function') return;
     renderMathInElement(document.querySelector('.latex-page') || document.body, {
       delimiters: [

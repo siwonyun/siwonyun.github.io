@@ -4,9 +4,23 @@
   cache — they are a few KB, so re-fetching them per deploy is free.
 {%- endcomment -%}
 {%- assign asset_version = site.time | date: '%s' -%}
+{%- comment -%}
+  KaTeX is the heaviest thing a page loads — 271 KB of script before
+  compression, plus its stylesheet — and most pages have no math at all. It is
+  loaded only where the rendered body holds a delimiter site.js hands to
+  renderMathInElement: \( and \[ (what kramdown makes of $$…$$), or a raw $$
+  kept inside block HTML. Those are the only delimiters the renderer looks for,
+  so a page this skips had nothing to render; a stray match, say \( inside a
+  code block, costs no more than every page used to pay.
+{%- endcomment -%}
+{%- if content contains '\(' or content contains '\[' or content contains '$$' -%}
+  {%- assign math = true -%}
+{%- else -%}
+  {%- assign math = false -%}
+{%- endif -%}
 <html lang="{{ page.lang | default: 'en-US' }}">
   <head>
-    {% include head.html asset_version=asset_version %}
+    {% include head.html asset_version=asset_version math=math %}
   </head>
 
   <body{% if page.nav %} class="has-page-nav"{% endif %}>
@@ -19,10 +33,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
     <script>anchors.add();</script>
 
+    {%- if math %}
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.17.0/katex.min.js"
             referrerpolicy="no-referrer"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.17.0/contrib/auto-render.min.js"
             referrerpolicy="no-referrer"></script>
+    {%- endif %}
     <script defer src="{{ '/assets/js/site.js' | relative_url }}?v={{ asset_version }}"></script>
   </body>
 </html>
