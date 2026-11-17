@@ -23,7 +23,7 @@ nav: bcsc
 - Week 1–3: [*Introduction to the Theory of Neural Computation*](https://www.taylorfrancis.com/books/mono/10.1201/9780429499661/introduction-theory-neural-computation-john-hertz) — Hertz, Krogh, and Palmer
 - Week 4: [A Fast Learning Algorithm for Deep Belief Nets](https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf) — Geoffrey E. Hinton, Simon Osindero, and Yee-Whye Teh
 - Week 5: [Attention is All You Need](https://arxiv.org/pdf/1706.03762) — Ashish Vaswani et al.
-- Week 6: [Hopfield Network is All You Need](https://arxiv.org/pdf/2008.02217) — Hubert Ramsauer et al.
+- Week 6: [Hopfield Networks is All You Need](https://arxiv.org/pdf/2008.02217) — Hubert Ramsauer et al.
 
 ### Additional Materials
 - Week 2: <https://www.youtube.com/watch?v=ozyNz5-2Ek0>
@@ -45,4 +45,4 @@ nav: bcsc
 |  3   | [Boltzmann Machines](/bcsc/artificial-intelligence/pdf/w3.pdf)                 |    전수빈    |
 |  4   | [Deep Learning (RBM, DBN)](/bcsc/artificial-intelligence/pdf/w4.pdf)           |    정서윤    |
 |  5   | [Attention is All You Need & Memory](/bcsc/artificial-intelligence/pdf/w5.pdf) |    황동욱    |
-|  6   | [Hopfield Network is All You Need](/bcsc/artificial-intelligence/pdf/w6.pdf)   |    김은민    |
+|  6   | [Hopfield Networks is All You Need](/bcsc/artificial-intelligence/pdf/w6.pdf)   |    김은민    |
