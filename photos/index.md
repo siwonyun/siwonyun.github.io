@@ -1,10 +1,13 @@
 ---
 layout: default
-title: "Experience"
+title: "Photos"
 nav: main
+# Was /experience/ until the CV took over that job; the old address forwards
+# here so links made before the rename still land.
+redirect_from: /experience/
 ---
 
-# Experience
+# Photos
 
 ## [Regeneron International Science and Engineering Fair (ISEF)](https://www.societyforscience.org/isef/) 2024
 

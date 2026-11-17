@@ -2,5 +2,7 @@
 # which a page asks for by writing `nav: main`.
 - title: Home
   url: /
-- title: Experience
-  url: /experience/
+- title: Photos
+  url: /photos/
+- title: CV
+  url: /cv/

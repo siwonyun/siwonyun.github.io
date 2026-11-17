@@ -2,13 +2,16 @@
 # below are the ones it derives for a user site, spelled out so local preview
 # resolves paths exactly as production does.
 theme: jekyll-theme-primer
-# Both ship with the github-pages bundle the Actions build uses, so listing them
+# All ship with the github-pages bundle the Actions build uses, so listing them
 # is all it takes. jekyll-sitemap writes /sitemap.xml and the /robots.txt that
 # points at it, covering every page and every published PDF; it skips /404.html
 # on its own and anything carrying `sitemap: false` in its front matter.
+# jekyll-redirect-from turns a page's `redirect_from:` into a small forwarding
+# page at each old address, so moving a page does not break links to it.
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-redirect-from
 title: "Siwon Yun"
 # Empty on purpose, and load-bearing. Left unset, jekyll-github-metadata installs
 # a lazy fallback that fetches this from the repository over the GitHub API — a

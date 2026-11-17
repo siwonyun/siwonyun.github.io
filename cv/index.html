@@ -1,0 +1,394 @@
+---
+layout: default
+title: "CV"
+nav: main
+---
+{%- comment -%}
+  The web edition of cv/resume.pdf. Same content, laid out for a screen rather
+  than a page: dates in a column of their own on the left, so the eye can run
+  down them; prose ragged-right, which reads better than justified text at a
+  browser's line breaking; and the site's own record linked in [brackets], the
+  way academic pages point at slides and reports.
+
+  Set in CMU Serif, the Unicode build of Computer Modern, from jsDelivr pinned to
+  one commit of bitmaks/cm-web-fonts — regular, bold and italic are what the
+  page uses, and a face the page never uses is never fetched. Everything else
+  is in this file, so removing the draft is removing the file. Selectors carry
+  .cv two or three times to outrank Primer (.markdown-body h2) and latex-extras
+  (.latex-extras.indent-pars p), which would otherwise restyle the headings,
+  indent every paragraph and swap the list markers.
+{%- endcomment -%}
+{%- assign cmu = 'https://cdn.jsdelivr.net/gh/bitmaks/cm-web-fonts@333f55ec19733c28cdc43567ecf72eafd6b0af61/font/Serif/' -%}
+<style>
+  @font-face { font-family: 'CMU Serif'; src: url('{{ cmu }}cmunrm.woff') format('woff'); font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'CMU Serif'; src: url('{{ cmu }}cmunbx.woff') format('woff'); font-weight: 700; font-style: normal; font-display: swap; }
+  @font-face { font-family: 'CMU Serif'; src: url('{{ cmu }}cmunti.woff') format('woff'); font-weight: 400; font-style: italic; font-display: swap; }
+  @font-face { font-family: 'CMU Serif'; src: url('{{ cmu }}cmunbi.woff') format('woff'); font-weight: 700; font-style: italic; font-display: swap; }
+
+  .cv.cv {
+    font-family: 'CMU Serif', 'Latin Modern Roman', 'Computer Modern Serif', Georgia, serif;
+    /* Computer Modern's small x-height reads a size below the site's sans */
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--body-color);
+    hyphens: manual;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* The site hyphenates running text (.latex-page p, li) to make justified
+     Korean columns fit. Ragged-right English needs no such help, and a word
+     split across lines only reads as print here. */
+  .cv.cv.cv p,
+  .cv.cv.cv li {
+    margin: 0;
+    text-indent: 0;
+    hyphens: manual;
+    -webkit-hyphens: manual;
+  }
+
+  .cv.cv.cv a {
+    color: var(--link-visited);
+    text-decoration: none;
+  }
+
+  .cv.cv.cv a:hover {
+    text-decoration: underline;
+  }
+
+  /* a title reads as a name first; that it is also a link shows on hover */
+  .cv.cv.cv .cv-title a {
+    color: inherit;
+  }
+
+  .cv.cv.cv .cv-title a:hover,
+  .cv.cv.cv .cv-title .cv-links a {
+    color: var(--link-visited);
+  }
+
+  /* ---------- header ---------- */
+
+  .cv-head {
+    margin-bottom: 1.75rem;
+  }
+
+  /* Says what the page is: the name alone reads the same as the homepage. */
+  .cv.cv.cv .cv-kicker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.4rem;
+    color: var(--muted-color);
+    font-size: 0.8em;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* The PDF edition, on the label's row: what the page is, and where its
+     printable copy is. Tracking leaves a space after the last letter, so the
+     right padding is the smaller one. */
+  .cv.cv.cv .cv-pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.2em 0.55em 0.2em 0.65em;
+    border: 1px solid var(--rule-color);
+    border-radius: 4px;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+  }
+  .cv.cv.cv .cv-pdf:hover {
+    border-color: currentColor;
+    text-decoration: none;
+  }
+  .cv-pdf svg {
+    width: 1em;
+    height: 1em;
+    flex: none;
+  }
+
+  .cv.cv .cv-head h1 {
+    margin: 0 0 0.25rem;
+    padding: 0;
+    font-family: inherit;
+    font-size: 2.4em;
+    font-weight: 700;
+    line-height: 1.1;
+    border: 0;
+  }
+
+  .cv.cv.cv .cv-contact {
+    margin-top: 0.35rem;
+  }
+
+  /* ---------- sections ---------- */
+
+  .cv.cv h2 {
+    margin: 2.4rem 0 1.1rem;
+    padding: 0 0 0.3rem;
+    font-family: inherit;
+    font-size: 1.32em;
+    font-weight: 700;
+    line-height: 1.25;
+    border-bottom: 1px solid var(--rule-color);
+  }
+
+  /* Every entry is two columns: when, then what. A phone has no room for the
+     first, so there it sits above the entry instead. */
+  .cv-item {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr);
+    column-gap: 1.25rem;
+    margin-bottom: 1.05rem;
+  }
+
+  .cv-when {
+    padding-top: 0.08em;
+    color: var(--muted-color);
+    font-size: 0.92em;
+    line-height: 1.6;
+  }
+
+  .cv-title {
+    font-weight: 700;
+  }
+
+  .cv-meta {
+    color: var(--muted-color);
+    font-style: italic;
+  }
+
+  .cv.cv.cv .cv-what > * + * {
+    margin-top: 0.25rem;
+  }
+
+  .cv-links {
+    font-size: 0.88em;
+    font-style: normal;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  /* roles held inside the entry above, hung from it by a rule */
+  .cv-nested {
+    margin-top: -0.35rem;
+  }
+
+  .cv-nested .cv-what {
+    padding-left: 1rem;
+    border-left: 1px solid var(--rule-color);
+  }
+
+  .cv-role {
+    font-style: italic;
+  }
+
+  .cv.cv ul {
+    margin: 0;
+    padding-left: 1.2em;
+    list-style-type: '•  ';
+  }
+
+  .cv.cv ul ul {
+    margin-top: 0.15rem;
+    list-style-type: '◦  ';
+  }
+
+  .cv.cv li + li {
+    margin-top: 0.15rem;
+  }
+
+  .cv.cv.cv .cv-updated {
+    margin-top: 2.5rem;
+    color: var(--muted-color);
+    font-size: 0.88em;
+    font-style: italic;
+    text-align: right;
+  }
+
+  /* a unit that must not break across lines: a term's months, 10^5-fold */
+  .nw { white-space: nowrap; }
+
+  /* the LaTeX logo, as \LaTeX sets it */
+  .tex { white-space: nowrap; }
+  .tex .a { margin: 0 -0.36em 0 -0.15em; font-size: 0.72em; vertical-align: 0.26em; text-transform: uppercase; }
+  .tex .e { margin: 0 -0.12em 0 -0.17em; vertical-align: -0.5ex; text-transform: uppercase; }
+
+  @media (max-width: 599px) {
+    .cv-item {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 0.05rem;
+    }
+
+    .cv-when {
+      font-size: 0.86em;
+    }
+
+    .cv-nested {
+      margin-top: 0;
+    }
+  }
+</style>
+
+<div class="cv">
+  <header class="cv-head">
+    <div class="cv-kicker">
+      <span>Curriculum Vitae</span>
+      <a class="cv-pdf" href="{{ '/cv/siwon-yun-cv.pdf' | relative_url }}"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v7.5M4.75 6.75 8 10l3.25-3.25M3 13.5h10"/></svg>PDF</a>
+    </div>
+    <h1>Siwon Yun</h1>
+    <p class="cv-contact">siwonyunkr[at]gmail[dot]com · <a href="https://github.com/siwonyun/">GitHub</a></p>
+  </header>
+
+  <div class="cv-item">
+    <div class="cv-when">Research interests</div>
+    <div class="cv-what"><p>Computational neuroscience, brain-inspired AI, and information theory.</p></div>
+  </div>
+
+  <h2>Education</h2>
+  <div class="cv-item">
+    <div class="cv-when">Mar.&nbsp;2025 – Feb.&nbsp;2028 (expected)</div>
+    <div class="cv-what">
+      <p class="cv-title"><a href="https://inu.ac.kr">Incheon National University</a> <span class="cv-links">[<a href="{{ '/education/bs/' | relative_url }}">page</a>]</span></p>
+      <p class="cv-meta">B.S. in Computer Science and Engineering · GPA 4.4/4.5 · Incheon, Korea</p>
+    </div>
+  </div>
+  <div class="cv-item">
+    <div class="cv-when">Mar.&nbsp;2022 – Jan.&nbsp;2025</div>
+    <div class="cv-what">
+      <p class="cv-title"><a href="https://dimigo.hs.kr/">Korea Digital Media High School</a> <span class="cv-links">[<a href="{{ '/education/dimigo/' | relative_url }}">page</a>]</span></p>
+      <p class="cv-meta">High School Diploma in Web Programming · Ansan, Korea</p>
+      <p>Top 2 of 189 in IT Literacy Certification Program</p>
+    </div>
+  </div>
+
+  <h2>Research Experience</h2>
+  <div class="cv-item">
+    <div class="cv-when">Sep.&nbsp;2025 – Present</div>
+    <div class="cv-what">
+      <p class="cv-title">Research Intern, <a href="https://sites.google.com/view/gailab/">GAI Lab</a></p>
+      <p class="cv-meta">Incheon National University · Advisor: Prof. Jibum Kim · Incheon, Korea</p>
+      <ul>
+        <li>Self-directed simulation project in Python (manuscript in preparation): with weights held fixed to isolate what dynamics alone provide, can synchronization with a chaotic world, a state of its own, and adaptation emerge in a spiking network?
+          <ul>
+            <li>Measured the world-driven and own parts of each neuron’s activity with copies of the network driven by the same world from different starting states.</li>
+            <li>Found that they can: the own part keeps 88% of its spread across a <span class="nw">10<sup>5</sup>-fold</span> rise in input gain, and evolved networks, once frozen, re-synchronize in a median of 11–19 steps after a world switch.</li>
+            <li>Reported the limit: the tested world is simple enough that a linear filter reaches 90% of an oracle; a world that requires the own part is the next step.</li>
+          </ul>
+        </li>
+        <li>Lab seminar: reviewed a brain-to-text decoding paper, arguing that teacher forcing leaks target information into its reported scores.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Honors &amp; Awards</h2>
+  <div class="cv-item">
+    <div class="cv-when">2024</div>
+    <div class="cv-what">
+      <p>Finalist, <a href="https://www.societyforscience.org/isef/">Regeneron International Science and Engineering Fair (ISEF)</a></p>
+      <p class="cv-meta">67 countries and regions · Selected as a representative of South Korea</p>
+    </div>
+  </div>
+  <div class="cv-item">
+    <div class="cv-when">2026</div>
+    <div class="cv-what">
+      <p>1st Place, 7th IDEA Hackathon, Brain and Cognitive Science Community (BCSC) <span class="cv-links">[<a href="{{ '/bcsc/pdf/20260810-bcsc_hackathon.pdf' | relative_url }}">slides</a>]</span></p>
+    </div>
+  </div>
+  <div class="cv-item">
+    <div class="cv-when">2023</div>
+    <div class="cv-what"><p>Bronze Medal, Korea Code Fair, Ministry of Science and ICT</p></div>
+  </div>
+  <div class="cv-item">
+    <div class="cv-when">2025–2026</div>
+    <div class="cv-what"><p>Academic Excellence Scholarship, Incheon National University (3 semesters)</p></div>
+  </div>
+
+  <h2>Selected Projects</h2>
+  <div class="cv-item">
+    <div class="cv-when">2024</div>
+    <div class="cv-what">
+      <p class="cv-title">connectome_nn</p>
+      <p>Python simulator for layered Izhikevich spiking networks with synaptic reweighting and rewiring, built after Seung’s <i>Connectome</i> to test whether these simple rules alone can hold activity patterns like a memory; this question grew into the fixed-weight project above.</p>
+    </div>
+  </div>
+  <div class="cv-item">
+    <div class="cv-when">2024</div>
+    <div class="cv-what">
+      <p class="cv-title">VoiceMath</p>
+      <p>Graphing calculator that turns spoken math into equations: fine-tuned Whisper-tiny on about 1,000 self-recorded math utterances (test WER 11.5%) and ran the system on a Raspberry Pi.</p>
+    </div>
+  </div>
+  <div class="cv-item">
+    <div class="cv-when">2023</div>
+    <div class="cv-what">
+      <p class="cv-title">Orora</p>
+      <p>Implemented an interpreted language in C (lexer, parser, AST visitor) with LaTeX-like mathematical syntax, running algorithms such as gradient descent written as equations; programs also export to LaTeX and run in a web client.</p>
+    </div>
+  </div>
+  <div class="cv-item">
+    <div class="cv-when">2022</div>
+    <div class="cv-what">
+      <p class="cv-title">Quantum Annealing Regression</p>
+      <p>Formulated linear regression as a QUBO on D-Wave Leap; on synthetic data, RMSE was within 1.4% of the closed-form solution.</p>
+    </div>
+  </div>
+  <div class="cv-item">
+    <div class="cv-when">2023</div>
+    <div class="cv-what">
+      <p class="cv-title">Interactive Explainer Pages</p>
+      <p>Built from scratch in TypeScript, React, and Next.js a set of interactive explainers: a cart-and-weight simulation driven by a stock-and-flow diagram that shows energy conservation, gradient descent versus momentum on curves whose extrema users drag, matrix operations, floating-point representation, and qubit rotations on the Bloch sphere; shaped the draggable curve piecewise after showing that a quartic cannot put its three extrema at arbitrary points.</p>
+    </div>
+  </div>
+
+  <h2>Activities</h2>
+  <div class="cv-item">
+    <div class="cv-when">Mar.&nbsp;2025 – Present</div>
+    <div class="cv-what">
+      <p class="cv-title"><a href="{{ '/bcsc/' | relative_url }}">Brain and Cognitive Science Community (BCSC)</a></p>
+      <p class="cv-meta">Communications Team (Spring 2026) · Communications Team Lead (Fall 2026)</p>
+    </div>
+  </div>
+  <div class="cv-item cv-nested">
+    <div class="cv-when">Mar.–May, <span class="nw">Sep.–Nov.&nbsp;2026</span></div>
+    <div class="cv-what">
+      <p class="cv-role">Study Leader, Artificial Neural Network <span class="cv-links">[<a href="{{ '/bcsc/artificial-intelligence/' | relative_url }}">spring</a>] [<a href="{{ '/bcsc/artificial-intelligence-2026/' | relative_url }}">fall</a>]</span></p>
+      <p>Designed and led a curriculum on associative memory, from the Hebb rule and Hopfield networks to Boltzmann machines, modern Hopfield networks, and attention (Outstanding Study Award, 1st Place).</p>
+    </div>
+  </div>
+  <div class="cv-item cv-nested">
+    <div class="cv-when">Dec.&nbsp;2025 – Mar.&nbsp;2026</div>
+    <div class="cv-what">
+      <p class="cv-role">Study Leader, Probabilistic Computational Neuroscience <span class="cv-links">[<a href="{{ '/bcsc/probabilistic-computational-neuroscience/' | relative_url }}">page</a>] [<a href="{{ '/bcsc/probabilistic-computational-neuroscience/pdf/AI_report/Active_Inference_%ED%86%B5%ED%95%A9%EB%B3%B8.pdf' | relative_url }}">report</a>] [<a href="{{ '/bcsc/probabilistic-computational-neuroscience/pdf/BCSC-9th-PCN-%ED%8F%AC%EC%8A%A4%ED%84%B0.pdf' | relative_url }}">poster</a>]</span></p>
+      <p>Led the active inference team through Parr, Pezzulo, and Friston’s textbook, producing a combined report and poster.</p>
+    </div>
+  </div>
+  <div class="cv-item cv-nested">
+    <div class="cv-when">Jul. – Aug.&nbsp;2025</div>
+    <div class="cv-what">
+      <p class="cv-role">Member, Science of Memory <span class="cv-links">[<a href="{{ '/bcsc/science-of-memory/' | relative_url }}">page</a>]</span></p>
+      <p>Presented six topics, including working memory and memory systems in AI.</p>
+    </div>
+  </div>
+  <div class="cv-item">
+    <div class="cv-when">Nov.&nbsp;2024</div>
+    <div class="cv-what">
+      <p class="cv-title"><a href="https://counterspell-seoul.vercel.app">Counterspell Seoul</a>, Hack Club</p>
+      <p class="cv-meta">Co-organizer</p>
+      <p>Organized a two-day offline game hackathon for 50 high school students, with support from Hack Club.</p>
+    </div>
+  </div>
+
+  <h2>Technical Skills</h2>
+  <div class="cv-item">
+    <div class="cv-when">Programming</div>
+    <div class="cv-what"><p>Python, C/C++</p></div>
+  </div>
+  <div class="cv-item">
+    <div class="cv-when">Tools</div>
+    <div class="cv-what"><p>Git, Linux, <span class="tex">L<span class="a">a</span>T<span class="e">e</span>X</span>, Inkscape</p></div>
+  </div>
+
+  <p class="cv-updated">Last updated: November 17, 2026</p>
+</div>
