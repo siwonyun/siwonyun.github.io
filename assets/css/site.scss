@@ -273,9 +273,14 @@ body {
   }
 
   /* Margin figures: an image in a .sidenote fills the note's column, with the
-     note's own text acting as the caption underneath. */
+     note's own text acting as the caption underneath. The column is 18vw wide
+     (latex-extras) while the text column stops growing at the container's
+     width, so on a wide monitor the picture would outgrow the prose beside it.
+     It stops at 16rem, about what a 1400px window gives it, so a wide screen
+     shows the figure at the size a laptop does. */
   .sidenote img {
     width: 100%;
+    max-width: 16rem;
     margin-bottom: 0.35rem;
   }
 }

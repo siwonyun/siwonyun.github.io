@@ -9,7 +9,7 @@ redirect_from: /experience/
 
 # Photos
 
-## [Regeneron International Science and Engineering Fair (ISEF)](https://www.societyforscience.org/isef/) 2024
+## [Regeneron International Science and Engineering Fair (ISEF)](https://www.societyforscience.org/isef/) 2024 {#isef}
 
 <div align="center">
     <figure class="photo-grid">
@@ -27,7 +27,7 @@ redirect_from: /experience/
 </div>
 
 
-## KAIST Creative and Global Leader Program (창의적 글로벌 리더 프로그램) 2023 Summer
+## KAIST Creative and Global Leader Program (창의적 글로벌 리더 프로그램) 2023 Summer {#cgl}
 
 <div align="center">
     <figure class="photo-grid">
@@ -39,7 +39,7 @@ redirect_from: /experience/
 </div>
 
 
-## [Counterspell: Seoul](https://counterspell-seoul.vercel.app)
+## [Counterspell: Seoul](https://counterspell-seoul.vercel.app) {#counterspell}
 
 <div align="center">
     <figure class="photo-grid">
@@ -53,7 +53,7 @@ redirect_from: /experience/
     </figure>
 </div>
 
-## [CANSAT COMPETITION KOREA](https://cansat.kaist.ac.kr) 2023
+## [CANSAT COMPETITION KOREA](https://cansat.kaist.ac.kr) 2023 {#cansat}
 
 <div align="center">
     <figure class="photo-grid">
@@ -67,7 +67,7 @@ redirect_from: /experience/
     </figure>
 </div>
 
-## Korea Code Fair (KCF) 2023
+## Korea Code Fair (KCF) 2023 {#kcf}
 
 <div align="center">
     <figure class="photo-grid">
@@ -81,7 +81,7 @@ redirect_from: /experience/
     </figure>
 </div>
 
-## Korean Scholars Conference for Youth (KSCY) 2023
+## Korean Scholars Conference for Youth (KSCY) 2023 {#kscy}
 
 <div align="center">
     <figure class="photo-grid">

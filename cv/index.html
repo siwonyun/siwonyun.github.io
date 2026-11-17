@@ -56,16 +56,6 @@ nav: main
     text-decoration: underline;
   }
 
-  /* a title reads as a name first; that it is also a link shows on hover */
-  .cv.cv.cv .cv-title a {
-    color: inherit;
-  }
-
-  .cv.cv.cv .cv-title a:hover,
-  .cv.cv.cv .cv-title .cv-links a {
-    color: var(--link-visited);
-  }
-
   /* ---------- header ---------- */
 
   .cv-head {
@@ -138,8 +128,8 @@ nav: main
      first, so there it sits above the entry instead. */
   .cv-item {
     display: grid;
-    grid-template-columns: 8rem minmax(0, 1fr);
-    column-gap: 1.25rem;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    column-gap: 1rem;
     margin-bottom: 1.05rem;
   }
 
@@ -250,7 +240,7 @@ nav: main
   <div class="cv-item">
     <div class="cv-when">Mar.&nbsp;2025 – Feb.&nbsp;2028 (expected)</div>
     <div class="cv-what">
-      <p class="cv-title"><a href="https://inu.ac.kr">Incheon National University</a> <span class="cv-links">[<a href="{{ '/education/bs/' | relative_url }}">page</a>]</span></p>
+      <p class="cv-title"><a href="https://inu.ac.kr">Incheon National University</a> <span class="cv-links">[<a href="{{ '/education/bs/' | relative_url }}">page</a>] [<a href="{{ '/education/bs/coursework' | relative_url }}">coursework</a>]</span></p>
       <p class="cv-meta">B.S. in Computer Science and Engineering · GPA 4.4/4.5 · Incheon, Korea</p>
     </div>
   </div>
@@ -293,7 +283,7 @@ nav: main
   <div class="cv-item">
     <div class="cv-when">2026</div>
     <div class="cv-what">
-      <p>1st Place, 7th IDEA Hackathon, Brain and Cognitive Science Community (BCSC) <span class="cv-links">[<a href="{{ '/bcsc/pdf/20260810-bcsc_hackathon.pdf' | relative_url }}">slides</a>]</span></p>
+      <p>1st Place, 7th IDEA Hackathon, Brain and Cognitive Science Community (BCSC)</p>
     </div>
   </div>
   <div class="cv-item">
@@ -346,7 +336,7 @@ nav: main
   <div class="cv-item">
     <div class="cv-when">Mar.&nbsp;2025 – Present</div>
     <div class="cv-what">
-      <p class="cv-title"><a href="{{ '/bcsc/' | relative_url }}">Brain and Cognitive Science Community (BCSC)</a></p>
+      <p class="cv-title"><a href="https://bcscommunity123.wixstudio.com/bcsc">Brain and Cognitive Science Community (BCSC)</a> <span class="cv-links">[<a href="{{ '/bcsc/' | relative_url }}">page</a>]</span></p>
       <p class="cv-meta">Communications Team (Spring 2026) · Communications Team Lead (Fall 2026)</p>
     </div>
   </div>
