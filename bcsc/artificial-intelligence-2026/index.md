@@ -56,7 +56,7 @@ nav:
 
 **Part III:**
 {: .no-indent}
-- Week 7: [Hopfield Network is All You Need](https://arxiv.org/pdf/2008.02217) — Hubert Ramsauer et al.
+- Week 7: [Hopfield Networks is All You Need](https://arxiv.org/pdf/2008.02217) — Hubert Ramsauer et al.
 
 ### Additional Materials
 - Week 2: <https://www.youtube.com/watch?v=ozyNz5-2Ek0>
@@ -79,7 +79,7 @@ nav:
 |  4   |  1 Nov  | [Boltzmann Machines](./pdf/w4.pdf)                  |    정윤호    |
 |  5   |  8 Nov  | [DBN & Deep Learning](./pdf/w5.pdf)                 |    이한나    |
 |  6   | 15 Nov  | [Attention is All You Need & Memory](./pdf/w6.pdf)  |    박정욱    |
-|  7   | 22 Nov  | Hopfield Network is All You Need                    |    권가민    |
+|  7   | 22 Nov  | Hopfield Networks is All You Need                    |    권가민    |
 
 ## Attendance
 
