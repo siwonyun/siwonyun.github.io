@@ -43,7 +43,7 @@ title: "Coursework"
 - 자료구조<sup>Data Structure</sup>
 - 대학수학(1)<sup>Calculus(1)</sup>
 - Academic English
-- 확률및통계<sup>Probability and Statics</sup>
+- 확률및통계<sup>Probability and Statistics</sup>
 - 미생물학입문<sup>Introduction to Microbiology</sup>
 
 ### Summer
