@@ -79,17 +79,17 @@ nav:
 |  4   |  1 Nov  | [Boltzmann Machines](./pdf/w4.pdf)                  |    정윤호    |
 |  5   |  8 Nov  | [DBN & Deep Learning](./pdf/w5.pdf)                 |    이한나    |
 |  6   | 15 Nov  | [Attention is All You Need & Memory](./pdf/w6.pdf)  |    박정욱    |
-|  7   | 22 Nov  | Hopfield Networks is All You Need                    |    권가민    |
+|  7   | 22 Nov  | [Hopfield Networks is All You Need](./pdf/w7.pdf)   |    권가민    |
 
 ## Attendance
 
 |  이름  | Week 1  | Week 2  | Week 3  | Week 4  | Week 5  | Week 6  | Week 7  |
 | :---: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
-| 윤시원  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |         |
-| 권가민  |    ✔    |    ✔    |   ❌    |    ✔    |    ✔    |    ✔    |         |
-| 박정욱  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |         |
-| 이한나  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |         |
-| 정윤호  |   ✅    |   ✅    |   ✅    |   ✅    |    ✔    |   ✅    |         |
+| 윤시원  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |
+| 권가민  |    ✔    |    ✔    |   ❌    |    ✔    |    ✔    |    ✔    |    ✔    |
+| 박정욱  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |
+| 이한나  |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |   ✅    |
+| 정윤호  |   ✅    |   ✅    |   ✅    |   ✅    |    ✔    |   ✅    |   ✅    |
 | 차민경  |   ✅    |    ✔    |         |         |         |         |         |
 
 ✅: 출석,
